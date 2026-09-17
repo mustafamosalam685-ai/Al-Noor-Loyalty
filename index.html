@@ -3,99 +3,463 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Al Noor Loyalty Card</title>
+
+<title>Al Noor Loyalty</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
 <style>
-*{box-sizing:border-box}
 body{
-  margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
-  font-family:Arial,sans-serif; background:#f3f0e8; padding:24px;
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f5f5f5;
+    color:#222;
 }
+
+.container{
+    max-width:430px;
+    margin:30px auto;
+    padding:20px;
+}
+
 .card{
-  width:min(390px,100%); border-radius:28px; overflow:hidden;
-  background:#fff; box-shadow:0 18px 45px rgba(0,0,0,.18);
+    background:white;
+    border-radius:22px;
+    padding:25px;
+    box-shadow:0 8px 30px rgba(0,0,0,.12);
+    text-align:center;
 }
-.header{
-  padding:28px 24px 22px; background:#33483a; color:#fff;
+
+.logo{
+    font-size:28px;
+    font-weight:bold;
+    color:#65752b;
 }
-.brand{font-size:14px; letter-spacing:2px; opacity:.9}
-.title{font-size:28px; font-weight:700; margin-top:8px}
-.body{padding:24px}
-.name{font-size:24px;font-weight:700;color:#26352b}
-.id{color:#777;margin-top:5px}
-.points{
-  margin-top:22px; padding:20px; border-radius:20px;
-  background:#f0eee6; text-align:center;
+
+h2{
+    margin-bottom:20px;
 }
-.points strong{display:block;font-size:42px;color:#33483a}
-.points span{font-size:14px;color:#666}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-.stat{padding:15px;border:1px solid #e3e0d7;border-radius:16px}
-.stat b{display:block;font-size:19px;color:#33483a}
-.stat small{color:#777}
-.reward{
-  margin-top:14px;padding:16px;border-radius:16px;
-  background:#33483a;color:#fff
+
+input{
+    width:100%;
+    box-sizing:border-box;
+    padding:14px;
+    margin:8px 0;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:16px;
 }
-.reward small{opacity:.8}
-.actions{padding:0 24px 26px}
+
 button{
-  width:100%; border:0; border-radius:15px; padding:15px;
-  margin-top:10px; font-size:16px; font-weight:700; cursor:pointer;
+    width:100%;
+    padding:14px;
+    margin-top:12px;
+    border:0;
+    border-radius:10px;
+    background:#65752b;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
 }
-.wallet{background:#111;color:#fff}
-.google{background:#fff;color:#222;border:1px solid #ccc}
-.note{font-size:11px;color:#888;text-align:center;margin-top:14px;line-height:1.5}
+
+.points{
+    font-size:55px;
+    font-weight:bold;
+    margin:15px 0;
+    color:#65752b;
+}
+
+.info{
+    background:#f3f3f3;
+    border-radius:12px;
+    padding:12px;
+    margin:8px 0;
+}
+
+#qrcode{
+    margin:20px auto;
+    width:200px;
+}
+
+.hidden{
+    display:none;
+}
+
+.error{
+    color:#b00020;
+    margin-top:10px;
+}
+
+.success{
+    color:green;
+    margin-top:10px;
+}
 </style>
 </head>
+
 <body>
-<div class="card">
-  <div class="header">
-    <div class="brand">AL NOOR MODERN BAKERY</div>
-    <div class="title">LOYALTY CARD</div>
-  </div>
-  <div class="body">
-    <div class="name" id="name">Customer</div>
-    <div class="id" id="id">Customer ID</div>
 
-    <div class="points">
-      <strong id="points">0</strong>
-      <span>LOYALTY POINTS</span>
+<div class="container">
+
+    <!-- REGISTRATION -->
+    <div id="registerPage" class="card hidden">
+
+        <div class="logo">AL NOOR</div>
+
+        <h2>Join Al Noor Loyalty</h2>
+
+        <input id="fullName"
+               type="text"
+               placeholder="Full Name">
+
+        <input id="mobile"
+               type="tel"
+               placeholder="Mobile Number">
+
+        <input id="email"
+               type="email"
+               placeholder="Email (Optional)">
+
+        <button onclick="registerCustomer()">
+            Create Loyalty Card
+        </button>
+
+        <div id="registerMessage"></div>
+
     </div>
 
-    <div class="stats">
-      <div class="stat"><b id="visits">0</b><small>Visits</small></div>
-      <div class="stat"><b id="spend">0 AED</b><small>Total Spend</small></div>
+
+    <!-- CUSTOMER CARD -->
+    <div id="cardPage" class="card hidden">
+
+        <div class="logo">AL NOOR</div>
+
+        <h2 id="customerName"></h2>
+
+        <div class="info">
+            Customer ID:
+            <strong id="customerCode"></strong>
+        </div>
+
+        <div class="points" id="points">0</div>
+
+        <div>LOYALTY POINTS</div>
+
+        <div class="info">
+            Visits:
+            <strong id="visits"></strong>
+        </div>
+
+        <div class="info">
+            Reward:
+            <strong id="reward"></strong>
+        </div>
+
+        <div class="info">
+            Status:
+            <strong id="status"></strong>
+        </div>
+
+        <h3>Your QR Code</h3>
+
+        <div id="qrcode"></div>
+
+        <button onclick="location.reload()">
+            Refresh Card
+        </button>
+
     </div>
 
-    <div class="reward">
-      <small>Current Reward</small>
-      <div id="reward" style="font-size:20px;font-weight:700;margin-top:5px">No reward</div>
-    </div>
-  </div>
 
-  <div class="actions">
-    <button class="wallet" onclick="alert('Apple Wallet integration will be connected in the next step.')">Add to Apple Wallet</button>
-    <button class="google" onclick="alert('Google Wallet integration will be connected in the next step.')">Add to Google Wallet</button>
-    <div class="note">Al Noor Loyalty • Your points and rewards will be connected to the loyalty system.</div>
-  </div>
+    <!-- ERROR -->
+    <div id="errorPage" class="card hidden">
+
+        <div class="logo">AL NOOR</div>
+
+        <h2>Customer Not Found</h2>
+
+        <p>
+            This loyalty card could not be found.
+        </p>
+
+    </div>
+
 </div>
 
+
 <script>
-const customers = {
-  C0001:{name:"Ahmed Mohamed",points:6,visits:12,spend:"450 AED",reward:"2 Cups"},
-  C0002:{name:"Sara Ali",points:3,visits:7,spend:"280 AED",reward:"1 Cup"},
-  C0003:{name:"Mohamed",points:8,visits:15,spend:"620 AED",reward:"FREE DRINK"}
+
+/* =========================
+   SUPABASE
+========================= */
+
+const SUPABASE_URL =
+"https://fgarlyoqobopudfkifbp.supabase.co/rest/v1/";
+
+const SUPABASE_KEY =
+"sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
+
+
+/* =========================
+   PAGE START
+========================= */
+
+window.onload = function(){
+
+    const params =
+        new URLSearchParams(window.location.search);
+
+    const token =
+        params.get("token");
+
+    const register =
+        params.get("register");
+
+    if(register === "1"){
+        showRegister();
+        return;
+    }
+
+    if(token){
+        loadCustomer(token);
+        return;
+    }
+
+    showRegister();
 };
 
-const id = new URLSearchParams(location.search).get("id") || "C0002";
-const c = customers[id] || customers.C0002;
 
-document.getElementById("name").textContent=c.name;
-document.getElementById("id").textContent="Customer ID: "+id;
-document.getElementById("points").textContent=c.points;
-document.getElementById("visits").textContent=c.visits;
-document.getElementById("spend").textContent=c.spend;
-document.getElementById("reward").textContent=c.reward;
+/* =========================
+   SHOW REGISTER
+========================= */
+
+function showRegister(){
+
+    document
+        .getElementById("registerPage")
+        .classList.remove("hidden");
+
+}
+
+
+/* =========================
+   REGISTER CUSTOMER
+========================= */
+
+async function registerCustomer(){
+
+    const name =
+        document.getElementById("fullName")
+        .value.trim();
+
+    const mobile =
+        document.getElementById("mobile")
+        .value.trim();
+
+    const email =
+        document.getElementById("email")
+        .value.trim();
+
+    const message =
+        document.getElementById("registerMessage");
+
+    if(!name || !mobile){
+
+        message.className="error";
+        message.innerText=
+            "Please enter your name and mobile number.";
+
+        return;
+    }
+
+    message.className="";
+    message.innerText="Creating your loyalty card...";
+
+    try{
+
+        const response =
+            await fetch(
+                SUPABASE_URL +
+                "/rest/v1/rpc/register_customer",
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json",
+
+                        "apikey":
+                            SUPABASE_KEY,
+
+                        "Authorization":
+                            "Bearer " + SUPABASE_KEY
+                    },
+
+                    body:JSON.stringify({
+
+                        p_full_name:name,
+                        p_mobile:mobile,
+                        p_email:email || null
+
+                    })
+                }
+            );
+
+        if(!response.ok){
+
+            const error =
+                await response.text();
+
+            throw new Error(error);
+        }
+
+        const customer =
+            await response.json();
+
+        const token =
+            customer.public_token;
+
+        window.location.href =
+            window.location.pathname +
+            "?token=" +
+            encodeURIComponent(token);
+
+    }
+    catch(error){
+
+        message.className="error";
+
+        message.innerText =
+            "Registration failed. Please try again.";
+
+        console.error(error);
+    }
+}
+
+
+/* =========================
+   LOAD CUSTOMER
+========================= */
+
+async function loadCustomer(token){
+
+    try{
+
+        const response =
+            await fetch(
+                SUPABASE_URL +
+                "/rest/v1/rpc/get_customer_by_token",
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json",
+
+                        "apikey":
+                            SUPABASE_KEY,
+
+                        "Authorization":
+                            "Bearer " + SUPABASE_KEY
+                    },
+
+                    body:JSON.stringify({
+                        p_token:token
+                    })
+                }
+            );
+
+        if(!response.ok){
+
+            throw new Error(
+                await response.text()
+            );
+        }
+
+        const data =
+            await response.json();
+
+        if(!data || data.length === 0){
+
+            showError();
+            return;
+        }
+
+        const customer = data[0];
+
+        document.getElementById(
+            "customerName"
+        ).innerText =
+            customer.full_name;
+
+        document.getElementById(
+            "customerCode"
+        ).innerText =
+            customer.customer_code;
+
+        document.getElementById(
+            "points"
+        ).innerText =
+            customer.points;
+
+        document.getElementById(
+            "visits"
+        ).innerText =
+            customer.visits;
+
+        document.getElementById(
+            "reward"
+        ).innerText =
+            customer.reward || "No Reward";
+
+        document.getElementById(
+            "status"
+        ).innerText =
+            customer.status || "Active";
+
+
+        document
+            .getElementById("cardPage")
+            .classList.remove("hidden");
+
+
+        /* CUSTOMER QR */
+
+        document
+            .getElementById("qrcode")
+            .innerHTML="";
+
+        new QRCode(
+            document.getElementById("qrcode"),
+            {
+                text:window.location.href,
+                width:200,
+                height:200
+            }
+        );
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        showError();
+    }
+}
+
+
+/* =========================
+   ERROR
+========================= */
+
+function showError(){
+
+    document
+        .getElementById("errorPage")
+        .classList.remove("hidden");
+}
+
 </script>
+
 </body>
 </html>
