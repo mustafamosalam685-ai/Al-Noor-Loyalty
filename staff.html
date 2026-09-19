@@ -1,1 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Al Noor Staff</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:#211d1a;color:#fff}
+body{
+  min-height:100vh;
+  background:
+    linear-gradient(rgba(20,16,13,.28),rgba(20,16,13,.48)),
+    url("staff-design.png") center top/cover fixed no-repeat;
+}
+.page{min-height:100vh;padding:30px 18px 45px}
+.topbar{max-width:980px;margin:0 auto 22px;display:flex;justify-content:flex-end}
+.logout{
+  border:1px solid rgba(255,255,255,.35);background:rgba(25,22,20,.55);
+  color:#fff;border-radius:18px;padding:13px 20px;font-size:16px;font-weight:700;
+  cursor:pointer;backdrop-filter:blur(10px)
+}
+.card{
+  width:min(680px,100%);margin:115px auto 35px;padding:42px;
+  background:rgba(24,21,19,.82);border:1px solid rgba(255,255,255,.30);
+  border-radius:34px;box-shadow:0 25px 70px rgba(0,0,0,.35);
+  backdrop-filter:blur(14px)
+}
+h1{font-size:48px;margin:0 0 8px}
+.sub{font-size:20px;color:#c9c4c0;margin-bottom:34px}
+label{display:block;font-size:17px;font-weight:700;margin:18px 0 9px}
+input{
+  width:100%;padding:17px 18px;border-radius:18px;border:1px solid #777;
+  background:rgba(255,255,255,.08);color:#fff;font-size:17px;outline:none
+}
+input:focus{border-color:#ff7200}
+.btn{
+  width:100%;border:0;border-radius:18px;padding:18px;margin-top:25px;
+  background:#ff7200;color:#fff;font-size:18px;font-weight:800;cursor:pointer
+}
+.message{min-height:24px;margin-top:15px;text-align:center;font-weight:700;color:#ffb6a6}
+.hidden{display:none!important}
+
+.staff-panel{width:min(980px,100%);margin:70px auto 0}
+.panel{
+  background:rgba(24,21,19,.88);border:1px solid rgba(255,255,255,.25);
+  border-radius:30px;padding:25px;backdrop-filter:blur(14px)
+}
+.panel h2{margin:0 0 18px;font-size:30px}
+#reader{width:100%;max-width:620px;margin:0 auto;border-radius:22px;overflow:hidden}
+.customer{
+  margin-top:22px;padding:25px;border-radius:24px;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.16)
+}
+.customer-code{color:#ff9a4a;font-weight:800;letter-spacing:2px}
+.customer-name{font-size:32px;font-weight:800;margin:8px 0 18px}
+.points{
+  font-size:64px;font-weight:900;text-align:center;background:#2b2521;
+  border-radius:22px;padding:18px;margin:12px 0
+}
+.points small{display:block;font-size:13px;letter-spacing:5px;color:#ccc}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.info{background:rgba(255,255,255,.07);padding:15px;border-radius:16px}
+.info span{display:block;color:#aaa;font-size:13px;margin-bottom:5px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.action{padding:17px;border:0;border-radius:16px;font-weight:800;font-size:16px;cursor:pointer}
+.add{background:#ff7200;color:#fff}
+.redeem{background:#fff;color:#241f1c}
+.next{grid-column:1/-1;background:#4a413b;color:#fff}
+.status{margin-top:15px;text-align:center;font-weight:700;color:#9fe6a6}
+@media(max-width:700px){
+  .page{padding:18px 12px 35px}
+  .card{margin-top:90px;padding:28px 20px;border-radius:27px}
+  h1{font-size:38px}
+  .sub{font-size:17px}
+  .grid{grid-template-columns:1fr}
+  .actions{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+
+  <div class="topbar">
+    <button id="logoutBtn" class="logout hidden" onclick="logout()">↪ Logout</button>
+  </div>
+
+  <!-- LOGIN -->
+  <section id="loginCard" class="card">
+    <h1>Staff Login</h1>
+    <div class="sub">Authorized Al Noor staff only</div>
+
+    <label>Staff Email</label>
+    <input id="email" type="email" autocomplete="username"
+           value="staff@alnoorloyalty.com">
+
+    <label>Password</label>
+    <input id="password" type="password" autocomplete="current-password"
+           placeholder="Enter password">
+
+    <button class="btn" onclick="login()">LOGIN →</button>
+    <div id="loginMessage" class="message"></div>
+  </section>
+
+  <!-- STAFF SCANNER -->
+  <section id="staffPanel" class="staff-panel hidden">
+    <div class="panel">
+      <h2>Al Noor Staff Scanner</h2>
+      <div id="reader"></div>
+
+      <div id="customerBox" class="customer hidden">
+        <div id="customerCode" class="customer-code"></div>
+        <div id="customerName" class="customer-name"></div>
+
+        <div class="points">
+          <span id="points">0</span>
+          <small>CURRENT POINTS</small>
+        </div>
+
+        <div class="grid">
+          <div class="info"><span>Visits</span><b id="visits">0</b></div>
+          <div class="info"><span>Reward</span><b id="reward">No Reward</b></div>
+          <div class="info"><span>Status</span><b id="status">Active</b></div>
+        </div>
+
+        <div class="actions">
+          <button class="action add" onclick="addPoint()">+1 POINT / VISIT</button>
+          <button class="action redeem" onclick="redeemReward()">REDEEM REWARD</button>
+          <button class="action next" onclick="scanNext()">SCAN NEXT CUSTOMER</button>
+        </div>
+
+        <div id="actionMessage" class="status"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+const SUPABASE_URL = "https://fgarlyoqobopudfkifbp.supabase.co";
+const SUPABASE_KEY = "sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let scanner = null;
+let currentCustomerCode = null;
+let scanning = false;
+
+async function login(){
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  document.getElementById("loginMessage").textContent = "Signing in...";
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email, password
+  });
+
+  if(error){
+    document.getElementById("loginMessage").textContent =
+      "Login failed: " + error.message;
+    return;
+  }
+
+  document.getElementById("loginCard").classList.add("hidden");
+  document.getElementById("staffPanel").classList.remove("hidden");
+  document.getElementById("logoutBtn").classList.remove("hidden");
+  startScanner();
+}
+
+async function checkSession(){
+  const { data } = await supabaseClient.auth.getSession();
+  if(data.session){
+    document.getElementById("loginCard").classList.add("hidden");
+    document.getElementById("staffPanel").classList.remove("hidden");
+    document.getElementById("logoutBtn").classList.remove("hidden");
+    startScanner();
+  }
+}
+
+async function logout(){
+  await supabaseClient.auth.signOut();
+  location.reload();
+}
+
+function startScanner(){
+  if(scanning) return;
+  scanning = true;
+
+  scanner = new Html5Qrcode("reader");
+
+  scanner.start(
+    { facingMode: "environment" },
+    { fps: 10, qrbox: { width: 260, height: 260 } },
+    async (decodedText) => {
+      await handleQR(decodedText);
+    },
+    () => {}
+  ).catch(err => {
+    scanning = false;
+    document.getElementById("actionMessage").textContent =
+      "Camera error: " + err;
+  });
+}
+
+async function handleQR(text){
+  let code = text.trim();
+
+  // Customer QR is the full Al Noor URL with ?token=UUID
+  try{
+    const url = new URL(code);
+    const token = url.searchParams.get("token");
+
+    if(token){
+      const { data, error } = await supabaseClient.rpc(
+        "get_customer_by_token",
+        { p_token: token }
+      );
+
+      if(error || !data || !data.length){
+        alert("Customer not found.");
+        return;
+      }
+
+      showCustomer(data[0]);
+      await stopScanner();
+      return;
+    }
+  }catch(e){}
+
+  // Also support the desktop QR format: ALNOOR:CUSTOMER_CODE
+  if(code.startsWith("ALNOOR:")){
+    code = code.substring(7).trim();
+  }
+
+  if(!code) return;
+  await loadCustomerByCode(code);
+}
+
+async function loadCustomerByCode(code){
+  const { data, error } = await supabaseClient
+    .from("customers")
+    .select("customer_code,full_name,points,visits,reward,status")
+    .eq("customer_code", code)
+    .limit(1);
+
+  if(error || !data || !data.length){
+    alert("Customer not found.");
+    return;
+  }
+
+  showCustomer(data[0]);
+  await stopScanner();
+}
+
+function showCustomer(c){
+  currentCustomerCode = c.customer_code;
+
+  document.getElementById("customerBox").classList.remove("hidden");
+  document.getElementById("customerCode").textContent = c.customer_code;
+  document.getElementById("customerName").textContent = c.full_name;
+  document.getElementById("points").textContent = c.points ?? 0;
+  document.getElementById("visits").textContent = c.visits ?? 0;
+  document.getElementById("reward").textContent = c.reward || "No Reward";
+  document.getElementById("status").textContent = c.status || "Active";
+  document.getElementById("actionMessage").textContent = "";
+}
+
+async function refreshCustomer(){
+  if(!currentCustomerCode) return;
+
+  const { data, error } = await supabaseClient
+    .from("customers")
+    .select("customer_code,full_name,points,visits,reward,status")
+    .eq("customer_code", currentCustomerCode)
+    .limit(1);
+
+  if(!error && data && data.length) showCustomer(data[0]);
+}
+
+async function addPoint(){
+  if(!currentCustomerCode) return;
+
+  const { data, error } = await supabaseClient.rpc(
+    "add_customer_point",
+    {
+      p_customer_code: currentCustomerCode,
+      p_staff_pin: "1234"
+    }
+  );
+
+  if(error){
+    document.getElementById("actionMessage").textContent =
+      "Error: " + error.message;
+    return;
+  }
+
+  showCustomer(data);
+  document.getElementById("actionMessage").textContent =
+    "1 point added successfully.";
+}
+
+async function redeemReward(){
+  if(!currentCustomerCode) return;
+
+  const points = Number(document.getElementById("points").textContent || 0);
+
+  if(points < 10){
+    document.getElementById("actionMessage").textContent =
+      "Customer needs 10 points for a FREE DRINK.";
+    return;
+  }
+
+  if(!confirm("Redeem 10 points for a FREE DRINK?")) return;
+
+  const { data, error } = await supabaseClient.rpc(
+    "redeem_customer_reward",
+    {
+      p_customer_code: currentCustomerCode,
+      p_staff_pin: "1234"
+    }
+  );
+
+  if(error){
+    document.getElementById("actionMessage").textContent =
+      "Error: " + error.message;
+    return;
+  }
+
+  showCustomer(data);
+  document.getElementById("actionMessage").textContent =
+    "Reward redeemed successfully.";
+}
+
+async function stopScanner(){
+  if(!scanner) return;
+
+  try{
+    await scanner.stop();
+    await scanner.clear();
+  }catch(e){}
+
+  scanning = false;
+}
+
+async function scanNext(){
+  currentCustomerCode = null;
+  document.getElementById("customerBox").classList.add("hidden");
+  document.getElementById("actionMessage").textContent = "";
+  await stopScanner();
+  startScanner();
+}
+
+checkSession();
+</script>
+</body>
+</html>
