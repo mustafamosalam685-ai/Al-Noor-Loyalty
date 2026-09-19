@@ -430,7 +430,7 @@ button:disabled{
                         </div>
 
                         <div class="info-value">
-                            8 Points
+                            10 Points
                         </div>
                     </div>
 
@@ -524,7 +524,7 @@ button:disabled{
 
         <p>
             Subtract
-            <strong>8 points</strong>
+            <strong>10 points</strong>
             <br>
             for
             <strong>FREE DRINK</strong>?
@@ -1338,10 +1338,10 @@ function openRedeem(){
         );
 
 
-    if(points < 8){
+    if(points < 10){
 
         showCustomerMessage(
-            "Customer needs 8 points for a FREE DRINK.",
+            "Customer needs 10 points for a FREE DRINK.",
             "error"
         );
 
@@ -1365,7 +1365,7 @@ function openRedeem(){
     document.getElementById(
         "redeemAfterPoints"
     ).innerText =
-        points - 8;
+        points - 10;
 
 
     document.getElementById(
@@ -1495,7 +1495,7 @@ async function confirmRedeem(){
 
 
         showCustomerMessage(
-            "FREE DRINK redeemed successfully. 8 points deducted.",
+            "FREE DRINK redeemed successfully. 10 points deducted.",
             "success"
         );
 
@@ -1549,7 +1549,7 @@ function updateRedeemButton(){
 
 
     button.disabled =
-        points < 8;
+        points < 10;
 
 }
 
