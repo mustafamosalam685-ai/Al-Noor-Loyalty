@@ -1,606 +1,361 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<meta name="theme-color"
-      content="#314b22">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>AL NOOR Staff Scanner</title>
 
-<script src="https://unpkg.com/html5-qrcode"
-        type="text/javascript">
-</script>
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
 <style>
-
 *{
     box-sizing:border-box;
 }
 
 body{
     margin:0;
-    min-height:100vh;
     font-family:Arial,Helvetica,sans-serif;
-    background:#f4efe5;
-    color:#222;
+    background:#f3f1ed;
+    color:#2b2520;
 }
 
 .container{
     width:100%;
     max-width:520px;
     margin:auto;
-    padding:15px;
+    min-height:100vh;
+    background:#fff;
+    box-shadow:0 0 25px rgba(0,0,0,.12);
 }
 
-/* HEADER */
-
 .header{
-    position:relative;
-    min-height:150px;
-
-    border-radius:24px 24px 0 0;
-
-    overflow:hidden;
-
     background:
-    linear-gradient(
-        rgba(38,55,25,.88),
-        rgba(38,55,25,.88)
-    ),
-    url("https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80");
-
+    linear-gradient(rgba(40,25,20,.82),rgba(40,25,20,.88)),
+    url("https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1000&q=80");
     background-size:cover;
     background-position:center;
-
     color:white;
-
-    padding:25px 20px;
-
     text-align:center;
+    padding:42px 20px 34px;
 }
 
 .logo{
     font-family:Georgia,serif;
     font-size:34px;
-    letter-spacing:2px;
     font-weight:bold;
+    letter-spacing:2px;
 }
 
-.brand{
+.subtitle{
     font-size:12px;
     letter-spacing:4px;
-    margin-top:3px;
+    margin-top:5px;
 }
 
-.staff{
+.staff-mode{
     display:inline-block;
-
-    margin-top:15px;
-
-    padding:8px 15px;
-
-    border-radius:30px;
-
-    background:rgba(255,255,255,.18);
-
+    margin-top:18px;
+    padding:8px 18px;
+    border:1px solid rgba(255,255,255,.5);
+    border-radius:20px;
     font-size:13px;
 }
 
-/* MAIN CARD */
-
-.main-card{
-    background:#fff;
-
-    padding:22px;
-
-    border-radius:0 0 24px 24px;
-
-    box-shadow:
-    0 12px 35px rgba(0,0,0,.12);
+.content{
+    padding:24px 20px 35px;
 }
 
-/* PIN */
-
-.pin-box{
-    margin-bottom:15px;
-}
-
-.pin-box input{
+input{
     width:100%;
-
-    padding:13px;
-
+    padding:16px;
     border:1px solid #ddd;
-
-    border-radius:12px;
-
+    border-radius:14px;
     font-size:16px;
+    margin-bottom:16px;
+    outline:none;
 }
 
-/* SCANNER */
+input:focus{
+    border-color:#8b6b45;
+}
+
+.scanner-box{
+    background:#161616;
+    border-radius:20px;
+    padding:8px;
+    overflow:hidden;
+}
 
 #reader{
     width:100%;
-
-    overflow:hidden;
-
-    border-radius:18px;
-
-    margin-bottom:15px;
 }
 
-.scan-message{
+#reader video{
+    width:100% !important;
+    border-radius:15px;
+}
+
+.scan-text{
     text-align:center;
-
-    color:#777;
-
-    margin:10px 0 15px;
+    color:#8b6b45;
+    font-weight:bold;
+    margin:14px 0 22px;
 }
 
-/* CUSTOMER */
-
-.customer{
+.customer-card{
     display:none;
+    background:#faf8f4;
+    border-radius:20px;
+    padding:22px;
+    border:1px solid #e8e0d5;
+    margin-top:15px;
 }
 
 .customer-id{
-    background:#f0eee9;
-
-    padding:12px;
-
-    border-radius:12px;
-
-    text-align:center;
-
-    font-size:14px;
-
-    color:#555;
+    color:#8b6b45;
+    font-size:13px;
+    font-weight:bold;
 }
 
 .customer-name{
-    text-align:center;
-
-    font-size:29px;
-
+    font-size:25px;
     font-weight:bold;
-
-    margin:18px 0 8px;
+    margin:7px 0 18px;
 }
 
-/* POINTS */
-
-.points-area{
+.points-box{
     text-align:center;
-
-    padding:10px 0 20px;
+    background:#2d2520;
+    color:white;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:15px;
 }
 
-.points{
-    font-size:70px;
-
-    line-height:1;
-
+.points-number{
+    font-size:46px;
     font-weight:bold;
-
-    color:#55752d;
 }
 
 .points-label{
-    margin-top:8px;
-
-    font-size:13px;
-
+    font-size:12px;
     letter-spacing:2px;
-
-    color:#777;
+    opacity:.8;
 }
-
-/* INFO */
 
 .info-grid{
     display:grid;
-
-    grid-template-columns:
-    repeat(3,1fr);
-
-    gap:8px;
-
-    margin-bottom:18px;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
 }
 
 .info{
-    background:#f4f2ed;
-
-    border-radius:13px;
-
-    padding:12px 5px;
-
-    text-align:center;
+    background:white;
+    border-radius:14px;
+    padding:14px;
+    border:1px solid #eee;
 }
 
 .info-title{
-    font-size:11px;
-
-    color:#777;
-
-    margin-bottom:5px;
+    color:#888;
+    font-size:12px;
 }
 
 .info-value{
-    font-size:15px;
-
+    font-size:16px;
     font-weight:bold;
+    margin-top:5px;
 }
-
-/* BUTTONS */
 
 button{
     width:100%;
-
     border:0;
-
-    border-radius:14px;
-
-    padding:16px;
-
-    margin-top:10px;
-
+    border-radius:15px;
+    padding:17px;
     font-size:16px;
-
     font-weight:bold;
-
     cursor:pointer;
+    margin-top:12px;
 }
 
-.add{
-    background:#55752d;
-
+.add-btn{
+    background:#2d2520;
     color:white;
 }
 
-.redeem{
-    background:#a93228;
-
+.redeem-btn{
+    background:#b08a55;
     color:white;
 }
 
-.scan-next{
-    background:white;
-
-    color:#333;
-
-    border:1px solid #bbb;
+.next-btn{
+    background:#eee7dc;
+    color:#2d2520;
 }
 
-/* MESSAGE */
+button:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
 
 .message{
-    text-align:center;
-
-    margin-top:15px;
-
-    padding:12px;
-
-    border-radius:10px;
-
     display:none;
+    margin-top:15px;
+    padding:14px;
+    border-radius:12px;
+    text-align:center;
+    font-weight:bold;
 }
 
 .success{
-    display:block;
-
-    background:#e9f6df;
-
-    color:#35651d;
+    background:#e7f5e8;
+    color:#27652d;
 }
 
 .error{
-    display:block;
-
-    background:#fde8e6;
-
-    color:#9e2119;
+    background:#fde8e8;
+    color:#9b2525;
 }
-
-/* MODAL */
 
 .modal{
     display:none;
-
     position:fixed;
-
     inset:0;
-
     background:rgba(0,0,0,.65);
-
-    z-index:1000;
-
     align-items:center;
-
     justify-content:center;
-
     padding:20px;
+    z-index:999;
 }
 
 .modal-box{
     width:100%;
-
     max-width:420px;
-
     background:white;
-
     border-radius:22px;
-
     padding:25px;
-
     text-align:center;
-
-    box-shadow:0 20px 60px rgba(0,0,0,.3);
 }
 
-.modal-title{
-    background:#fde8e6;
-
-    color:#9e2119;
-
-    padding:15px;
-
-    border-radius:12px;
-
-    font-size:21px;
-
-    font-weight:bold;
+.modal-box h2{
+    margin-top:0;
 }
 
-.modal-text{
+.modal-points{
+    font-size:18px;
     margin:18px 0;
-
-    line-height:1.7;
-
-    color:#444;
 }
 
-.modal-buttons{
-    display:grid;
-
-    grid-template-columns:
-    1fr 1fr;
-
-    gap:10px;
-}
-
-.cancel{
-    background:#e9e9e9;
-
+.cancel-btn{
+    background:#eee;
     color:#333;
 }
 
-.confirm{
-    background:#a93228;
-
-    color:white;
-}
-
-/* FOOTER */
-
 .footer{
     text-align:center;
-
-    padding:20px 0 5px;
-
-    color:#777;
-
-    font-family:Georgia,serif;
-
-    font-size:14px;
+    color:#aaa;
+    font-size:12px;
+    margin-top:22px;
 }
-
-@media(max-width:380px){
-
-    .info-grid{
-        grid-template-columns:1fr;
-    }
-
-}
-
 </style>
-
 </head>
 
 <body>
 
 <div class="container">
 
-    <!-- HEADER -->
-
     <div class="header">
-
-        <div class="logo">
-            AL NOOR
-        </div>
-
-        <div class="brand">
-            MODERN BAKERY
-        </div>
-
-        <div class="staff">
-            👤 Staff Mode
-        </div>
-
+        <div class="logo">AL NOOR</div>
+        <div class="subtitle">MODERN BAKERY</div>
+        <div class="staff-mode">Staff Mode</div>
     </div>
 
+    <div class="content">
 
-    <div class="main-card">
+        <input
+            type="password"
+            id="staffPin"
+            placeholder="Staff PIN"
+            value="1234"
+        >
 
-
-        <!-- PIN -->
-
-        <div class="pin-box">
-
-            <input
-                id="staffPin"
-                type="password"
-                value="1234"
-                placeholder="Staff PIN">
-
+        <div class="scanner-box">
+            <div id="reader"></div>
         </div>
 
-
-        <!-- SCANNER -->
-
-        <div id="reader"></div>
-
-        <div
-            id="scanMessage"
-            class="scan-message">
-
+        <div class="scan-text">
             Scan customer QR code
-
         </div>
 
+        <div id="message" class="message"></div>
 
-        <!-- CUSTOMER -->
+        <div id="customerCard" class="customer-card">
 
-        <div
-            id="customer"
-            class="customer">
-
-
-            <div class="customer-id">
-
-                Customer ID:
-                <strong id="customerCode">
-                </strong>
-
+            <div class="customer-id" id="customerId">
+                CUSTOMER
             </div>
 
-
-            <div
-                id="customerName"
-                class="customer-name">
+            <div class="customer-name" id="customerName">
+                Customer Name
             </div>
 
-
-            <!-- POINTS -->
-
-            <div class="points-area">
-
-                <div
-                    id="points"
-                    class="points">
-
-                    0
-
-                </div>
-
-                <div class="points-label">
-
-                    LOYALTY POINTS
-
-                </div>
-
+            <div class="points-box">
+                <div class="points-number" id="points">0</div>
+                <div class="points-label">CURRENT POINTS</div>
             </div>
-
-
-            <!-- INFO -->
 
             <div class="info-grid">
 
                 <div class="info">
-
-                    <div class="info-title">
-                        VISITS
-                    </div>
-
-                    <div
-                        id="visits"
-                        class="info-value">
-                    </div>
-
+                    <div class="info-title">Visits</div>
+                    <div class="info-value" id="visits">0</div>
                 </div>
 
-
                 <div class="info">
-
-                    <div class="info-title">
-                        REWARD
-                    </div>
-
-                    <div
-                        id="reward"
-                        class="info-value">
-                    </div>
-
+                    <div class="info-title">Reward</div>
+                    <div class="info-value" id="reward">No Reward</div>
                 </div>
 
+                <div class="info">
+                    <div class="info-title">Status</div>
+                    <div class="info-value" id="status">Active</div>
+                </div>
 
                 <div class="info">
-
-                    <div class="info-title">
-                        STATUS
-                    </div>
-
-                    <div
-                        id="status"
-                        class="info-value">
-                    </div>
-
+                    <div class="info-title">Required</div>
+                    <div class="info-value">10 Points</div>
                 </div>
 
             </div>
 
-
-            <!-- ADD POINT -->
-
             <button
-                class="add"
-                onclick="addPoint()">
-
-                ➕ &nbsp; +1 POINT / VISIT
-
+                class="add-btn"
+                id="addPointBtn"
+                onclick="addPoint()"
+            >
+                +1 POINT / VISIT
             </button>
 
-
-            <!-- REDEEM -->
-
             <button
-                class="redeem"
-                onclick="openRedeem()">
-
-                🎁 &nbsp; REDEEM REWARD
-
+                class="redeem-btn"
+                id="redeemBtn"
+                onclick="openRedeem()"
+            >
+                REDEEM REWARD
             </button>
 
-
-            <!-- SCAN NEXT -->
-
             <button
-                class="scan-next"
-                onclick="startScanner()">
-
-                ▣ &nbsp; SCAN NEXT CUSTOMER
-
+                class="next-btn"
+                onclick="scanNext()"
+            >
+                SCAN NEXT CUSTOMER
             </button>
-
-
-            <div
-                id="message"
-                class="message">
-            </div>
 
         </div>
 
-
         <div class="footer">
-
             Fresh Moments • Better Rewards
-
         </div>
 
     </div>
@@ -608,46 +363,42 @@ button{
 </div>
 
 
-<!-- =========================
-     REDEEM MODAL
-========================= -->
+<!-- REDEEM MODAL -->
 
-<div
-    id="redeemModal"
-    class="modal">
+<div class="modal" id="redeemModal">
 
     <div class="modal-box">
 
-        <div class="modal-title">
+        <h2>Redeem Reward 🎁</h2>
 
-            🎁 Redeem Reward?
+        <p id="redeemCustomer"></p>
 
+        <div class="modal-points">
+            Current Points:
+            <strong id="redeemCurrentPoints">0</strong>
+            <br><br>
+            After Redemption:
+            <strong id="redeemAfterPoints">0</strong>
         </div>
 
-        <div
-            id="redeemText"
-            class="modal-text">
-        </div>
+        <p>
+            Subtract <strong>10 points</strong><br>
+            for <strong>FREE DRINK</strong>?
+        </p>
 
-        <div class="modal-buttons">
+        <button
+            class="redeem-btn"
+            onclick="confirmRedeem()"
+        >
+            CONFIRM REDEEM
+        </button>
 
-            <button
-                class="cancel"
-                onclick="closeRedeem()">
-
-                CANCEL
-
-            </button>
-
-            <button
-                class="confirm"
-                onclick="confirmRedeem()">
-
-                CONFIRM REDEEM
-
-            </button>
-
-        </div>
+        <button
+            class="cancel-btn"
+            onclick="closeRedeem()"
+        >
+            CANCEL
+        </button>
 
     </div>
 
@@ -656,9 +407,9 @@ button{
 
 <script>
 
-/* =========================
+/* =========================================
    SUPABASE
-========================= */
+========================================= */
 
 const SUPABASE_URL =
 "https://fgarlyoqobopudfkifbp.supabase.co";
@@ -667,158 +418,272 @@ const SUPABASE_KEY =
 "sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
 
 
-/* =========================
+/* =========================================
    VARIABLES
-========================= */
+========================================= */
 
 let scanner = null;
+let scannerRunning = false;
 
 let currentCustomer = null;
 
-
-/* =========================
-   START
-========================= */
-
-window.onload = function(){
-
-    startScanner();
-
-};
+let lastScannedText = "";
+let lastScanTime = 0;
 
 
-/* =========================
+/* =========================================
+   MESSAGE
+========================================= */
+
+function showMessage(text, type){
+
+    const box = document.getElementById("message");
+
+    box.innerText = text;
+
+    box.className = "message " + type;
+
+    box.style.display = "block";
+
+}
+
+
+/* =========================================
    START SCANNER
-========================= */
+========================================= */
 
-function startScanner(){
+async function startScanner(){
 
-    document
-    .getElementById("customer")
-    .style.display = "none";
-
-
-    document
-    .getElementById("message")
-    .className = "message";
-
-
-    document
-    .getElementById("message")
-    .innerText = "";
-
-
-    document
-    .getElementById("scanMessage")
-    .innerText =
-    "Scan customer QR code";
-
-
-    if(scanner){
-
-        scanner
-        .clear()
-        .catch(()=>{});
-
+    if(scannerRunning){
+        return;
     }
 
+    scanner = new Html5Qrcode("reader");
 
-    scanner =
-    new Html5Qrcode("reader");
+    try{
 
+        /*
+         * FIRST TRY:
+         * Force rear camera
+         */
 
-    scanner.start(
+        await scanner.start(
 
-        {
-            facingMode:"environment"
-        },
+            {
+                facingMode: {
+                    exact: "environment"
+                }
+            },
 
-        {
-            fps:10,
-            qrbox:250
-        },
+            {
+                fps: 10,
 
-        function(decodedText){
+                qrbox: {
+                    width: 250,
+                    height: 250
+                },
 
-            scanner
-            .clear()
-            .catch(()=>{});
+                aspectRatio: 1.0
 
-            openCustomer(decodedText);
+            },
 
-        },
+            onScanSuccess,
 
-        function(errorMessage){
+            onScanFailure
 
-            // Ignore scan errors
+        );
+
+        scannerRunning = true;
+
+        console.log("Rear camera started");
+
+    }
+    catch(error){
+
+        console.log(
+            "Exact rear camera failed:",
+            error
+        );
+
+        /*
+         * SECOND TRY:
+         * Rear camera without exact
+         */
+
+        try{
+
+            await scanner.start(
+
+                {
+                    facingMode: "environment"
+                },
+
+                {
+                    fps: 10,
+
+                    qrbox: {
+                        width: 250,
+                        height: 250
+                    }
+                },
+
+                onScanSuccess,
+
+                onScanFailure
+
+            );
+
+            scannerRunning = true;
+
+            console.log(
+                "Rear camera fallback started"
+            );
+
+        }
+        catch(error2){
+
+            console.error(
+                "Camera failed:",
+                error2
+            );
+
+            showMessage(
+                "Unable to start camera. Please allow camera permission.",
+                "error"
+            );
 
         }
 
-    )
-    .catch(function(error){
-
-        showMessage(
-            "Camera error: " + error,
-            true
-        );
-
-    });
-
-}
-
-
-/* =========================
-   GET TOKEN FROM QR
-========================= */
-
-function getToken(qrText){
-
-    try{
-
-        const url =
-        new URL(qrText);
-
-        return url
-        .searchParams
-        .get("token");
-
-    }
-
-    catch(e){
-
-        return null;
-
     }
 
 }
 
 
-/* =========================
-   OPEN CUSTOMER
-========================= */
+/* =========================================
+   QR SCAN SUCCESS
+========================================= */
 
-async function openCustomer(qrText){
+async function onScanSuccess(decodedText){
 
-    const token =
-    getToken(qrText);
+    const now = Date.now();
 
+    /*
+     * Prevent the same QR from being
+     * scanned many times instantly
+     */
 
-    if(!token){
-
-        showMessage(
-            "Invalid customer QR",
-            true
-        );
-
+    if(
+        decodedText === lastScannedText &&
+        now - lastScanTime < 3000
+    ){
         return;
-
     }
 
+    lastScannedText = decodedText;
+    lastScanTime = now;
+
+
+    console.log(
+        "QR scanned:",
+        decodedText
+    );
+
+
+    await loadCustomer(decodedText);
+
+}
+
+
+/* =========================================
+   SCAN FAILURE
+========================================= */
+
+function onScanFailure(error){
+
+    /*
+     * Normal QR scanning generates
+     * many temporary failures.
+     * We intentionally ignore them.
+     */
+
+}
+
+
+/* =========================================
+   LOAD CUSTOMER FROM QR
+========================================= */
+
+async function loadCustomer(qrText){
 
     try{
 
-        const response =
-        await fetch(
+        let token = null;
+
+
+        /*
+         * Customer QR normally looks like:
+         *
+         * https://.../?token=UUID
+         */
+
+        try{
+
+            const url = new URL(qrText);
+
+            token = url.searchParams.get("token");
+
+        }
+        catch(e){
+
+            /*
+             * If QR is directly a UUID
+             */
+
+            if(
+                /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+                .test(qrText)
+            ){
+
+                token = qrText;
+
+            }
+
+        }
+
+
+        /*
+         * Old desktop QR format:
+         * ALNOOR:C0001
+         */
+
+        if(
+            !token &&
+            qrText.startsWith("ALNOOR:")
+        ){
+
+            const customerCode =
+                qrText.substring(7);
+
+            await loadCustomerByCode(
+                customerCode
+            );
+
+            return;
+        }
+
+
+        if(!token){
+
+            showMessage(
+                "Invalid Al Noor customer QR.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const response = await fetch(
 
             SUPABASE_URL +
             "/rest/v1/rpc/get_customer_by_token",
@@ -828,22 +693,20 @@ async function openCustomer(qrText){
                 method:"POST",
 
                 headers:{
-
                     "Content-Type":
-                    "application/json",
+                        "application/json",
 
                     "apikey":
-                    SUPABASE_KEY,
+                        SUPABASE_KEY,
 
                     "Authorization":
-                    "Bearer " +
-                    SUPABASE_KEY
-
+                        "Bearer " +
+                        SUPABASE_KEY
                 },
 
                 body:JSON.stringify({
 
-                    p_token:token
+                    p_token: token
 
                 })
 
@@ -852,42 +715,60 @@ async function openCustomer(qrText){
         );
 
 
+        const data = await response.json();
+
+
+        console.log(
+            "Customer response:",
+            data
+        );
+
+
         if(!response.ok){
 
             throw new Error(
-                await response.text()
+                data.message ||
+                data.error ||
+                "Customer lookup failed"
             );
 
         }
 
 
-        const data =
-        await response.json();
+        if(!data || data.length === 0){
 
-
-        if(!data ||
-           data.length === 0){
-
-            throw new Error(
-                "Customer not found"
+            showMessage(
+                "Customer not found.",
+                "error"
             );
+
+            return;
 
         }
 
 
-        currentCustomer =
-        data[0];
+        const customer = data[0];
 
 
-        showCustomer();
+        currentCustomer = customer;
 
-    }
 
-    catch(error){
+        displayCustomer(customer);
+
 
         showMessage(
-            error.message,
-            true
+            "Customer found successfully.",
+            "success"
+        );
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        showMessage(
+            "Could not load customer.",
+            "error"
         );
 
     }
@@ -895,75 +776,157 @@ async function openCustomer(qrText){
 }
 
 
-/* =========================
-   SHOW CUSTOMER
-========================= */
+/* =========================================
+   LOAD CUSTOMER BY CUSTOMER CODE
+========================================= */
 
-function showCustomer(){
+async function loadCustomerByCode(customerCode){
 
-    const c =
-    currentCustomer;
+    try{
 
+        const response = await fetch(
 
-    document
-    .getElementById("customerCode")
-    .innerText =
-    c.customer_code;
+            SUPABASE_URL +
+            "/rest/v1/customers?customer_code=eq." +
+            encodeURIComponent(customerCode) +
+            "&select=customer_code,full_name,points,visits,total_spend,reward,status,join_date,last_visit",
 
+            {
 
-    document
-    .getElementById("customerName")
-    .innerText =
-    c.full_name;
+                method:"GET",
 
+                headers:{
+                    "apikey":
+                        SUPABASE_KEY,
 
-    document
-    .getElementById("points")
-    .innerText =
-    c.points;
+                    "Authorization":
+                        "Bearer " +
+                        SUPABASE_KEY
+                }
 
+            }
 
-    document
-    .getElementById("visits")
-    .innerText =
-    c.visits;
-
-
-    document
-    .getElementById("reward")
-    .innerText =
-    c.reward ||
-    "No Reward";
+        );
 
 
-    document
-    .getElementById("status")
-    .innerText =
-    c.status ||
-    "Active";
+        const data = await response.json();
 
 
-    document
-    .getElementById("customer")
-    .style.display =
-    "block";
+        if(!response.ok){
+
+            throw new Error(
+                data.message ||
+                "Customer lookup failed"
+            );
+
+        }
 
 
-    document
-    .getElementById("scanMessage")
-    .innerText =
-    "Customer found";
+        if(!data || data.length === 0){
+
+            showMessage(
+                "Customer not found.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        currentCustomer = data[0];
+
+
+        displayCustomer(
+            currentCustomer
+        );
+
+
+        showMessage(
+            "Customer found successfully.",
+            "success"
+        );
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        showMessage(
+            "Could not load customer.",
+            "error"
+        );
+
+    }
 
 }
 
 
-/* =========================
-   ADD POINT
-========================= */
+/* =========================================
+   DISPLAY CUSTOMER
+========================================= */
+
+function displayCustomer(customer){
+
+    document.getElementById(
+        "customerId"
+    ).innerText =
+        customer.customer_code || "CUSTOMER";
+
+
+    document.getElementById(
+        "customerName"
+    ).innerText =
+        customer.full_name || "Customer";
+
+
+    document.getElementById(
+        "points"
+    ).innerText =
+        customer.points ?? 0;
+
+
+    document.getElementById(
+        "visits"
+    ).innerText =
+        customer.visits ?? 0;
+
+
+    document.getElementById(
+        "reward"
+    ).innerText =
+        customer.reward || "No Reward";
+
+
+    document.getElementById(
+        "status"
+    ).innerText =
+        customer.status || "Active";
+
+
+    document.getElementById(
+        "customerCard"
+    ).style.display =
+        "block";
+
+
+    updateRedeemButton();
+
+}
+
+
+/* =========================================
+   ADD ONE POINT
+========================================= */
 
 async function addPoint(){
 
     if(!currentCustomer){
+
+        showMessage(
+            "Scan a customer first.",
+            "error"
+        );
 
         return;
 
@@ -971,22 +934,35 @@ async function addPoint(){
 
 
     const pin =
-    document
-    .getElementById("staffPin")
-    .value
-    .trim();
+        document.getElementById(
+            "staffPin"
+        ).value.trim();
 
 
-    showMessage(
-        "Adding point...",
-        false
-    );
+    if(!pin){
+
+        showMessage(
+            "Enter staff PIN.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const button =
+        document.getElementById(
+            "addPointBtn"
+        );
+
+
+    button.disabled = true;
 
 
     try{
 
-        const response =
-        await fetch(
+        const response = await fetch(
 
             SUPABASE_URL +
             "/rest/v1/rpc/add_customer_point",
@@ -996,26 +972,24 @@ async function addPoint(){
                 method:"POST",
 
                 headers:{
-
                     "Content-Type":
-                    "application/json",
+                        "application/json",
 
                     "apikey":
-                    SUPABASE_KEY,
+                        SUPABASE_KEY,
 
                     "Authorization":
-                    "Bearer " +
-                    SUPABASE_KEY
-
+                        "Bearer " +
+                        SUPABASE_KEY
                 },
 
                 body:JSON.stringify({
 
                     p_customer_code:
-                    currentCustomer.customer_code,
+                        currentCustomer.customer_code,
 
                     p_staff_pin:
-                    pin
+                        pin
 
                 })
 
@@ -1024,53 +998,68 @@ async function addPoint(){
         );
 
 
+        const data =
+            await response.json();
+
+
         if(!response.ok){
 
             throw new Error(
-                await response.text()
+                data.message ||
+                data.error ||
+                "Unable to add point"
             );
 
         }
 
 
-        const updated =
-        await response.json();
-
-
         currentCustomer =
-        updated;
+            data;
 
 
-        showCustomer();
+        displayCustomer(
+            currentCustomer
+        );
 
 
         showMessage(
-            "✓ Point added successfully",
-            false
+            "+1 Point added successfully.",
+            "success"
         );
 
     }
-
     catch(error){
 
+        console.error(error);
+
         showMessage(
-            "Error: " +
-            error.message,
-            true
+            error.message ||
+            "Could not add point.",
+            "error"
         );
+
+    }
+    finally{
+
+        button.disabled = false;
 
     }
 
 }
 
 
-/* =========================
+/* =========================================
    OPEN REDEEM
-========================= */
+========================================= */
 
 function openRedeem(){
 
     if(!currentCustomer){
+
+        showMessage(
+            "Scan a customer first.",
+            "error"
+        );
 
         return;
 
@@ -1078,16 +1067,16 @@ function openRedeem(){
 
 
     const points =
-    Number(
-        currentCustomer.points
-    );
+        Number(
+            currentCustomer.points || 0
+        );
 
 
     if(points < 10){
 
         showMessage(
             "Customer needs 10 points for a FREE DRINK.",
-            true
+            "error"
         );
 
         return;
@@ -1095,57 +1084,55 @@ function openRedeem(){
     }
 
 
-    const after =
-    points - 10;
+    document.getElementById(
+        "redeemCustomer"
+    ).innerText =
+        currentCustomer.full_name;
 
 
-    document
-    .getElementById("redeemText")
-    .innerHTML =
-
-    "Subtract <strong>10 points</strong> " +
-    "for <strong>FREE DRINK</strong>?<br><br>" +
-
-    "Customer: <strong>" +
-    currentCustomer.full_name +
-    "</strong><br>" +
-
-    "Current Points: <strong>" +
-    points +
-    "</strong> → After: <strong>" +
-    after +
-    "</strong>";
+    document.getElementById(
+        "redeemCurrentPoints"
+    ).innerText =
+        points;
 
 
-    document
-    .getElementById("redeemModal")
-    .style.display =
-    "flex";
+    document.getElementById(
+        "redeemAfterPoints"
+    ).innerText =
+        points - 10;
+
+
+    document.getElementById(
+        "redeemModal"
+    ).style.display =
+        "flex";
 
 }
 
 
-/* =========================
+/* =========================================
    CLOSE REDEEM
-========================= */
+========================================= */
 
 function closeRedeem(){
 
-    document
-    .getElementById("redeemModal")
-    .style.display =
-    "none";
+    document.getElementById(
+        "redeemModal"
+    ).style.display =
+        "none";
 
 }
 
 
-/* =========================
+/* =========================================
    CONFIRM REDEEM
-========================= */
+========================================= */
 
 async function confirmRedeem(){
 
     if(!currentCustomer){
+
+        closeRedeem();
 
         return;
 
@@ -1153,25 +1140,28 @@ async function confirmRedeem(){
 
 
     const pin =
-    document
-    .getElementById("staffPin")
-    .value
-    .trim();
+        document.getElementById(
+            "staffPin"
+        ).value.trim();
 
 
-    closeRedeem();
+    if(!pin){
 
+        closeRedeem();
 
-    showMessage(
-        "Redeeming reward...",
-        false
-    );
+        showMessage(
+            "Enter staff PIN.",
+            "error"
+        );
+
+        return;
+
+    }
 
 
     try{
 
-        const response =
-        await fetch(
+        const response = await fetch(
 
             SUPABASE_URL +
             "/rest/v1/rpc/redeem_customer_reward",
@@ -1181,26 +1171,24 @@ async function confirmRedeem(){
                 method:"POST",
 
                 headers:{
-
                     "Content-Type":
-                    "application/json",
+                        "application/json",
 
                     "apikey":
-                    SUPABASE_KEY,
+                        SUPABASE_KEY,
 
                     "Authorization":
-                    "Bearer " +
-                    SUPABASE_KEY
-
+                        "Bearer " +
+                        SUPABASE_KEY
                 },
 
                 body:JSON.stringify({
 
                     p_customer_code:
-                    currentCustomer.customer_code,
+                        currentCustomer.customer_code,
 
                     p_staff_pin:
-                    pin
+                        pin
 
                 })
 
@@ -1209,39 +1197,49 @@ async function confirmRedeem(){
         );
 
 
+        const data =
+            await response.json();
+
+
         if(!response.ok){
 
             throw new Error(
-                await response.text()
+                data.message ||
+                data.error ||
+                "Unable to redeem reward"
             );
 
         }
 
 
-        const updated =
-        await response.json();
-
-
         currentCustomer =
-        updated;
+            data;
 
 
-        showCustomer();
+        closeRedeem();
+
+
+        displayCustomer(
+            currentCustomer
+        );
 
 
         showMessage(
-            "✓ FREE DRINK redeemed successfully",
-            false
+            "FREE DRINK redeemed successfully. 10 points deducted.",
+            "success"
         );
 
     }
-
     catch(error){
 
+        console.error(error);
+
+        closeRedeem();
+
         showMessage(
-            "Error: " +
-            error.message,
-            true
+            error.message ||
+            "Could not redeem reward.",
+            "error"
         );
 
     }
@@ -1249,31 +1247,84 @@ async function confirmRedeem(){
 }
 
 
-/* =========================
-   MESSAGE
-========================= */
+/* =========================================
+   REDEEM BUTTON STATE
+========================================= */
 
-function showMessage(
-    text,
-    error
-){
+function updateRedeemButton(){
 
-    const box =
-    document.getElementById(
-        "message"
-    );
+    const button =
+        document.getElementById(
+            "redeemBtn"
+        );
 
 
-    box.innerText =
-    text;
+    if(!currentCustomer){
+
+        button.disabled = true;
+
+        return;
+
+    }
 
 
-    box.className =
-    error
-    ? "message error"
-    : "message success";
+    const points =
+        Number(
+            currentCustomer.points || 0
+        );
+
+
+    button.disabled =
+        points < 10;
 
 }
+
+
+/* =========================================
+   SCAN NEXT CUSTOMER
+========================================= */
+
+async function scanNext(){
+
+    currentCustomer = null;
+
+    lastScannedText = "";
+
+    lastScanTime = 0;
+
+
+    document.getElementById(
+        "customerCard"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "message"
+    ).style.display =
+        "none";
+
+
+    /*
+     * Scanner remains running.
+     * No need to restart camera.
+     */
+
+}
+
+
+/* =========================================
+   START WHEN PAGE LOADS
+========================================= */
+
+window.addEventListener(
+    "load",
+    function(){
+
+        startScanner();
+
+    }
+);
 
 </script>
 
