@@ -1,199 +1,652 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Al Noor Staff Scanner</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<meta name="theme-color"
+      content="#314b22">
+
+<title>AL NOOR Staff Scanner</title>
+
+<script src="https://unpkg.com/html5-qrcode"
+        type="text/javascript">
+</script>
 
 <style>
+
 *{
     box-sizing:border-box;
 }
 
 body{
     margin:0;
-    font-family:Arial,sans-serif;
-    background:#f3f3f3;
+    min-height:100vh;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4efe5;
     color:#222;
 }
 
 .container{
+    width:100%;
     max-width:520px;
     margin:auto;
-    padding:20px;
+    padding:15px;
 }
 
-.card{
-    background:white;
-    border-radius:20px;
-    padding:24px;
-    margin-top:20px;
-    box-shadow:0 8px 25px rgba(0,0,0,.12);
+/* HEADER */
+
+.header{
+    position:relative;
+    min-height:150px;
+
+    border-radius:24px 24px 0 0;
+
+    overflow:hidden;
+
+    background:
+    linear-gradient(
+        rgba(38,55,25,.88),
+        rgba(38,55,25,.88)
+    ),
+    url("https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80");
+
+    background-size:cover;
+    background-position:center;
+
+    color:white;
+
+    padding:25px 20px;
+
+    text-align:center;
 }
 
 .logo{
-    text-align:center;
-    font-size:30px;
+    font-family:Georgia,serif;
+    font-size:34px;
+    letter-spacing:2px;
     font-weight:bold;
-    color:#65752b;
 }
 
-h2{
-    text-align:center;
-    margin:10px 0 18px;
+.brand{
+    font-size:12px;
+    letter-spacing:4px;
+    margin-top:3px;
 }
 
-input{
+.staff{
+    display:inline-block;
+
+    margin-top:15px;
+
+    padding:8px 15px;
+
+    border-radius:30px;
+
+    background:rgba(255,255,255,.18);
+
+    font-size:13px;
+}
+
+/* MAIN CARD */
+
+.main-card{
+    background:#fff;
+
+    padding:22px;
+
+    border-radius:0 0 24px 24px;
+
+    box-shadow:
+    0 12px 35px rgba(0,0,0,.12);
+}
+
+/* PIN */
+
+.pin-box{
+    margin-bottom:15px;
+}
+
+.pin-box input{
     width:100%;
-    padding:14px;
+
+    padding:13px;
+
     border:1px solid #ddd;
-    border-radius:10px;
+
+    border-radius:12px;
+
     font-size:16px;
 }
 
-button{
-    width:100%;
-    padding:15px;
-    margin-top:12px;
-    border:0;
-    border-radius:10px;
-    background:#65752b;
-    color:white;
-    font-size:17px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-button:disabled{
-    opacity:.6;
-}
+/* SCANNER */
 
 #reader{
     width:100%;
-    margin-top:18px;
+
+    overflow:hidden;
+
+    border-radius:18px;
+
+    margin-bottom:15px;
 }
+
+.scan-message{
+    text-align:center;
+
+    color:#777;
+
+    margin:10px 0 15px;
+}
+
+/* CUSTOMER */
 
 .customer{
     display:none;
+}
+
+.customer-id{
+    background:#f0eee9;
+
+    padding:12px;
+
+    border-radius:12px;
+
     text-align:center;
+
+    font-size:14px;
+
+    color:#555;
+}
+
+.customer-name{
+    text-align:center;
+
+    font-size:29px;
+
+    font-weight:bold;
+
+    margin:18px 0 8px;
+}
+
+/* POINTS */
+
+.points-area{
+    text-align:center;
+
+    padding:10px 0 20px;
 }
 
 .points{
-    font-size:58px;
+    font-size:70px;
+
+    line-height:1;
+
     font-weight:bold;
-    color:#65752b;
-    margin:12px;
+
+    color:#55752d;
+}
+
+.points-label{
+    margin-top:8px;
+
+    font-size:13px;
+
+    letter-spacing:2px;
+
+    color:#777;
+}
+
+/* INFO */
+
+.info-grid{
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    gap:8px;
+
+    margin-bottom:18px;
 }
 
 .info{
-    background:#f5f5f5;
-    padding:12px;
-    margin:8px 0;
-    border-radius:10px;
+    background:#f4f2ed;
+
+    border-radius:13px;
+
+    padding:12px 5px;
+
+    text-align:center;
 }
+
+.info-title{
+    font-size:11px;
+
+    color:#777;
+
+    margin-bottom:5px;
+}
+
+.info-value{
+    font-size:15px;
+
+    font-weight:bold;
+}
+
+/* BUTTONS */
+
+button{
+    width:100%;
+
+    border:0;
+
+    border-radius:14px;
+
+    padding:16px;
+
+    margin-top:10px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+.add{
+    background:#55752d;
+
+    color:white;
+}
+
+.redeem{
+    background:#a93228;
+
+    color:white;
+}
+
+.scan-next{
+    background:white;
+
+    color:#333;
+
+    border:1px solid #bbb;
+}
+
+/* MESSAGE */
 
 .message{
     text-align:center;
-    margin-top:14px;
-    min-height:22px;
+
+    margin-top:15px;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    display:none;
 }
 
 .success{
-    color:green;
+    display:block;
+
+    background:#e9f6df;
+
+    color:#35651d;
 }
 
 .error{
-    color:#b00020;
+    display:block;
+
+    background:#fde8e6;
+
+    color:#9e2119;
 }
+
+/* MODAL */
+
+.modal{
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.65);
+
+    z-index:1000;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+}
+
+.modal-box{
+    width:100%;
+
+    max-width:420px;
+
+    background:white;
+
+    border-radius:22px;
+
+    padding:25px;
+
+    text-align:center;
+
+    box-shadow:0 20px 60px rgba(0,0,0,.3);
+}
+
+.modal-title{
+    background:#fde8e6;
+
+    color:#9e2119;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    font-size:21px;
+
+    font-weight:bold;
+}
+
+.modal-text{
+    margin:18px 0;
+
+    line-height:1.7;
+
+    color:#444;
+}
+
+.modal-buttons{
+    display:grid;
+
+    grid-template-columns:
+    1fr 1fr;
+
+    gap:10px;
+}
+
+.cancel{
+    background:#e9e9e9;
+
+    color:#333;
+}
+
+.confirm{
+    background:#a93228;
+
+    color:white;
+}
+
+/* FOOTER */
+
+.footer{
+    text-align:center;
+
+    padding:20px 0 5px;
+
+    color:#777;
+
+    font-family:Georgia,serif;
+
+    font-size:14px;
+}
+
+@media(max-width:380px){
+
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-    <!-- SCANNER -->
-    <div class="card">
+    <!-- HEADER -->
+
+    <div class="header">
 
         <div class="logo">
             AL NOOR
         </div>
 
-        <h2>
-            Staff Scanner
-        </h2>
+        <div class="brand">
+            MODERN BAKERY
+        </div>
 
-        <input
-            id="staffPin"
-            type="password"
-            inputmode="numeric"
-            placeholder="Staff PIN"
-            value="1234"
-        >
-
-        <div id="reader"></div>
-
-        <div id="message" class="message">
-            Scan customer QR code
+        <div class="staff">
+            👤 Staff Mode
         </div>
 
     </div>
 
 
-    <!-- CUSTOMER -->
-    <div id="customerCard" class="card customer">
+    <div class="main-card">
 
-        <div class="logo">
-            AL NOOR
+
+        <!-- PIN -->
+
+        <div class="pin-box">
+
+            <input
+                id="staffPin"
+                type="password"
+                value="1234"
+                placeholder="Staff PIN">
+
         </div>
 
-        <h2 id="customerName"></h2>
 
-        <div class="info">
-            Customer ID:
-            <strong id="customerCode"></strong>
-        </div>
+        <!-- SCANNER -->
 
-        <div class="points" id="points">
-            0
-        </div>
-
-        <div>
-            LOYALTY POINTS
-        </div>
-
-        <div class="info">
-            Visits:
-            <strong id="visits"></strong>
-        </div>
-
-        <div class="info">
-            Reward:
-            <strong id="reward"></strong>
-        </div>
-
-        <div class="info">
-            Status:
-            <strong id="status"></strong>
-        </div>
-
-        <button
-            id="addPointButton"
-            onclick="addPoint()">
-            +1 POINT / VISIT
-        </button>
-
-        <button
-            onclick="startScanner()">
-            SCAN NEXT CUSTOMER
-        </button>
+        <div id="reader"></div>
 
         <div
-            id="pointMessage"
-            class="message">
+            id="scanMessage"
+            class="scan-message">
+
+            Scan customer QR code
+
+        </div>
+
+
+        <!-- CUSTOMER -->
+
+        <div
+            id="customer"
+            class="customer">
+
+
+            <div class="customer-id">
+
+                Customer ID:
+                <strong id="customerCode">
+                </strong>
+
+            </div>
+
+
+            <div
+                id="customerName"
+                class="customer-name">
+            </div>
+
+
+            <!-- POINTS -->
+
+            <div class="points-area">
+
+                <div
+                    id="points"
+                    class="points">
+
+                    0
+
+                </div>
+
+                <div class="points-label">
+
+                    LOYALTY POINTS
+
+                </div>
+
+            </div>
+
+
+            <!-- INFO -->
+
+            <div class="info-grid">
+
+                <div class="info">
+
+                    <div class="info-title">
+                        VISITS
+                    </div>
+
+                    <div
+                        id="visits"
+                        class="info-value">
+                    </div>
+
+                </div>
+
+
+                <div class="info">
+
+                    <div class="info-title">
+                        REWARD
+                    </div>
+
+                    <div
+                        id="reward"
+                        class="info-value">
+                    </div>
+
+                </div>
+
+
+                <div class="info">
+
+                    <div class="info-title">
+                        STATUS
+                    </div>
+
+                    <div
+                        id="status"
+                        class="info-value">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ADD POINT -->
+
+            <button
+                class="add"
+                onclick="addPoint()">
+
+                ➕ &nbsp; +1 POINT / VISIT
+
+            </button>
+
+
+            <!-- REDEEM -->
+
+            <button
+                class="redeem"
+                onclick="openRedeem()">
+
+                🎁 &nbsp; REDEEM REWARD
+
+            </button>
+
+
+            <!-- SCAN NEXT -->
+
+            <button
+                class="scan-next"
+                onclick="startScanner()">
+
+                ▣ &nbsp; SCAN NEXT CUSTOMER
+
+            </button>
+
+
+            <div
+                id="message"
+                class="message">
+            </div>
+
+        </div>
+
+
+        <div class="footer">
+
+            Fresh Moments • Better Rewards
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     REDEEM MODAL
+========================= -->
+
+<div
+    id="redeemModal"
+    class="modal">
+
+    <div class="modal-box">
+
+        <div class="modal-title">
+
+            🎁 Redeem Reward?
+
+        </div>
+
+        <div
+            id="redeemText"
+            class="modal-text">
+        </div>
+
+        <div class="modal-buttons">
+
+            <button
+                class="cancel"
+                onclick="closeRedeem()">
+
+                CANCEL
+
+            </button>
+
+            <button
+                class="confirm"
+                onclick="confirmRedeem()">
+
+                CONFIRM REDEEM
+
+            </button>
+
         </div>
 
     </div>
@@ -219,8 +672,8 @@ const SUPABASE_KEY =
 ========================= */
 
 let scanner = null;
+
 let currentCustomer = null;
-let busy = false;
 
 
 /* =========================
@@ -235,112 +688,81 @@ window.onload = function(){
 
 
 /* =========================
-   STOP SCANNER
-========================= */
-
-async function stopScanner(){
-
-    if(scanner){
-
-        try{
-            await scanner.stop();
-        }
-        catch(e){}
-
-        try{
-            await scanner.clear();
-        }
-        catch(e){}
-
-        scanner = null;
-    }
-
-}
-
-
-/* =========================
    START SCANNER
 ========================= */
 
-async function startScanner(){
+function startScanner(){
 
-    await stopScanner();
-
-    document.getElementById(
-        "customerCard"
-    ).style.display = "none";
-
-    document.getElementById(
-        "pointMessage"
-    ).innerText = "";
-
-    document.getElementById(
-        "message"
-    ).className = "message";
-
-    document.getElementById(
-        "message"
-    ).innerText =
-    "Allow camera access, then scan customer QR";
+    document
+    .getElementById("customer")
+    .style.display = "none";
 
 
-    scanner = new Html5Qrcode("reader");
+    document
+    .getElementById("message")
+    .className = "message";
 
 
-    try{
+    document
+    .getElementById("message")
+    .innerText = "";
 
-        await scanner.start(
 
-            {
-                facingMode:"environment"
-            },
+    document
+    .getElementById("scanMessage")
+    .innerText =
+    "Scan customer QR code";
 
-            {
-                fps:10,
-                qrbox:{
-                    width:250,
-                    height:250
-                }
-            },
 
-            async function(decodedText){
+    if(scanner){
 
-                if(busy){
-                    return;
-                }
+        scanner
+        .clear()
+        .catch(()=>{});
 
-                busy = true;
+    }
 
-                await stopScanner();
 
-                await openCustomer(decodedText);
+    scanner =
+    new Html5Qrcode("reader");
 
-                busy = false;
 
-            },
+    scanner.start(
 
-            function(errorMessage){
+        {
+            facingMode:"environment"
+        },
 
-                // Normal scanning attempts
+        {
+            fps:10,
+            qrbox:250
+        },
 
-            }
+        function(decodedText){
 
+            scanner
+            .clear()
+            .catch(()=>{});
+
+            openCustomer(decodedText);
+
+        },
+
+        function(errorMessage){
+
+            // Ignore scan errors
+
+        }
+
+    )
+    .catch(function(error){
+
+        showMessage(
+            "Camera error: " + error,
+            true
         );
 
-    }
-
-    catch(error){
-
-        document.getElementById(
-            "message"
-        ).className = "message error";
-
-        document.getElementById(
-            "message"
-        ).innerText =
-        "Camera error: " + error;
-
-    }
+    });
 
 }
 
@@ -356,9 +778,9 @@ function getToken(qrText){
         const url =
         new URL(qrText);
 
-        return url.searchParams.get(
-            "token"
-        );
+        return url
+        .searchParams
+        .get("token");
 
     }
 
@@ -372,7 +794,7 @@ function getToken(qrText){
 
 
 /* =========================
-   FIND CUSTOMER
+   OPEN CUSTOMER
 ========================= */
 
 async function openCustomer(qrText){
@@ -383,15 +805,10 @@ async function openCustomer(qrText){
 
     if(!token){
 
-        document.getElementById(
-            "message"
-        ).className =
-        "message error";
-
-        document.getElementById(
-            "message"
-        ).innerText =
-        "Invalid customer QR code";
+        showMessage(
+            "Invalid customer QR",
+            true
+        );
 
         return;
 
@@ -399,17 +816,6 @@ async function openCustomer(qrText){
 
 
     try{
-
-        document.getElementById(
-            "message"
-        ).className =
-        "message";
-
-        document.getElementById(
-            "message"
-        ).innerText =
-        "Loading customer...";
-
 
         const response =
         await fetch(
@@ -479,16 +885,10 @@ async function openCustomer(qrText){
 
     catch(error){
 
-        document.getElementById(
-            "message"
-        ).className =
-        "message error";
-
-        document.getElementById(
-            "message"
-        ).innerText =
-        "Error: " +
-        error.message;
+        showMessage(
+            error.message,
+            true
+        );
 
     }
 
@@ -505,58 +905,54 @@ function showCustomer(){
     currentCustomer;
 
 
-    document.getElementById(
-        "customerName"
-    ).innerText =
-    c.full_name || "";
+    document
+    .getElementById("customerCode")
+    .innerText =
+    c.customer_code;
 
 
-    document.getElementById(
-        "customerCode"
-    ).innerText =
-    c.customer_code || "";
+    document
+    .getElementById("customerName")
+    .innerText =
+    c.full_name;
 
 
-    document.getElementById(
-        "points"
-    ).innerText =
-    c.points ?? 0;
+    document
+    .getElementById("points")
+    .innerText =
+    c.points;
 
 
-    document.getElementById(
-        "visits"
-    ).innerText =
-    c.visits ?? 0;
+    document
+    .getElementById("visits")
+    .innerText =
+    c.visits;
 
 
-    document.getElementById(
-        "reward"
-    ).innerText =
-    c.reward || "No Reward";
+    document
+    .getElementById("reward")
+    .innerText =
+    c.reward ||
+    "No Reward";
 
 
-    document.getElementById(
-        "status"
-    ).innerText =
-    c.status || "Active";
+    document
+    .getElementById("status")
+    .innerText =
+    c.status ||
+    "Active";
 
 
-    document.getElementById(
-        "customerCard"
-    ).style.display =
+    document
+    .getElementById("customer")
+    .style.display =
     "block";
 
 
-    document.getElementById(
-        "message"
-    ).className =
-    "message success";
-
-
-    document.getElementById(
-        "message"
-    ).innerText =
-    "✓ Customer found";
+    document
+    .getElementById("scanMessage")
+    .innerText =
+    "Customer found";
 
 }
 
@@ -568,48 +964,23 @@ function showCustomer(){
 async function addPoint(){
 
     if(!currentCustomer){
+
         return;
+
     }
 
 
     const pin =
-    document.getElementById(
-        "staffPin"
-    ).value.trim();
+    document
+    .getElementById("staffPin")
+    .value
+    .trim();
 
 
-    const message =
-    document.getElementById(
-        "pointMessage"
+    showMessage(
+        "Adding point...",
+        false
     );
-
-
-    const button =
-    document.getElementById(
-        "addPointButton"
-    );
-
-
-    if(!pin){
-
-        message.className =
-        "message error";
-
-        message.innerText =
-        "Enter staff PIN";
-
-        return;
-
-    }
-
-
-    button.disabled = true;
-
-    message.className =
-    "message";
-
-    message.innerText =
-    "Adding point...";
 
 
     try{
@@ -673,33 +1044,234 @@ async function addPoint(){
         showCustomer();
 
 
-        message.className =
-        "message success";
-
-
-        message.innerText =
-        "✓ Point added successfully";
-
+        showMessage(
+            "✓ Point added successfully",
+            false
+        );
 
     }
 
     catch(error){
 
-        message.className =
-        "message error";
+        showMessage(
+            "Error: " +
+            error.message,
+            true
+        );
 
-        message.innerText =
-        "Error: " +
-        error.message;
+    }
+
+}
+
+
+/* =========================
+   OPEN REDEEM
+========================= */
+
+function openRedeem(){
+
+    if(!currentCustomer){
+
+        return;
 
     }
 
 
-    finally{
+    const points =
+    Number(
+        currentCustomer.points
+    );
 
-        button.disabled = false;
+
+    if(points < 10){
+
+        showMessage(
+            "Customer needs 10 points for a FREE DRINK.",
+            true
+        );
+
+        return;
 
     }
+
+
+    const after =
+    points - 10;
+
+
+    document
+    .getElementById("redeemText")
+    .innerHTML =
+
+    "Subtract <strong>10 points</strong> " +
+    "for <strong>FREE DRINK</strong>?<br><br>" +
+
+    "Customer: <strong>" +
+    currentCustomer.full_name +
+    "</strong><br>" +
+
+    "Current Points: <strong>" +
+    points +
+    "</strong> → After: <strong>" +
+    after +
+    "</strong>";
+
+
+    document
+    .getElementById("redeemModal")
+    .style.display =
+    "flex";
+
+}
+
+
+/* =========================
+   CLOSE REDEEM
+========================= */
+
+function closeRedeem(){
+
+    document
+    .getElementById("redeemModal")
+    .style.display =
+    "none";
+
+}
+
+
+/* =========================
+   CONFIRM REDEEM
+========================= */
+
+async function confirmRedeem(){
+
+    if(!currentCustomer){
+
+        return;
+
+    }
+
+
+    const pin =
+    document
+    .getElementById("staffPin")
+    .value
+    .trim();
+
+
+    closeRedeem();
+
+
+    showMessage(
+        "Redeeming reward...",
+        false
+    );
+
+
+    try{
+
+        const response =
+        await fetch(
+
+            SUPABASE_URL +
+            "/rest/v1/rpc/redeem_customer_reward",
+
+            {
+
+                method:"POST",
+
+                headers:{
+
+                    "Content-Type":
+                    "application/json",
+
+                    "apikey":
+                    SUPABASE_KEY,
+
+                    "Authorization":
+                    "Bearer " +
+                    SUPABASE_KEY
+
+                },
+
+                body:JSON.stringify({
+
+                    p_customer_code:
+                    currentCustomer.customer_code,
+
+                    p_staff_pin:
+                    pin
+
+                })
+
+            }
+
+        );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                await response.text()
+            );
+
+        }
+
+
+        const updated =
+        await response.json();
+
+
+        currentCustomer =
+        updated;
+
+
+        showCustomer();
+
+
+        showMessage(
+            "✓ FREE DRINK redeemed successfully",
+            false
+        );
+
+    }
+
+    catch(error){
+
+        showMessage(
+            "Error: " +
+            error.message,
+            true
+        );
+
+    }
+
+}
+
+
+/* =========================
+   MESSAGE
+========================= */
+
+function showMessage(
+    text,
+    error
+){
+
+    const box =
+    document.getElementById(
+        "message"
+    );
+
+
+    box.innerText =
+    text;
+
+
+    box.className =
+    error
+    ? "message error"
+    : "message success";
 
 }
 
