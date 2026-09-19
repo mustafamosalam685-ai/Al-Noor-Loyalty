@@ -176,6 +176,8 @@ align-items:center;justify-content:center;gap:4px;font-size:10px}
   .action-title{font-size:13px}.action-sub{font-size:10px}
   .points-number{font-size:64px}
 }
+
+.gm-page{width:min(920px,100%);margin:auto;padding:20px 16px 50px}.gm-head{text-align:center;padding:35px 0 25px}.gm-head h1{font-family:Georgia,serif;font-size:42px;font-weight:500;margin:0}.gm-head p{color:#c9b9a9;letter-spacing:3px;font-size:11px}.gm-user{text-align:center;margin-bottom:22px}.gm-user-name{font-size:26px;font-weight:800}.gm-user-email{color:#a99a8c;font-size:13px;margin-top:4px}.gm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.gm-card{padding:22px;border-radius:22px;text-align:center}.gm-icon{font-size:30px}.gm-label{font-size:10px;letter-spacing:2px;color:#a99a8c;margin-top:7px}.gm-number{font-size:38px;font-weight:900;margin-top:6px}.gm-sub{font-size:11px;color:#8f8174;margin-top:4px}.gm-refresh{width:100%;margin-top:18px;padding:16px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.045);color:#fff;font-weight:800}.gm-message{text-align:center;color:#ff9b8b;margin-top:12px;font-size:12px}@media(max-width:620px){.gm-grid{grid-template-columns:repeat(2,1fr)}.gm-head h1{font-size:34px}}
 </style>
 </head>
 <body>
@@ -265,6 +267,31 @@ align-items:center;justify-content:center;gap:4px;font-size:10px}
   </nav>
 </div>
 
+<div id="gmPage" class="hidden gm-page">
+  <div class="header-row">
+    <div class="user-chip">GM • REPORTS</div>
+    <button class="logout" onclick="logout()">LOG OUT</button>
+  </div>
+  <header class="gm-head">
+    <div class="scan-icon">◆</div>
+    <h1>GM Report</h1>
+    <p>AL NOOR LOYALTY OVERVIEW</p>
+  </header>
+  <div class="gm-user">
+    <div id="gmName" class="gm-user-name">GM</div>
+    <div id="gmEmail" class="gm-user-email">—</div>
+  </div>
+  <section class="gm-grid">
+    <div class="gm-card glass"><div class="gm-icon">👥</div><div class="gm-label">CUSTOMERS</div><div id="reportCustomers" class="gm-number">0</div><div class="gm-sub">Total customers</div></div>
+    <div class="gm-card glass"><div class="gm-icon">🧾</div><div class="gm-label">ORDERS / VISITS</div><div id="reportOrders" class="gm-number">0</div><div class="gm-sub">Recorded visits</div></div>
+    <div class="gm-card glass"><div class="gm-icon">🎁</div><div class="gm-label">FREE EARNED</div><div id="reportEarned" class="gm-number">0</div><div class="gm-sub">Coupons issued</div></div>
+    <div class="gm-card glass"><div class="gm-icon">✅</div><div class="gm-label">REDEEMED</div><div id="reportRedeemed" class="gm-number">0</div><div class="gm-sub">Used rewards</div></div>
+    <div class="gm-card glass"><div class="gm-icon">🎟️</div><div class="gm-label">AVAILABLE</div><div id="reportAvailable" class="gm-number">0</div><div class="gm-sub">Current rewards</div></div>
+    <div class="gm-card glass"><div class="gm-icon">📅</div><div class="gm-label">TODAY ORDERS</div><div id="reportTodayOrders" class="gm-number">0</div><div class="gm-sub">Today's activity</div></div>
+  </section>
+  <button class="gm-refresh" onclick="loadGMReport()">↻ &nbsp; REFRESH REPORT</button>
+  <div id="gmMessage" class="gm-message"></div>
+</div>
 <div id="redeemModal" class="modal" onclick="if(event.target===this)closeModal('redeemModal')">
   <div class="sheet">
     <div class="sheet-head">
@@ -365,9 +392,36 @@ async function login(){
 
 async function routeByRole(){
   document.getElementById("loginView").classList.add("hidden");
+  document.getElementById("staffView").classList.add("hidden");
+  document.getElementById("gmPage").classList.add("hidden");
+
+  if(staffRole === "gm") {
+    document.getElementById("gmPage").classList.remove("hidden");
+    document.getElementById("gmName").textContent=staffName||"GM";
+    document.getElementById("gmEmail").textContent=staffEmail||"—";
+    await loadGMReport();
+    return;
+  }
+
   document.getElementById("staffView").classList.remove("hidden");
   document.getElementById("staffName").textContent=staffName||staffEmail;
   startScanner();
+}
+
+async function loadGMReport(){
+  const msg=document.getElementById("gmMessage");
+  msg.textContent="";
+  try{
+    const d=await rpc("get_gm_report",{});
+    const x=Array.isArray(d)?d[0]:d;
+    if(!x) throw new Error("No report data returned.");
+    document.getElementById("reportCustomers").textContent=Number(x.total_customers||0).toLocaleString();
+    document.getElementById("reportOrders").textContent=Number(x.total_orders||0).toLocaleString();
+    document.getElementById("reportEarned").textContent=Number(x.free_drinks_earned||0).toLocaleString();
+    document.getElementById("reportRedeemed").textContent=Number(x.free_drinks_redeemed||0).toLocaleString();
+    document.getElementById("reportAvailable").textContent=Number(x.free_drinks_available||0).toLocaleString();
+    document.getElementById("reportTodayOrders").textContent=Number(x.today_orders||0).toLocaleString();
+  }catch(e){msg.textContent=e.message||"Could not load GM report.";}
 }
 
 async function startScanner(){
@@ -538,6 +592,7 @@ async function logout(){
   sessionStorage.removeItem("alnoor_refresh_token");
   sessionStorage.removeItem("alnoor_staff_email");
   sessionStorage.removeItem("alnoor_staff_name");
+  document.getElementById("gmPage").classList.add("hidden");
   location.reload();
 }
 document.getElementById("loginBtn").addEventListener("click",login);
