@@ -2,2816 +2,563 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>AL NOOR — Staff & GM</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#100b07">
+<title>Al Noor Staff</title>
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-
 <style>
 :root{
-  --orange:#ff6a00;
-  --orange2:#ff8a2a;
-  --cream:#f5eee7;
-  --dark:#171311;
-  --glass:rgba(18,14,12,.76);
-  --line:rgba(255,255,255,.22);
-  --green:#72e67c;
-  --red:#ff9d9d;
+  --bg:#0d0906;--panel:#17100b;--panel2:#21150d;
+  --gold:#d99b43;--gold2:#f0c875;--cream:#f7efe4;
+  --muted:#b8a695;--line:rgba(255,255,255,.12);
+  --green:#67e28b;--red:#ef806e;
 }
-
 *{box-sizing:border-box}
-
 body{
-  margin:0;
-  min-height:100vh;
-  color:#fff;
-  font-family:Arial,Helvetica,sans-serif;
+  margin:0;min-height:100vh;color:#fff;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   background:
-    linear-gradient(rgba(20,13,10,.48),rgba(20,13,10,.64)),
-    url("cafe-background.jpg")
-    center/cover fixed;
+    linear-gradient(180deg,rgba(10,7,4,.72),rgba(10,7,4,.95)),
+    url("cafe-background.jpg") center/cover fixed no-repeat;
 }
-
-body:before{
-  content:"";
-  position:fixed;
-  inset:0;
-  backdrop-filter:blur(2px);
-  pointer-events:none;
-}
-
-button,input{font:inherit}
-
+button{font:inherit;cursor:pointer}
 .hidden{display:none!important}
-
-.page{
-  width:min(1050px,94%);
-  margin:auto;
-  padding:28px 0 45px;
-  position:relative;
-  z-index:1;
+.app{width:min(920px,100%);margin:auto;padding:20px 16px 118px}
+.glass{
+  background:linear-gradient(135deg,rgba(255,255,255,.075),rgba(255,255,255,.025));
+  border:1px solid var(--line);backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);box-shadow:0 24px 70px rgba(0,0,0,.42);
 }
-
-.topbar{
-  display:flex;
-  justify-content:flex-start;
-  align-items:flex-start;
-  gap:20px;
+.header{text-align:center;padding:8px 0 20px}
+.scan-icon{font-size:38px;color:var(--gold2);margin-bottom:4px}
+.header h1{font-family:Georgia,serif;font-size:38px;font-weight:500;margin:0}
+.header p{margin:8px 0 0;color:#d2c5b8;letter-spacing:3px;font-size:12px}
+.header-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.user-chip{
+  border:1px solid var(--line);border-radius:999px;padding:8px 12px;
+  color:#d7c7b7;background:rgba(255,255,255,.045);font-size:11px
 }
+.logout{border:0;background:transparent;color:#bda990;font-size:11px}
 
-.brand{
-  display:flex;
-  align-items:flex-start;
-}
-
-.brand-logo{
-  width:260px;
-  max-width:42vw;
-  height:auto;
-  display:block;
-  filter:drop-shadow(0 8px 18px rgba(0,0,0,.30));
-}
-
-.title{
-  text-align:center;
-  margin:35px 0 20px;
-}
-
-.title h1{
-  margin:0;
-  font-size:48px;
-}
-
-.title p{
-  margin:8px 0 0;
-  font-size:20px;
-  opacity:.9;
-}
-
-.panel{
-  background:var(--glass);
-  border:1px solid var(--line);
-  border-radius:28px;
-  box-shadow:0 25px 70px rgba(0,0,0,.38);
-  backdrop-filter:blur(12px);
-}
-
-/* =========================
-   LOGIN
-========================= */
-
-.login{
-  max-width:560px;
-  margin:90px auto;
-  padding:32px;
-}
-
-.login h2{
-  margin:0;
-  font-size:32px;
-}
-
-.login p{
-  opacity:.7;
-}
-
-.field{
-  margin-top:18px;
-}
-
-.field label{
-  display:block;
-  margin-bottom:8px;
-  font-weight:700;
-}
-
-.field input{
-  width:100%;
-  padding:16px 17px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.25);
-  background:rgba(255,255,255,.08);
-  color:#fff;
-  outline:none;
-}
-
-.login-btn{
-  width:100%;
-  margin-top:22px;
-  padding:17px;
-  border:0;
-  border-radius:15px;
-  background:var(--orange);
-  color:#fff;
-  font-weight:900;
-  cursor:pointer;
-}
-
-#loginMessage{
-  margin-top:15px;
-  color:var(--red);
-  font-weight:700;
-}
-
-/* =========================
-   STAFF SCANNER
-========================= */
-
-.scanner-panel{
-  padding:22px;
-}
-
-.scanner-frame{
-  min-height:330px;
-  border:2px solid rgba(255,255,255,.24);
-  border-radius:24px;
-  position:relative;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(0,0,0,.28);
-}
-
-.corner{
-  position:absolute;
-  width:65px;
-  height:65px;
-  border-color:var(--orange);
-  border-style:solid;
-  z-index:5;
-}
-
-.c1{
-  left:35px;
-  top:35px;
-  border-width:7px 0 0 7px;
-  border-radius:18px 0 0 0
-}
-
-.c2{
-  right:35px;
-  top:35px;
-  border-width:7px 7px 0 0;
-  border-radius:0 18px 0 0
-}
-
-.c3{
-  left:35px;
-  bottom:35px;
-  border-width:0 0 7px 7px;
-  border-radius:0 0 0 18px
-}
-
-.c4{
-  right:35px;
-  bottom:35px;
-  border-width:0 7px 7px 0;
-  border-radius:0 0 18px 0
-}
-
-#reader{
-  width:100%;
-  max-width:650px;
-}
-
-#reader video{
-  border-radius:18px;
-}
-
-.scanner-empty{
-  text-align:center;
-  opacity:.9;
-  padding:35px;
-}
-
-.scanner-empty .qr{
-  font-size:70px;
-  margin-bottom:12px;
-}
-
-.scanner-empty h2{
-  margin:0 0 8px;
-  font-size:25px;
-}
-
-.scanner-empty p{
-  margin:0;
-  opacity:.7;
-}
-
-/* =========================
-   CUSTOMER
-========================= */
-
-.result{
-  margin-top:18px;
-  padding:20px;
-}
-
+.scanner-card{border-radius:30px;padding:20px}
 .status{
-  padding:14px 18px;
-  border-radius:16px;
-  background:rgba(45,110,48,.30);
-  color:var(--green);
-  font-size:20px;
-  font-weight:800;
-  margin-bottom:18px;
+  border-radius:19px;padding:15px 17px;display:flex;align-items:center;
+  justify-content:space-between;gap:10px;background:rgba(255,255,255,.035);
+  border:1px solid var(--line);color:#d9cabc
 }
+.status.ok{background:rgba(42,100,47,.35);border-color:rgba(103,226,139,.32);color:#78eb97}
+.status.err{background:rgba(120,43,35,.28);border-color:rgba(239,128,110,.3);color:#ff9b8b}
+.status-title{font-weight:800;font-size:18px}
+.status-sub{font-size:11px;margin-top:3px;opacity:.8}
+.status-time{font-weight:700;font-size:15px}
+#reader{
+  width:100%;max-width:520px;margin:18px auto 8px;
+  border:1px solid rgba(217,155,67,.35)!important;
+  border-radius:24px;overflow:hidden;background:#080604;
+}
+#reader video{border-radius:20px}
+#reader__dashboard{padding:10px!important}
+#reader__dashboard button{
+  border:1px solid var(--line)!important;background:#25170e!important;
+  color:#fff!important;border-radius:10px!important;padding:8px 12px!important
+}
+#reader__dashboard_section_csr button{margin:4px!important}
+.hint{text-align:center;color:var(--muted);font-size:12px;margin:10px 0 4px}
 
 .customer{
-  display:grid;
-  grid-template-columns:1fr 1px 1fr;
-  align-items:center;
-  gap:25px;
+  margin-top:16px;border-radius:28px;padding:22px;overflow:hidden;position:relative;
 }
-
-.customer-left{
-  display:flex;
-  align-items:center;
-  gap:20px;
+.customer:after{
+  content:"";position:absolute;width:260px;height:260px;border-radius:50%;
+  right:-110px;bottom:-140px;background:rgba(217,155,67,.08)
 }
-
+.customer-top{display:flex;align-items:center;gap:16px;position:relative;z-index:1}
 .avatar{
-  width:85px;
-  height:85px;
-  border-radius:50%;
-  background:rgba(255,106,0,.18);
-  border:1px solid rgba(255,150,80,.45);
-  display:grid;
-  place-items:center;
-  font-size:40px;
+  width:76px;height:76px;border-radius:50%;display:grid;place-items:center;
+  background:linear-gradient(135deg,#a96528,#4d2915);
+  border:1px solid rgba(240,200,117,.45);font-size:25px;font-weight:800
 }
-
-.label{
-  font-size:13px;
-  letter-spacing:2px;
-  opacity:.65;
-}
-
-.name{
-  font-size:34px;
-  font-weight:800;
-  margin:5px 0;
-}
-
-.id{
-  opacity:.75;
-  font-size:17px;
-}
-
-.divider{
-  height:100%;
-  background:var(--line);
-}
-
+.label{font-size:10px;letter-spacing:3px;color:#a89583}
+.name{font-size:29px;font-weight:800;margin-top:4px}
+.id{color:#c7b7a7;margin-top:4px;font-size:13px}
 .points{
-  text-align:center;
+  margin-top:20px;border-radius:22px;padding:22px;text-align:center;
+  background:linear-gradient(135deg,rgba(75,44,20,.52),rgba(255,255,255,.035));
+  border:1px solid rgba(217,155,67,.17)
 }
-
-.star{
-  color:var(--orange);
-  font-size:48px;
-}
-
-.points-number{
-  font-size:65px;
-  font-weight:900;
-  line-height:1;
-}
-
-.points-text{
-  letter-spacing:5px;
-  opacity:.7;
-  margin-top:8px;
-}
-
-/* =========================
-   COUPONS
-========================= */
-
-.coupons-panel{
-  margin-top:22px;
-  padding:20px;
-  border-radius:22px;
-  background:rgba(0,0,0,.20);
-  border:1px solid rgba(255,255,255,.12);
-}
-
-.coupons-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:15px;
-}
-
-.coupons-title{
-  font-size:20px;
-  font-weight:900;
-}
-
-.coupons-count{
-  background:var(--orange);
-  padding:6px 12px;
-  border-radius:20px;
-  font-weight:900;
-}
-
-.coupon-list{
-  display:grid;
-  gap:10px;
-}
-
-.coupon-item{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:14px 16px;
-  border-radius:14px;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.12);
-}
-
-.coupon-number{
-  font-size:21px;
-  font-weight:900;
-  letter-spacing:1px;
-}
-
-.coupon-status{
-  color:var(--green);
-  font-size:13px;
-  font-weight:900;
-}
-
-.no-coupons{
-  opacity:.65;
-  text-align:center;
-  padding:12px;
-}
-
-/* =========================
-   ACTIONS
-========================= */
+.star{font-size:42px;color:#f5a62b;line-height:1}
+.points-number{font-size:74px;font-weight:800;line-height:1;margin:8px 0}
+.points-label{letter-spacing:5px;color:#c6b6a6;font-size:12px}
+.point-dots{display:flex;justify-content:center;gap:7px;margin-top:18px;flex-wrap:wrap}
+.point-dot{width:13px;height:13px;border-radius:50%;background:#453a32}
+.point-dot.active{background:var(--gold2);box-shadow:0 0 10px rgba(240,200,117,.22)}
+.reward-message{margin-top:14px;color:#f1ddbf;font-size:13px}
 
 .actions{
-  display:grid;
-  gap:13px;
-  margin-top:18px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:20px;
 }
-
 .action{
-  min-height:76px;
-  border-radius:20px;
-  border:1px solid rgba(255,255,255,.2);
-  cursor:pointer;
-  font-weight:900;
-  font-size:22px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:15px;
-  transition:.15s;
+  border:0;background:transparent;color:#fff;text-align:center;
 }
-
-.action:hover{
-  transform:translateY(-1px);
+.action-icon{
+  width:112px;height:112px;max-width:100%;margin:auto;border-radius:50%;
+  display:grid;place-items:center;font-size:43px;
+  background:linear-gradient(145deg,#a96427,#3a2315);
+  border:1px solid rgba(240,200,117,.35);
+  box-shadow:0 15px 35px rgba(0,0,0,.38)
 }
+.action.next .action-icon{background:linear-gradient(145deg,#3b3835,#181614);border-color:rgba(255,255,255,.15)}
+.action-title{font-size:16px;font-weight:800;letter-spacing:.6px;margin-top:12px}
+.action-sub{font-size:11px;color:#b8aa9c;margin-top:4px}
 
-.action:disabled{
-  opacity:.45;
-  cursor:not-allowed;
-  transform:none;
+.bottom-nav{
+  position:fixed;z-index:40;left:50%;bottom:12px;transform:translateX(-50%);
+  width:min(850px,calc(100% - 18px));height:76px;border-radius:27px;
+  padding:7px 8px;display:grid;grid-template-columns:repeat(5,1fr);
+  background:rgba(17,11,7,.92);border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 18px 60px rgba(0,0,0,.62);backdrop-filter:blur(22px)
 }
-
-.add{
-  color:#fff;
-  background:linear-gradient(135deg,var(--orange),#ff8a22);
+.nav{border:0;background:none;color:#958a7f;display:flex;flex-direction:column;
+align-items:center;justify-content:center;gap:4px;font-size:10px}
+.nav-icon{font-size:22px;line-height:1}
+.nav.active{color:var(--gold2)}
+.nav.center{color:#fff}
+.nav.center .round{
+  width:58px;height:58px;margin-top:-30px;border-radius:50%;display:grid;place-items:center;
+  background:#17100b;border:1px solid rgba(240,200,117,.7);
+  box-shadow:0 0 0 7px rgba(217,155,67,.07);font-size:25px
 }
+.nav.center span:last-child{color:var(--gold2);letter-spacing:1px;font-size:9px}
 
-.redeem{
-  color:#221b18;
-  background:var(--cream);
+.login-wrap{min-height:100vh;display:grid;place-items:center;padding:24px}
+.login{width:min(440px,100%);padding:28px;border-radius:30px}
+.login h1{font-family:Georgia,serif;font-size:34px;margin:0}
+.login p{color:var(--muted);line-height:1.5}
+.input{
+  width:100%;margin-top:8px;padding:14px;border-radius:13px;
+  background:rgba(255,255,255,.045);border:1px solid var(--line);
+  color:#fff;outline:none
 }
-
-.next{
-  color:#fff;
-  background:rgba(20,14,12,.65);
+.login-btn,.confirm-btn{
+  width:100%;margin-top:14px;padding:14px;border:0;border-radius:13px;
+  background:linear-gradient(135deg,#e5b65e,#a86725);color:#21140b;font-weight:900
 }
-
-.action small{
-  display:block;
-  font-size:13px;
-  font-weight:500;
-  opacity:.75;
-}
-
-.message{
-  margin-top:16px;
-  padding:15px 18px;
-  border-radius:15px;
-  display:none;
-  font-weight:700;
-}
-
-.message.success{
-  display:block;
-  background:rgba(58,135,61,.28);
-  color:#8df194;
-}
-
-.message.error{
-  display:block;
-  background:rgba(170,45,45,.28);
-  color:#ff9d9d;
-}
-
-/* =========================
-   GM DASHBOARD
-========================= */
-
-.gm-header{
-  text-align:center;
-  margin:35px 0 25px;
-}
-
-.gm-header h1{
-  margin:0;
-  font-size:46px;
-}
-
-.gm-header p{
-  margin:8px 0 0;
-  opacity:.75;
-}
-
-.gm-user{
-  text-align:center;
-  margin-bottom:22px;
-}
-
-.gm-user-name{
-  font-size:28px;
-  font-weight:900;
-}
-
-.gm-user-email{
-  opacity:.65;
-  margin-top:5px;
-}
-
-.report-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
-}
-
-.report-card{
-  padding:25px 18px;
-  min-height:155px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-}
-
-.report-icon{
-  font-size:34px;
-  margin-bottom:8px;
-}
-
-.report-label{
-  font-size:13px;
-  letter-spacing:2px;
-  opacity:.65;
-}
-
-.report-number{
-  font-size:43px;
-  font-weight:900;
-  margin-top:7px;
-}
-
-.report-sub{
-  margin-top:5px;
-  opacity:.55;
-  font-size:13px;
-}
-
-.report-orange{
-  border-top:4px solid var(--orange);
-}
-
-.report-green{
-  border-top:4px solid var(--green);
-}
-
-.report-light{
-  border-top:4px solid var(--cream);
-}
-
-.gm-refresh{
-  width:100%;
-  margin-top:22px;
-  min-height:65px;
-  border-radius:18px;
-  border:1px solid rgba(255,255,255,.18);
-  background:rgba(20,14,12,.7);
-  color:#fff;
-  font-weight:900;
-  cursor:pointer;
-  font-size:19px;
-}
-
-.gm-message{
-  text-align:center;
-  margin-top:15px;
-  color:var(--red);
-  font-weight:700;
-}
-
-/* =========================
-   FEATURES / FOOTER
-========================= */
-
-.features{
-  margin-top:35px;
-  padding-top:25px;
-  border-top:1px solid var(--line);
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  text-align:center;
-  gap:15px;
-}
-
-.feature-icon{
-  font-size:34px;
-}
-
-.feature-title{
-  margin-top:7px;
-  font-weight:700;
-}
-
-.feature-sub{
-  opacity:.65;
-  font-size:13px;
-  margin-top:4px;
-}
-
-.footer{
-  text-align:center;
-  margin-top:30px;
-  letter-spacing:5px;
-  font-size:13px;
-  opacity:.75;
-}
-
-/* =========================
-   REDEEM MODAL
-========================= */
-
+.error{color:#ff9c8c;font-size:12px;margin-top:10px}
 .modal{
-  position:fixed;
-  inset:0;
-  z-index:100;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  background:rgba(0,0,0,.72);
-  backdrop-filter:blur(5px);
+  position:fixed;z-index:100;inset:0;background:rgba(0,0,0,.78);
+  display:none;align-items:flex-end;justify-content:center;padding:12px
 }
-
-.modal-box{
-  width:min(500px,100%);
-  padding:25px;
-  border-radius:25px;
-  background:#211a17;
-  border:1px solid rgba(255,255,255,.2);
-  box-shadow:0 30px 100px rgba(0,0,0,.6);
+.modal.open{display:flex}
+.sheet{
+  width:min(620px,100%);max-height:86vh;overflow:auto;border-radius:28px 28px 18px 18px;
+  padding:22px;background:#18100b;border:1px solid var(--line);box-shadow:0 -25px 80px rgba(0,0,0,.6)
 }
-
-.modal-box h2{
-  margin:0;
-  font-size:28px;
+.sheet-head{display:flex;justify-content:space-between;align-items:center}
+.close{
+  width:38px;height:38px;border-radius:50%;border:1px solid var(--line);
+  background:rgba(255,255,255,.05);color:#fff
 }
-
-.modal-box p{
-  opacity:.7;
+.coupon{
+  padding:15px;border:1px solid var(--line);border-radius:16px;margin-top:10px;
+  background:rgba(255,255,255,.035);display:flex;justify-content:space-between;align-items:center;gap:10px
 }
-
-.modal-coupons{
-  display:grid;
-  gap:10px;
-  margin-top:18px;
+.coupon-code{font-weight:900;color:var(--gold2)}
+.coupon-btn{
+  border:0;border-radius:10px;padding:10px 13px;background:#e4b45c;color:#21140b;font-weight:800
 }
-
-.coupon-select{
-  width:100%;
-  padding:17px;
-  border-radius:15px;
-  border:1px solid rgba(255,255,255,.18);
-  background:rgba(255,255,255,.08);
-  color:#fff;
-  font-weight:900;
-  outline:none;
-}
-
-.modal-actions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin-top:20px;
-}
-
-.modal-btn{
-  min-height:58px;
-  border:0;
-  border-radius:15px;
-  font-weight:900;
-  cursor:pointer;
-}
-
-.modal-cancel{
-  background:rgba(255,255,255,.1);
-  color:#fff;
-}
-
-.modal-confirm{
-  background:var(--orange);
-  color:#fff;
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-@media(max-width:700px){
-
-  .page{
-    width:94%;
-    padding-top:18px;
-  }
-
-  .brand-logo{
-    width:190px;
-    max-width:58vw;
-  }
-
-  .title{
-    margin-top:25px;
-  }
-
-  .title h1{
-    font-size:34px;
-  }
-
-  .title p{
-    font-size:16px;
-  }
-
-  .scanner-frame{
-    min-height:300px;
-  }
-
-  .customer{
-    grid-template-columns:1fr;
-    text-align:center;
-  }
-
-  .customer-left{
-    justify-content:center;
-  }
-
-  .divider{
-    height:1px;
-    width:100%;
-  }
-
-  .points{
-    padding:10px;
-  }
-
-  .name{
-    font-size:28px;
-  }
-
-  .points-number{
-    font-size:56px;
-  }
-
-  .features{
-    grid-template-columns:1fr;
-  }
-
-  .report-grid{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .gm-header h1{
-    font-size:35px;
-  }
-
-  .report-card{
-    min-height:135px;
-  }
-
-  .report-number{
-    font-size:35px;
-  }
-
-  .modal-actions{
-    grid-template-columns:1fr;
-  }
+.report-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:15px}
+.metric{padding:18px;border-radius:18px;background:rgba(255,255,255,.045);border:1px solid var(--line)}
+.metric-value{font-size:28px;font-weight:800}.metric-label{color:var(--muted);font-size:11px;margin-top:4px}
+@media(max-width:620px){
+  .app{padding:12px 10px 110px}
+  .header h1{font-size:32px}.header p{letter-spacing:2px}
+  .actions{gap:7px}.action-icon{width:92px;height:92px;font-size:36px}
+  .action-title{font-size:13px}.action-sub{font-size:10px}
+  .points-number{font-size:64px}
 }
 </style>
 </head>
-
 <body>
 
-<!-- =====================================================
-     LOGIN
-===================================================== -->
-
-<div id="loginPage" class="page">
-
-  <div class="topbar">
-    <div class="brand">
-      <img class="brand-logo"
-           src="logo.png"
-           alt="Al Noor Modern Bakery & Cafe">
-    </div>
+<div id="loginView" class="login-wrap">
+  <div class="login glass">
+    <div style="color:var(--gold2);letter-spacing:3px;font-size:10px">AL NOOR MODERN BAKERY & CAFÉ</div>
+    <h1>Staff Login</h1>
+    <p>Sign in with your personal staff account to scan customers and record loyalty activity.</p>
+    <input id="email" class="input" type="email" placeholder="Email">
+    <input id="password" class="input" type="password" placeholder="Password">
+    <button id="loginBtn" class="login-btn">SIGN IN</button>
+    <div id="loginError" class="error"></div>
   </div>
-
-  <div class="login panel">
-
-    <h2>Staff Login</h2>
-
-    <p>
-      Authorized Al Noor staff only
-    </p>
-
-    <div class="field">
-
-      <label>Email</label>
-
-      <input
-        id="email"
-        type="email"
-        placeholder="Enter your email"
-        autocomplete="username"
-      >
-
-    </div>
-
-    <div class="field">
-
-      <label>Password</label>
-
-      <input
-        id="password"
-        type="password"
-        autocomplete="current-password"
-      >
-
-    </div>
-
-    <button
-      id="loginBtn"
-      class="login-btn">
-      LOGIN
-    </button>
-
-    <div id="loginMessage"></div>
-
-  </div>
-
 </div>
 
-
-<!-- =====================================================
-     STAFF APP
-===================================================== -->
-
-<div id="staffPage" class="page hidden">
-
-  <div class="topbar">
-
-    <div class="brand">
-
-      <img
-        class="brand-logo"
-        src="logo.png"
-        alt="Al Noor Modern Bakery & Cafe"
-      >
-
+<div id="staffView" class="hidden">
+  <main class="app">
+    <div class="header-row">
+      <div class="user-chip">STAFF • <span id="staffName">—</span></div>
+      <button class="logout" onclick="logout()">LOG OUT</button>
     </div>
 
-  </div>
+    <header class="header">
+      <div class="scan-icon">⌗</div>
+      <h1>Staff Scanner</h1>
+      <p>SCAN CUSTOMER QR CODE TO ADD POINTS</p>
+    </header>
 
-
-  <div class="title">
-
-    <h1>Staff Scanner</h1>
-
-    <p>
-      Scan customer QR code to add points
-    </p>
-
-  </div>
-
-
-  <!-- SCANNER -->
-
-  <div
-    id="scannerPanel"
-    class="panel scanner-panel">
-
-    <div class="scanner-frame">
-
-      <div class="corner c1"></div>
-      <div class="corner c2"></div>
-      <div class="corner c3"></div>
-      <div class="corner c4"></div>
-
-      <div
-        id="scannerEmpty"
-        class="scanner-empty">
-
-        <div class="qr">▦</div>
-
-        <h2>
-          Scan Customer QR Code
-        </h2>
-
-        <p>
-          Position the customer's QR code inside the frame
-        </p>
-
+    <section class="scanner-card glass">
+      <div id="status" class="status">
+        <div>
+          <div id="statusTitle" class="status-title">Ready to scan</div>
+          <div id="statusSub" class="status-sub">Point the camera at the customer's QR code.</div>
+        </div>
+        <div id="statusTime" class="status-time">—</div>
       </div>
 
       <div id="reader"></div>
+      <div class="hint">Customer QR codes are scanned from the camera above.</div>
 
-    </div>
-
-  </div>
-
-
-  <!-- CUSTOMER RESULT -->
-
-  <div
-    id="result"
-    class="panel result hidden">
-
-    <div class="status">
-
-      ✓ Customer found!
-
-      <span
-        id="time"
-        style="float:right;opacity:.8">
-      </span>
-
-    </div>
-
-
-    <div class="customer">
-
-      <div class="customer-left">
-
-        <div class="avatar">
-          ●
-        </div>
-
-        <div>
-
-          <div class="label">
-            CUSTOMER
+      <section id="customerCard" class="customer glass hidden">
+        <div class="customer-top">
+          <div id="customerAvatar" class="avatar">A</div>
+          <div>
+            <div class="label">CUSTOMER</div>
+            <div id="customerName" class="name">—</div>
+            <div>ID: <span id="customerCode" class="id">—</span></div>
           </div>
-
-          <div
-            id="customerName"
-            class="name">
-            —
-          </div>
-
-          <div class="id">
-
-            ID:
-            <span id="customerCode">
-              —
-            </span>
-
-          </div>
-
         </div>
 
-      </div>
-
-
-      <div class="divider"></div>
-
-
-      <div class="points">
-
-        <div class="star">
-          ★
+        <div class="points">
+          <div class="star">★</div>
+          <div id="customerPoints" class="points-number">0</div>
+          <div class="points-label">CURRENT POINTS</div>
+          <div id="pointDots" class="point-dots"></div>
+          <div id="rewardMessage" class="reward-message"></div>
         </div>
+      </section>
 
-        <div
-          id="points"
-          class="points-number">
-          0
-        </div>
-
-        <div class="points-text">
-          CURRENT POINTS
-        </div>
-
+      <div id="actions" class="actions hidden">
+        <button class="action" onclick="addPoint()">
+          <div class="action-icon">＋</div>
+          <div class="action-title">ADD POINT</div>
+          <div class="action-sub">+1 loyalty point</div>
+        </button>
+        <button class="action" onclick="openRedeem()">
+          <div class="action-icon">🎁</div>
+          <div class="action-title">REDEEM</div>
+          <div class="action-sub">Use free drink</div>
+        </button>
+        <button class="action next" onclick="nextCustomer()">
+          <div class="action-icon">↻</div>
+          <div class="action-title">NEXT</div>
+          <div class="action-sub">Scan next customer</div>
+        </button>
       </div>
+    </section>
+  </main>
 
-    </div>
-
-
-    <!-- COUPONS -->
-
-    <div class="coupons-panel">
-
-      <div class="coupons-header">
-
-        <div class="coupons-title">
-          🎁 AVAILABLE REWARDS
-        </div>
-
-        <div
-          id="couponCount"
-          class="coupons-count">
-          0
-        </div>
-
-      </div>
-
-      <div
-        id="couponList"
-        class="coupon-list">
-
-        <div class="no-coupons">
-          No rewards available
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- ACTIONS -->
-
-    <div class="actions">
-
-      <button
-        id="addPointBtn"
-        class="action add">
-
-        <span style="font-size:34px">
-          ＋
-        </span>
-
-        <span>
-
-          +1 POINT
-
-          <small>
-            Add one loyalty point
-          </small>
-
-        </span>
-
-      </button>
-
-
-      <button
-        id="redeemBtn"
-        class="action redeem">
-
-        <span style="font-size:30px">
-          🎁
-        </span>
-
-        <span>
-
-          REDEEM REWARD
-
-          <small>
-            Select FREE coupon
-          </small>
-
-        </span>
-
-      </button>
-
-
-      <button
-        id="nextBtn"
-        class="action next">
-
-        ↻ &nbsp;
-        SCAN NEXT CUSTOMER
-
-      </button>
-
-    </div>
-
-
-    <div
-      id="message"
-      class="message">
-    </div>
-
-  </div>
-
-
-  <div class="features">
-
-    <div>
-
-      <div class="feature-icon">
-        🥐
-      </div>
-
-      <div class="feature-title">
-        FRESH BAKED
-      </div>
-
-      <div class="feature-sub">
-        Made fresh every day
-      </div>
-
-    </div>
-
-
-    <div>
-
-      <div class="feature-icon">
-        ☕
-      </div>
-
-      <div class="feature-title">
-        GREAT COFFEE
-      </div>
-
-      <div class="feature-sub">
-        Quality in every cup
-      </div>
-
-    </div>
-
-
-    <div>
-
-      <div class="feature-icon">
-        ♡
-      </div>
-
-      <div class="feature-title">
-        LOYAL CUSTOMERS
-      </div>
-
-      <div class="feature-sub">
-        Reward every visit
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <div class="footer">
-    AL NOOR BAKERY & CAFE
-  </div>
-
+  <nav class="bottom-nav">
+    <button class="nav" onclick="nextCustomer()"><span class="nav-icon">⌂</span><span>Home</span></button>
+    <button class="nav" onclick="openRedeem()"><span class="nav-icon">♧</span><span>Rewards</span></button>
+    <button class="nav center active"><span class="round">⌗</span><span>Scanner</span></button>
+    <button class="nav" onclick="openLocations()"><span class="nav-icon">⌖</span><span>Locations</span></button>
+    <button class="nav" onclick="openMenu()"><span class="nav-icon">☰</span><span>Menu</span></button>
+  </nav>
 </div>
 
-
-<!-- =====================================================
-     GM REPORT
-===================================================== -->
-
-<div id="gmPage" class="page hidden">
-
-  <div class="topbar">
-
-    <div class="brand">
-
-      <img
-        class="brand-logo"
-        src="logo.png"
-        alt="Al Noor Modern Bakery & Cafe"
-      >
-
+<div id="redeemModal" class="modal" onclick="if(event.target===this)closeModal('redeemModal')">
+  <div class="sheet">
+    <div class="sheet-head">
+      <div>
+        <div style="color:var(--gold2);letter-spacing:2px;font-size:10px">FREE DRINKS</div>
+        <h2 style="font-family:Georgia,serif;margin:5px 0">Redeem Reward</h2>
+      </div>
+      <button class="close" onclick="closeModal('redeemModal')">×</button>
     </div>
-
+    <div id="couponList"></div>
+    <div id="redeemError" class="error"></div>
   </div>
-
-
-  <div class="gm-header">
-
-    <h1>
-      GM REPORT
-    </h1>
-
-    <p>
-      Al Noor Loyalty Overview
-    </p>
-
-  </div>
-
-
-  <div class="gm-user">
-
-    <div
-      id="gmName"
-      class="gm-user-name">
-      GM
-    </div>
-
-    <div
-      id="gmEmail"
-      class="gm-user-email">
-      —
-    </div>
-
-  </div>
-
-
-  <div class="report-grid">
-
-
-    <div class="panel report-card report-orange">
-
-      <div class="report-icon">
-        👥
-      </div>
-
-      <div class="report-label">
-        CUSTOMERS
-      </div>
-
-      <div
-        id="reportCustomers"
-        class="report-number">
-        0
-      </div>
-
-      <div class="report-sub">
-        Total customers
-      </div>
-
-    </div>
-
-
-    <div class="panel report-card report-light">
-
-      <div class="report-icon">
-        🧾
-      </div>
-
-      <div class="report-label">
-        ORDERS / VISITS
-      </div>
-
-      <div
-        id="reportOrders"
-        class="report-number">
-        0
-      </div>
-
-      <div class="report-sub">
-        Total recorded visits
-      </div>
-
-    </div>
-
-
-    <div class="panel report-card report-green">
-
-      <div class="report-icon">
-        🎁
-      </div>
-
-      <div class="report-label">
-        FREE DRINKS EARNED
-      </div>
-
-      <div
-        id="reportEarned"
-        class="report-number">
-        0
-      </div>
-
-      <div class="report-sub">
-        Coupons issued
-      </div>
-
-    </div>
-
-
-    <div class="panel report-card report-light">
-
-      <div class="report-icon">
-        ✅
-      </div>
-
-      <div class="report-label">
-        REDEEMED
-      </div>
-
-      <div
-        id="reportRedeemed"
-        class="report-number">
-        0
-      </div>
-
-      <div class="report-sub">
-        Used free drinks
-      </div>
-
-    </div>
-
-
-    <div class="panel report-card report-orange">
-
-      <div class="report-icon">
-        🎟️
-      </div>
-
-      <div class="report-label">
-        AVAILABLE
-      </div>
-
-      <div
-        id="reportAvailable"
-        class="report-number">
-        0
-      </div>
-
-      <div class="report-sub">
-        Current free drinks
-      </div>
-
-    </div>
-
-
-    <div class="panel report-card report-green">
-
-      <div class="report-icon">
-        📅
-      </div>
-
-      <div class="report-label">
-        TODAY ORDERS
-      </div>
-
-      <div
-        id="reportTodayOrders"
-        class="report-number">
-        0
-      </div>
-
-      <div class="report-sub">
-        Today's activity
-      </div>
-
-    </div>
-
-
-  </div>
-
-
-  <button
-    id="refreshReportBtn"
-    class="gm-refresh">
-
-    ↻ &nbsp;
-    REFRESH REPORT
-
-  </button>
-
-
-  <div
-    id="gmMessage"
-    class="gm-message">
-  </div>
-
-
-  <div class="footer">
-    AL NOOR BAKERY & CAFE
-  </div>
-
 </div>
 
-
-<!-- =====================================================
-     REDEEM MODAL
-===================================================== -->
-
-<div
-  id="redeemModal"
-  class="modal hidden">
-
-  <div class="modal-box">
-
-    <h2>
-      Redeem FREE DRINK
-    </h2>
-
-    <p>
-      Select the coupon number being used.
-    </p>
-
-    <div class="modal-coupons">
-
-      <select
-        id="couponSelect"
-        class="coupon-select">
-      </select>
-
+<div id="simpleModal" class="modal" onclick="if(event.target===this)closeModal('simpleModal')">
+  <div class="sheet">
+    <div class="sheet-head">
+      <div>
+        <div style="color:var(--gold2);letter-spacing:2px;font-size:10px">AL NOOR</div>
+        <h2 id="simpleTitle" style="font-family:Georgia,serif;margin:5px 0">—</h2>
+      </div>
+      <button class="close" onclick="closeModal('simpleModal')">×</button>
     </div>
-
-    <div class="modal-actions">
-
-      <button
-        id="cancelRedeemBtn"
-        class="modal-btn modal-cancel">
-
-        CANCEL
-
-      </button>
-
-      <button
-        id="confirmRedeemBtn"
-        class="modal-btn modal-confirm">
-
-        REDEEM
-
-      </button>
-
-    </div>
-
+    <div id="simpleBody" style="color:var(--muted);line-height:1.6"></div>
   </div>
-
 </div>
-
 
 <script>
+const SUPABASE_URL="https://fgarlyoqobopudfkifbp.supabase.co";
+const SUPABASE_KEY="sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
 
-/* =========================================================
-   SUPABASE
-========================================================= */
+let accessToken=sessionStorage.getItem("alnoor_access_token")||"";
+let refreshToken=sessionStorage.getItem("alnoor_refresh_token")||"";
+let staffEmail=sessionStorage.getItem("alnoor_staff_email")||"";
+let staffName=sessionStorage.getItem("alnoor_staff_name")||"";
+let staffRole="";
+let scanner=null;
+let scanning=false;
+let currentCustomer=null;
+let coupons=[];
 
-const SUPABASE_URL =
-  "https://fgarlyoqobopudfkifbp.supabase.co";
-
-const SUPABASE_KEY =
-  "sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
-
-
-/* =========================================================
-   STATE
-========================================================= */
-
-let scanner = null;
-
-let currentCustomer = null;
-
-let currentCustomerToken = null;
-
-let currentCoupons = [];
-
-let currentStaffProfile = null;
-
-let busy = false;
-
-
-/* =========================================================
-   SHORTCUT
-========================================================= */
-
-const $ = id =>
-  document.getElementById(id);
-
-
-/* =========================================================
-   HEADERS
-========================================================= */
-
-function headers(){
-
-  const accessToken =
-    sessionStorage.getItem(
-      "alnoor_access_token"
-    ) || SUPABASE_KEY;
-
-  return {
-
-    "apikey": SUPABASE_KEY,
-
-    "Authorization":
-      "Bearer " + accessToken,
-
-    "Content-Type":
-      "application/json"
-
-  };
+function headers(auth=true){
+  const h={"apikey":SUPABASE_KEY,"Content-Type":"application/json"};
+  if(auth && accessToken) h.Authorization="Bearer "+accessToken;
+  return h;
 }
-
-
-/* =========================================================
-   HIDE ALL PAGES
-========================================================= */
-
-function hideAllPages(){
-
-  $("loginPage")
-    .classList.add("hidden");
-
-  $("staffPage")
-    .classList.add("hidden");
-
-  $("gmPage")
-    .classList.add("hidden");
-
+async function rpc(name,body={},auth=true){
+  const r=await fetch(`${SUPABASE_URL}/rest/v1/rpc/${name}`,{
+    method:"POST",headers:headers(auth),body:JSON.stringify(body)
+  });
+  const t=await r.text();let d=null;
+  try{d=t?JSON.parse(t):null}catch{}
+  if(!r.ok)throw new Error((d&&(d.message||d.error||d.hint))||t||"Request failed");
+  return d;
 }
-
-
-/* =========================================================
-   SHOW STAFF
-========================================================= */
-
-function showStaff(){
-
-  hideAllPages();
-
-  $("staffPage")
-    .classList.remove("hidden");
-
-  startScanner();
-
+function initials(n){return (n||"A").trim().split(/\s+/).slice(0,2).map(x=>x[0]).join("").toUpperCase()}
+function nowTime(){return new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}
+function setStatus(title,sub,type=""){
+  const el=document.getElementById("status");
+  el.className="status "+type;
+  document.getElementById("statusTitle").textContent=title;
+  document.getElementById("statusSub").textContent=sub;
+  document.getElementById("statusTime").textContent=nowTime();
 }
-
-
-/* =========================================================
-   SHOW GM
-========================================================= */
-
-async function showGM(){
-
-  hideAllPages();
-
-  $("gmPage")
-    .classList.remove("hidden");
-
-  $("gmName").textContent =
-    currentStaffProfile?.full_name ||
-    "GM";
-
-  $("gmEmail").textContent =
-    sessionStorage.getItem(
-      "alnoor_staff_email"
-    ) || "—";
-
-  await loadGMReport();
-
-}
-
-
-/* =========================================================
-   LOGIN
-========================================================= */
+function setLoginError(x){document.getElementById("loginError").textContent=x||""}
 
 async function login(){
-
-  const email =
-    $("email").value.trim();
-
-  const password =
-    $("password").value;
-
-  $("loginMessage").textContent = "";
-
-  if(!email || !password){
-
-    $("loginMessage").textContent =
-      "Enter email and password.";
-
-    return;
-
-  }
-
-
-  $("loginBtn").disabled = true;
-
-  $("loginBtn").textContent =
-    "LOGGING IN...";
-
-
+  const email=document.getElementById("email").value.trim();
+  const password=document.getElementById("password").value;
+  if(!email||!password){setLoginError("Enter email and password.");return}
+  const btn=document.getElementById("loginBtn");btn.disabled=true;btn.textContent="SIGNING IN...";
+  setLoginError("");
   try{
+    const r=await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`,{
+      method:"POST",headers:{"apikey":SUPABASE_KEY,"Content-Type":"application/json"},
+      body:JSON.stringify({email,password})
+    });
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.error_description||d.msg||"Login failed.");
+    accessToken=d.access_token;refreshToken=d.refresh_token;
+    sessionStorage.setItem("alnoor_access_token",accessToken);
+    sessionStorage.setItem("alnoor_refresh_token",refreshToken);
+    sessionStorage.setItem("alnoor_staff_email",email);
+    staffEmail=email;
 
-    const response =
-      await fetch(
-        SUPABASE_URL +
-        "/auth/v1/token?grant_type=password",
-        {
-          method:"POST",
-
-          headers:{
-            "apikey":SUPABASE_KEY,
-            "Content-Type":
-              "application/json"
-          },
-
-          body:JSON.stringify({
-            email,
-            password
-          })
-        }
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if(!response.ok){
-
-      throw new Error(
-        data.error_description ||
-        data.msg ||
-        data.message ||
-        "Login failed."
-      );
-
-    }
-
-
-    sessionStorage.setItem(
-      "alnoor_access_token",
-      data.access_token
-    );
-
-    sessionStorage.setItem(
-      "alnoor_refresh_token",
-      data.refresh_token || ""
-    );
-
-    sessionStorage.setItem(
-      "alnoor_staff_email",
-      email
-    );
-
-
-    /* GET PROFILE */
-
-    const staffResponse =
-      await fetch(
-        SUPABASE_URL +
-        "/rest/v1/rpc/get_my_staff_profile",
-        {
-          method:"POST",
-          headers:headers(),
-          body:"{}"
-        }
-      );
-
-
-    const staffData =
-      await staffResponse.json();
-
-
-    if(!staffResponse.ok){
-
-      sessionStorage.removeItem(
-        "alnoor_access_token"
-      );
-
-      sessionStorage.removeItem(
-        "alnoor_refresh_token"
-      );
-
-      throw new Error(
-        staffData.message ||
-        staffData.error ||
-        "This account is not authorized."
-      );
-
-    }
-
-
-    currentStaffProfile =
-      Array.isArray(staffData)
-        ? staffData[0]
-        : staffData;
-
-
-    if(!currentStaffProfile){
-
-      throw new Error(
-        "Staff profile not found."
-      );
-
-    }
-
-
-    sessionStorage.setItem(
-      "alnoor_staff_name",
-      currentStaffProfile.full_name || email
-    );
-
-
-    /* ROLE */
-
-    const role =
-      String(
-        currentStaffProfile.role || ""
-      ).toLowerCase();
-
-
-    if(role === "gm"){
-
-      await showGM();
-
-    }else if(role === "staff"){
-
-      showStaff();
-
-    }else{
-
-      throw new Error(
-        "Unknown staff role."
-      );
-
-    }
-
-  }catch(err){
-
-    $("loginMessage").textContent =
-      err.message;
-
-  }finally{
-
-    $("loginBtn").disabled = false;
-
-    $("loginBtn").textContent =
-      "LOGIN";
-
-  }
-
+    const profile=await rpc("get_my_staff_profile",{});
+    const p=Array.isArray(profile)?profile[0]:profile;
+    if(!p || p.active===false)throw new Error("This staff account is not active.");
+    staffName=p.full_name||email;
+    staffRole=(p.role||"staff").toLowerCase();
+    sessionStorage.setItem("alnoor_staff_name",staffName);
+    await routeByRole();
+  }catch(e){
+    setLoginError(e.message||"Unable to sign in.");
+    accessToken="";refreshToken="";
+  }finally{btn.disabled=false;btn.textContent="SIGN IN"}
 }
 
+async function routeByRole(){
+  document.getElementById("loginView").classList.add("hidden");
+  document.getElementById("staffView").classList.remove("hidden");
+  document.getElementById("staffName").textContent=staffName||staffEmail;
+  startScanner();
+}
 
-/* =========================================================
-   EXTRACT CUSTOMER TOKEN
-========================================================= */
-
+async function startScanner(){
+  if(scanner) return;
+  scanner=new Html5Qrcode("reader");
+  try{
+    const cameras=await Html5Qrcode.getCameras();
+    if(!cameras||!cameras.length)throw new Error("No camera found.");
+    const cam=cameras.find(c=>/back|rear|environment/i.test(c.label))||cameras[0];
+    await scanner.start(cam.id,{fps:10,qrbox:{width:260,height:260}},onScan,()=>{});
+    scanning=true;
+    setStatus("Ready to scan","Point the camera at the customer's QR code.");
+  }catch(e){
+    setStatus("Camera unavailable","Allow camera access and reload this page.","err");
+  }
+}
+async function stopScanner(){
+  if(scanner&&scanning){
+    try{await scanner.stop()}catch{}
+    scanning=false;
+  }
+}
 function extractToken(text){
-
-  text =
-    String(text || "").trim();
-
-
-  if(text.startsWith("ALNOOR:")){
-
-    return null;
-
-  }
-
-
   try{
-
-    const url =
-      new URL(text);
-
-    const token =
-      url.searchParams.get("token");
-
-    if(token)
-      return token;
-
-  }catch(e){}
-
-
-  const uuid =
-    text.match(
-      /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i
-    );
-
-
-  return uuid
-    ? uuid[0]
-    : null;
-
+    const u=new URL(text);
+    const t=u.searchParams.get("token");
+    if(t)return t;
+  }catch{}
+  const m=String(text).match(/[?&]token=([0-9a-fA-F-]{20,})/);
+  return m?m[1]:null;
 }
-
-
-/* =========================================================
-   FIND CUSTOMER
-========================================================= */
-
-async function findCustomer(token){
-
-  const response =
-    await fetch(
-      SUPABASE_URL +
-      "/rest/v1/rpc/get_customer_by_token",
-      {
-        method:"POST",
-        headers:headers(),
-
-        body:JSON.stringify({
-          p_token:token
-        })
-      }
-    );
-
-
-  const data =
-    await response.json();
-
-
-  if(!response.ok){
-
-    throw new Error(
-      data.message ||
-      data.error ||
-      "Customer lookup failed."
-    );
-
-  }
-
-
-  const customer =
-    Array.isArray(data)
-      ? data[0]
-      : data;
-
-
-  if(!customer){
-
-    throw new Error(
-      "Customer not found."
-    );
-
-  }
-
-
-  return customer;
-
-}
-
-
-/* =========================================================
-   GET COUPONS
-========================================================= */
-
-async function getCoupons(token){
-
-  const response =
-    await fetch(
-      SUPABASE_URL +
-      "/rest/v1/rpc/get_customer_coupons",
-      {
-        method:"POST",
-
-        headers:headers(),
-
-        body:JSON.stringify({
-          p_token:token
-        })
-      }
-    );
-
-
-  const data =
-    await response.json();
-
-
-  if(!response.ok){
-
-    throw new Error(
-      data.message ||
-      data.error ||
-      "Could not load coupons."
-    );
-
-  }
-
-
-  return Array.isArray(data)
-    ? data
-    : [];
-
-}
-
-
-/* =========================================================
-   SCAN SUCCESS
-========================================================= */
-
-async function onScanSuccess(decodedText){
-
-  if(busy)
-    return;
-
-  busy = true;
-
-
-  try{
-
-    const token =
-      extractToken(decodedText);
-
-
-    if(!token){
-
-      throw new Error(
-        "Invalid customer QR code."
-      );
-
-    }
-
-
-    const customer =
-      await findCustomer(token);
-
-
-    currentCustomer =
-      customer;
-
-    currentCustomerToken =
-      token;
-
-
-    currentCoupons =
-      await getCoupons(token);
-
-
-    $("scannerPanel")
-      .classList.add("hidden");
-
-
-    renderCustomer(customer);
-
-    renderCoupons(currentCoupons);
-
-    showMessage("",false);
-
-
-    if(scanner){
-
-      try{
-
-        await scanner.pause(true);
-
-      }catch(e){}
-
-    }
-
-  }catch(err){
-
-    showMessage(
-      err.message,
-      true
-    );
-
-  }finally{
-
-    setTimeout(
-      ()=>busy=false,
-      1200
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   SCAN FAILURE
-========================================================= */
-
-function onScanFailure(){
-
-  /* normal scanner behavior */
-
-}
-
-
-/* =========================================================
-   START SCANNER
-========================================================= */
-
-function startScanner(){
-
-  $("scannerEmpty")
-    .style.display = "none";
-
-
-  if(scanner)
-    return;
-
-
-  scanner =
-    new Html5Qrcode("reader");
-
-
-  scanner.start(
-
-    {
-      facingMode:"environment"
-    },
-
-    {
-      fps:10,
-
-      qrbox:{
-        width:250,
-        height:250
-      },
-
-      aspectRatio:1.0
-
-    },
-
-    onScanSuccess,
-
-    onScanFailure
-
-  ).catch(err=>{
-
-    $("scannerEmpty")
-      .style.display = "block";
-
-
-    $("scannerEmpty").innerHTML =
-
-      '<div class="qr">▦</div>' +
-
-      '<h2>Camera could not start</h2>' +
-
-      '<p>Allow camera access and reload the page.</p>';
-
-  });
-
-}
-
-
-/* =========================================================
-   RENDER CUSTOMER
-========================================================= */
-
-function renderCustomer(c){
-
-  $("result")
-    .classList.remove("hidden");
-
-
-  $("customerName")
-    .textContent =
-      c.full_name ||
-      "Customer";
-
-
-  $("customerCode")
-    .textContent =
-      c.customer_code ||
-      "—";
-
-
-  $("points")
-    .textContent =
-      Number(c.points || 0);
-
-
-  $("time")
-    .textContent =
-      new Date().toLocaleTimeString(
-        [],
-        {
-          hour:"numeric",
-          minute:"2-digit"
-        }
-      );
-
-}
-
-
-/* =========================================================
-   RENDER COUPONS
-========================================================= */
-
-function renderCoupons(coupons){
-
-  const available =
-    coupons.filter(
-      c =>
-        String(c.status).toUpperCase()
-        === "AVAILABLE"
-    );
-
-
-  currentCoupons =
-    available;
-
-
-  $("couponCount")
-    .textContent =
-      available.length;
-
-
-  const list =
-    $("couponList");
-
-
-  list.innerHTML = "";
-
-
-  if(available.length === 0){
-
-    list.innerHTML =
-      '<div class="no-coupons">' +
-      'No FREE DRINK available yet.' +
-      '</div>';
-
-    return;
-
-  }
-
-
-  available.forEach(coupon=>{
-
-    const item =
-      document.createElement("div");
-
-
-    item.className =
-      "coupon-item";
-
-
-    const number =
-      document.createElement("div");
-
-
-    number.className =
-      "coupon-number";
-
-
-    number.textContent =
-      coupon.coupon_code ||
-      "FREE";
-
-
-    const status =
-      document.createElement("div");
-
-
-    status.className =
-      "coupon-status";
-
-
-    status.textContent =
-      "AVAILABLE";
-
-
-    item.appendChild(number);
-
-    item.appendChild(status);
-
-    list.appendChild(item);
-
-  });
-
-}
-
-
-/* =========================================================
-   MESSAGE
-========================================================= */
-
-function showMessage(text,error){
-
-  const box =
-    $("message");
-
-
-  if(!text){
-
-    box.className =
-      "message";
-
-    box.textContent =
-      "";
-
-    return;
-
-  }
-
-
-  box.textContent =
-    text;
-
-
-  box.className =
-    "message " +
-    (error
-      ? "error"
-      : "success");
-
-}
-
-
-/* =========================================================
-   ADD POINT
-========================================================= */
-
-async function addPoint(){
-
-  if(!currentCustomer)
-    return;
-
-
-  const button =
-    $("addPointBtn");
-
-
-  button.disabled = true;
-
-
-  try{
-
-    const response =
-      await fetch(
-        SUPABASE_URL +
-        "/rest/v1/rpc/add_customer_point",
-        {
-          method:"POST",
-
-          headers:headers(),
-
-          body:JSON.stringify({
-            p_customer_code:
-              currentCustomer.customer_code
-          })
-        }
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if(!response.ok){
-
-      throw new Error(
-        data.message ||
-        data.error ||
-        "Could not add point."
-      );
-
-    }
-
-
-    currentCustomer =
-      data;
-
-
-    renderCustomer(data);
-
-
-    if(currentCustomerToken){
-
-      currentCoupons =
-        await getCoupons(
-          currentCustomerToken
-        );
-
-      renderCoupons(
-        currentCoupons
-      );
-
-    }
-
-
-    const points =
-      Number(data.points || 0);
-
-
-    if(points % 10 === 0){
-
-      showMessage(
-        "Point added. FREE DRINK coupon created.",
-        false
-      );
-
-    }else{
-
-      showMessage(
-        "1 point added successfully.",
-        false
-      );
-
-    }
-
-  }catch(err){
-
-    showMessage(
-      err.message,
-      true
-    );
-
-  }finally{
-
-    button.disabled = false;
-
-  }
-
-}
-
-
-/* =========================================================
-   OPEN REDEEM MODAL
-========================================================= */
-
-function openRedeemModal(){
-
-  if(!currentCustomer)
-    return;
-
-
-  const available =
-    currentCoupons.filter(
-      c =>
-        String(c.status).toUpperCase()
-        === "AVAILABLE"
-    );
-
-
-  if(available.length === 0){
-
-    showMessage(
-      "No FREE DRINK coupon available.",
-      true
-    );
-
-    return;
-
-  }
-
-
-  const select =
-    $("couponSelect");
-
-
-  select.innerHTML =
-    "";
-
-
-  available.forEach(coupon=>{
-
-    const option =
-      document.createElement("option");
-
-
-    option.value =
-      coupon.coupon_code;
-
-
-    option.textContent =
-      coupon.coupon_code +
-      " — AVAILABLE";
-
-
-    select.appendChild(option);
-
-  });
-
-
-  $("redeemModal")
-    .classList.remove("hidden");
-
-}
-
-
-/* =========================================================
-   CLOSE REDEEM MODAL
-========================================================= */
-
-function closeRedeemModal(){
-
-  $("redeemModal")
-    .classList.add("hidden");
-
-}
-
-
-/* =========================================================
-   CONFIRM REDEEM
-========================================================= */
-
-async function confirmRedeem(){
-
-  if(!currentCustomer)
-    return;
-
-
-  const couponCode =
-    $("couponSelect").value;
-
-
-  if(!couponCode){
-
-    return;
-
-  }
-
-
-  const button =
-    $("confirmRedeemBtn");
-
-
-  button.disabled = true;
-
-  button.textContent =
-    "REDEEMING...";
-
-
-  try{
-
-    const response =
-      await fetch(
-        SUPABASE_URL +
-        "/rest/v1/rpc/redeem_customer_coupon",
-        {
-          method:"POST",
-
-          headers:headers(),
-
-          body:JSON.stringify({
-
-            p_customer_code:
-              currentCustomer.customer_code,
-
-            p_coupon_code:
-              couponCode
-
-          })
-        }
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if(!response.ok){
-
-      throw new Error(
-        data.message ||
-        data.error ||
-        "Could not redeem coupon."
-      );
-
-    }
-
-
-    currentCustomer =
-      data;
-
-
-    renderCustomer(data);
-
-
-    if(currentCustomerToken){
-
-      currentCoupons =
-        await getCoupons(
-          currentCustomerToken
-        );
-
-      renderCoupons(
-        currentCoupons
-      );
-
-    }
-
-
-    closeRedeemModal();
-
-
-    showMessage(
-      couponCode +
-      " redeemed successfully.",
-      false
-    );
-
-
-  }catch(err){
-
-    showMessage(
-      err.message,
-      true
-    );
-
-  }finally{
-
-    button.disabled = false;
-
-    button.textContent =
-      "REDEEM";
-
-  }
-
-}
-
-
-/* =========================================================
-   NEXT CUSTOMER
-========================================================= */
-
-async function nextCustomer(){
-
-  currentCustomer =
-    null;
-
-  currentCustomerToken =
-    null;
-
-  currentCoupons =
-    [];
-
-
-  $("result")
-    .classList.add("hidden");
-
-
-  showMessage(
-    "",
-    false
-  );
-
-
-  $("scannerPanel")
-    .classList.remove("hidden");
-
-
-  if(scanner){
-
-    try{
-
-      await scanner.resume();
-
-    }catch(e){}
-
-  }else{
-
-    startScanner();
-
-  }
-
-}
-
-
-/* =========================================================
-   GM REPORT
-========================================================= */
-
-async function loadGMReport(){
-
-  $("gmMessage")
-    .textContent = "";
-
-
-  try{
-
-    const response =
-      await fetch(
-        SUPABASE_URL +
-        "/rest/v1/rpc/get_gm_report",
-        {
-          method:"POST",
-
-          headers:headers(),
-
-          body:"{}"
-        }
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if(!response.ok){
-
-      throw new Error(
-        data.message ||
-        data.error ||
-        "Could not load GM report."
-      );
-
-    }
-
-
-    const report =
-      Array.isArray(data)
-        ? data[0]
-        : data;
-
-
-    if(!report){
-
-      throw new Error(
-        "No report data returned."
-      );
-
-    }
-
-
-    $("reportCustomers")
-      .textContent =
-        Number(
-          report.total_customers || 0
-        ).toLocaleString();
-
-
-    $("reportOrders")
-      .textContent =
-        Number(
-          report.total_orders || 0
-        ).toLocaleString();
-
-
-    $("reportEarned")
-      .textContent =
-        Number(
-          report.free_drinks_earned || 0
-        ).toLocaleString();
-
-
-    $("reportRedeemed")
-      .textContent =
-        Number(
-          report.free_drinks_redeemed || 0
-        ).toLocaleString();
-
-
-    $("reportAvailable")
-      .textContent =
-        Number(
-          report.free_drinks_available || 0
-        ).toLocaleString();
-
-
-    $("reportTodayOrders")
-      .textContent =
-        Number(
-          report.today_orders || 0
-        ).toLocaleString();
-
-
-  }catch(err){
-
-    $("gmMessage")
-      .textContent =
-        err.message;
-
-  }
-
-}
-
-
-/* =========================================================
-   EVENTS
-========================================================= */
-
-$("loginBtn")
-  .addEventListener(
-    "click",
-    login
-  );
-
-
-$("password")
-  .addEventListener(
-    "keydown",
-    e=>{
-
-      if(e.key === "Enter")
-        login();
-
-    }
-  );
-
-
-$("addPointBtn")
-  .addEventListener(
-    "click",
-    addPoint
-  );
-
-
-$("redeemBtn")
-  .addEventListener(
-    "click",
-    openRedeemModal
-  );
-
-
-$("nextBtn")
-  .addEventListener(
-    "click",
-    nextCustomer
-  );
-
-
-$("cancelRedeemBtn")
-  .addEventListener(
-    "click",
-    closeRedeemModal
-  );
-
-
-$("confirmRedeemBtn")
-  .addEventListener(
-    "click",
-    confirmRedeem
-  );
-
-
-$("refreshReportBtn")
-  .addEventListener(
-    "click",
-    loadGMReport
-  );
-
-
-/* =========================================================
-   EXISTING SESSION
-========================================================= */
-
-async function restoreSession(){
-
-  const token =
-    sessionStorage.getItem(
-      "alnoor_access_token"
-    );
-
-
+async function onScan(decodedText){
+  if(!scanning)return;
+  const token=extractToken(decodedText);
   if(!token){
-
-    hideAllPages();
-
-    $("loginPage")
-      .classList.remove("hidden");
-
+    setStatus("Invalid QR","This QR code is not an Al Noor customer card.","err");
     return;
-
   }
-
-
+  await stopScanner();
+  setStatus("Customer found!","Loading loyalty member...","ok");
   try{
-
-    const response =
-      await fetch(
-        SUPABASE_URL +
-        "/rest/v1/rpc/get_my_staff_profile",
-        {
-          method:"POST",
-
-          headers:headers(),
-
-          body:"{}"
-        }
-      );
-
-
-    const data =
-      await response.json();
-
-
-    if(!response.ok){
-
-      throw new Error(
-        "Session expired."
-      );
-
-    }
-
-
-    currentStaffProfile =
-      Array.isArray(data)
-        ? data[0]
-        : data;
-
-
-    if(!currentStaffProfile){
-
-      throw new Error(
-        "Staff profile not found."
-      );
-
-    }
-
-
-    const role =
-      String(
-        currentStaffProfile.role || ""
-      ).toLowerCase();
-
-
-    if(role === "gm"){
-
-      await showGM();
-
-    }else if(role === "staff"){
-
-      showStaff();
-
-    }else{
-
-      throw new Error(
-        "Unknown role."
-      );
-
-    }
-
-  }catch(err){
-
-    sessionStorage.removeItem(
-      "alnoor_access_token"
-    );
-
-    sessionStorage.removeItem(
-      "alnoor_refresh_token"
-    );
-
-    hideAllPages();
-
-    $("loginPage")
-      .classList.remove("hidden");
-
-    $("loginMessage")
-      .textContent =
-        "Please login again.";
-
+    const rows=await rpc("get_customer_by_token",{p_token:token},false);
+    const c=Array.isArray(rows)?rows[0]:rows;
+    if(!c)throw new Error("Customer not found.");
+    currentCustomer=c;
+    renderCustomer(c);
+    await loadCoupons(c.customer_code);
+    setStatus("Customer found!","Loyalty member recognized.","ok");
+  }catch(e){
+    setStatus("Customer not found",e.message||"Unable to load customer.","err");
+    setTimeout(()=>startScanner(),800);
   }
-
 }
+function renderCustomer(c){
+  document.getElementById("customerCard").classList.remove("hidden");
+  document.getElementById("actions").classList.remove("hidden");
+  document.getElementById("customerName").textContent=c.full_name||"Customer";
+  document.getElementById("customerCode").textContent=c.customer_code||"—";
+  document.getElementById("customerAvatar").textContent=initials(c.full_name);
+  renderPoints(c.points);
+}
+function renderPoints(points){
+  const p=Math.max(0,Number(points||0));
+  document.getElementById("customerPoints").textContent=p;
+  const current=p%10;
+  const dots=document.getElementById("pointDots");dots.innerHTML="";
+  for(let i=1;i<=10;i++){
+    const d=document.createElement("span");d.className="point-dot"+(i<=current||p>=10&&current===0?" active":"");
+    dots.appendChild(d);
+  }
+  document.getElementById("rewardMessage").textContent=
+    p>=10 ? `${Math.min(5,Math.floor(p/10))} FREE DRINK REWARD(S) EARNED` : `${10-current} more point(s) until the next free drink`;
+}
+async function addPoint(){
+  if(!currentCustomer)return;
+  const btns=document.querySelectorAll(".action");btns.forEach(b=>b.disabled=true);
+  try{
+    const result=await rpc("add_customer_point",{p_customer_code:currentCustomer.customer_code});
+    const c=Array.isArray(result)?result[0]:result;
+    if(c && typeof c==="object"){
+      currentCustomer={...currentCustomer,...c};
+    }else{
+      currentCustomer.points=Number(currentCustomer.points||0)+1;
+    }
+    renderCustomer(currentCustomer);
+    await loadCoupons(currentCustomer.customer_code);
+    setStatus("Point added!","Customer loyalty point recorded.","ok");
+  }catch(e){
+    setStatus("Point not added",e.message||"Unable to add point.","err");
+  }finally{btns.forEach(b=>b.disabled=false)}
+}
+async function loadCoupons(code){
+  try{
+    const data=await rpc("get_customer_coupons",{p_customer_code:code});
+    coupons=Array.isArray(data)?data.filter(x=>(x.status||"AVAILABLE")==="AVAILABLE"):[];
+  }catch{coupons=[]}
+}
+function openRedeem(){
+  if(!currentCustomer){setStatus("No customer selected","Scan a customer first.","err");return}
+  renderCoupons();
+  document.getElementById("redeemModal").classList.add("open");
+}
+function renderCoupons(){
+  const box=document.getElementById("couponList");
+  document.getElementById("redeemError").textContent="";
+  if(!coupons.length){
+    box.innerHTML='<div style="padding:28px 4px;color:#b8a695;text-align:center">No available free drink coupon for this customer.</div>';
+    return;
+  }
+  box.innerHTML=coupons.map((c,i)=>`
+    <div class="coupon">
+      <div><div style="font-size:10px;color:#a89583">FREE DRINK</div>
+      <div class="coupon-code">${esc(c.coupon_code||c.coupon_number||("COUPON "+(i+1)))}</div></div>
+      <button class="coupon-btn" onclick="redeemCoupon('${escAttr(c.coupon_code||c.coupon_number||"")}')">REDEEM</button>
+    </div>`).join("");
+}
+async function redeemCoupon(code){
+  if(!currentCustomer)return;
+  try{
+    const result=await rpc("redeem_customer_coupon",{
+      p_customer_code:currentCustomer.customer_code,
+      p_coupon_code:code
+    });
+    const c=Array.isArray(result)?result[0]:result;
+    if(c && typeof c==="object")currentCustomer={...currentCustomer,...c};
+    currentCustomer.points=Math.max(0,Number(currentCustomer.points||0)-10);
+    renderCustomer(currentCustomer);
+    await loadCoupons(currentCustomer.customer_code);
+    closeModal("redeemModal");
+    setStatus("Reward redeemed!","Free drink recorded for this customer.","ok");
+  }catch(e){
+    document.getElementById("redeemError").textContent=e.message||"Unable to redeem reward.";
+  }
+}
+function nextCustomer(){
+  currentCustomer=null;coupons=[];
+  document.getElementById("customerCard").classList.add("hidden");
+  document.getElementById("actions").classList.add("hidden");
+  setStatus("Ready to scan","Point the camera at the customer's QR code.");
+  startScanner();
+}
+function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function escAttr(v){return esc(v).replace(/`/g,"&#096;")}
+function closeModal(id){document.getElementById(id).classList.remove("open")}
+function openLocations(){
+  document.getElementById("simpleTitle").textContent="Locations";
+  document.getElementById("simpleBody").innerHTML=`
+    <p>Choose a branch to open it in Google Maps.</p>
+    <p><a style="color:var(--gold2)" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Al%20Noor%20Modern%20Bakery%20Al%20Ain">Open Al Noor in Google Maps ↗</a></p>`;
+  document.getElementById("simpleModal").classList.add("open");
+}
+function openMenu(){
+  document.getElementById("simpleTitle").textContent="Menu";
+  document.getElementById("simpleBody").innerHTML="<p>Al Noor menu can be connected here to the customer menu page, with categories, products, photos and prices.</p>";
+  document.getElementById("simpleModal").classList.add("open");
+}
+async function logout(){
+  try{
+    if(accessToken){
+      await fetch(SUPABASE_URL+"/auth/v1/logout",{
+        method:"POST",
+        headers:{"apikey":SUPABASE_KEY,"Authorization":"Bearer "+accessToken}
+      });
+    }
+  }catch{}
+  accessToken="";refreshToken="";
+  sessionStorage.removeItem("alnoor_access_token");
+  sessionStorage.removeItem("alnoor_refresh_token");
+  sessionStorage.removeItem("alnoor_staff_email");
+  sessionStorage.removeItem("alnoor_staff_name");
+  location.reload();
+}
+document.getElementById("loginBtn").addEventListener("click",login);
+document.getElementById("password").addEventListener("keydown",e=>{if(e.key==="Enter")login()});
 
-
-restoreSession();
-
+(async()=>{
+  if(accessToken){
+    try{
+      const p0=await rpc("get_my_staff_profile",{});
+      const p=Array.isArray(p0)?p0[0]:p0;
+      if(!p||p.active===false)throw new Error("inactive");
+      staffName=p.full_name||staffName||staffEmail;
+      staffRole=(p.role||"staff").toLowerCase();
+      await routeByRole();
+    }catch{
+      accessToken="";
+      sessionStorage.removeItem("alnoor_access_token");
+      document.getElementById("loginView").classList.remove("hidden");
+    }
+  }
+})();
 </script>
-
 </body>
 </html>
