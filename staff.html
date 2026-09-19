@@ -422,7 +422,7 @@ button,input{font:inherit}
     <p>Scan customer QR code to add points</p>
   </div>
 
-  <div class="panel scanner-panel">
+  <div id="scannerPanel" class="panel scanner-panel">
     <div class="scanner-frame">
       <div class="corner c1"></div>
       <div class="corner c2"></div>
@@ -652,6 +652,8 @@ async function onScanSuccess(decodedText){
     const customer = await findCustomer(token);
     currentCustomer = customer;
 
+    // Switch to customer screen only. Hide the scanner completely.
+    $("scannerPanel").classList.add("hidden");
     renderCustomer(customer);
     showMessage("", false);
 
@@ -806,8 +808,13 @@ async function nextCustomer(){
   $("result").classList.add("hidden");
   showMessage("", false);
 
+  // Return to scanner screen for the next customer.
+  $("scannerPanel").classList.remove("hidden");
+
   if(scanner){
     try{ await scanner.resume(); }catch(e){}
+  }else{
+    startScanner();
   }
 }
 
