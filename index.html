@@ -677,12 +677,15 @@ function displayCustomer(
     customer.visits ?? 0;
 
 
-    document.getElementById(
-        "reward"
-    ).innerText =
-    customer.reward ||
-    "No Reward";
+   const points = Number(data.points || 0);
 
+let rewardText = "No Reward";
+
+if (points >= 10) {
+    rewardText = "FREE DRINK READY 🎁";
+}
+
+document.getElementById("reward").textContent = rewardText;
 
     document.getElementById(
         "status"
