@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>AL NOOR — Staff Scanner</title>
+<title>AL NOOR — Staff & GM</title>
 
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
@@ -16,6 +16,7 @@
   --glass:rgba(18,14,12,.76);
   --line:rgba(255,255,255,.22);
   --green:#72e67c;
+  --red:#ff9d9d;
 }
 
 *{box-sizing:border-box}
@@ -95,6 +96,67 @@ button,input{font:inherit}
   backdrop-filter:blur(12px);
 }
 
+/* =========================
+   LOGIN
+========================= */
+
+.login{
+  max-width:560px;
+  margin:90px auto;
+  padding:32px;
+}
+
+.login h2{
+  margin:0;
+  font-size:32px;
+}
+
+.login p{
+  opacity:.7;
+}
+
+.field{
+  margin-top:18px;
+}
+
+.field label{
+  display:block;
+  margin-bottom:8px;
+  font-weight:700;
+}
+
+.field input{
+  width:100%;
+  padding:16px 17px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  outline:none;
+}
+
+.login-btn{
+  width:100%;
+  margin-top:22px;
+  padding:17px;
+  border:0;
+  border-radius:15px;
+  background:var(--orange);
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+}
+
+#loginMessage{
+  margin-top:15px;
+  color:var(--red);
+  font-weight:700;
+}
+
+/* =========================
+   STAFF SCANNER
+========================= */
+
 .scanner-panel{
   padding:22px;
 }
@@ -120,10 +182,33 @@ button,input{font:inherit}
   z-index:5;
 }
 
-.c1{left:35px;top:35px;border-width:7px 0 0 7px;border-radius:18px 0 0 0}
-.c2{right:35px;top:35px;border-width:7px 7px 0 0;border-radius:0 18px 0 0}
-.c3{left:35px;bottom:35px;border-width:0 0 7px 7px;border-radius:0 0 0 18px}
-.c4{right:35px;bottom:35px;border-width:0 7px 7px 0;border-radius:0 0 18px 0}
+.c1{
+  left:35px;
+  top:35px;
+  border-width:7px 0 0 7px;
+  border-radius:18px 0 0 0
+}
+
+.c2{
+  right:35px;
+  top:35px;
+  border-width:7px 7px 0 0;
+  border-radius:0 18px 0 0
+}
+
+.c3{
+  left:35px;
+  bottom:35px;
+  border-width:0 0 7px 7px;
+  border-radius:0 0 0 18px
+}
+
+.c4{
+  right:35px;
+  bottom:35px;
+  border-width:0 7px 7px 0;
+  border-radius:0 0 18px 0
+}
 
 #reader{
   width:100%;
@@ -154,6 +239,10 @@ button,input{font:inherit}
   margin:0;
   opacity:.7;
 }
+
+/* =========================
+   CUSTOMER
+========================= */
 
 .result{
   margin-top:18px;
@@ -211,7 +300,10 @@ button,input{font:inherit}
   font-size:17px;
 }
 
-.divider{height:100%;background:var(--line)}
+.divider{
+  height:100%;
+  background:var(--line);
+}
 
 .points{
   text-align:center;
@@ -234,6 +326,74 @@ button,input{font:inherit}
   margin-top:8px;
 }
 
+/* =========================
+   COUPONS
+========================= */
+
+.coupons-panel{
+  margin-top:22px;
+  padding:20px;
+  border-radius:22px;
+  background:rgba(0,0,0,.20);
+  border:1px solid rgba(255,255,255,.12);
+}
+
+.coupons-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+}
+
+.coupons-title{
+  font-size:20px;
+  font-weight:900;
+}
+
+.coupons-count{
+  background:var(--orange);
+  padding:6px 12px;
+  border-radius:20px;
+  font-weight:900;
+}
+
+.coupon-list{
+  display:grid;
+  gap:10px;
+}
+
+.coupon-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px 16px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+}
+
+.coupon-number{
+  font-size:21px;
+  font-weight:900;
+  letter-spacing:1px;
+}
+
+.coupon-status{
+  color:var(--green);
+  font-size:13px;
+  font-weight:900;
+}
+
+.no-coupons{
+  opacity:.65;
+  text-align:center;
+  padding:12px;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
 .actions{
   display:grid;
   gap:13px;
@@ -254,8 +414,15 @@ button,input{font:inherit}
   transition:.15s;
 }
 
-.action:hover{transform:translateY(-1px)}
-.action:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.action:hover{
+  transform:translateY(-1px);
+}
+
+.action:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+  transform:none;
+}
 
 .add{
   color:#fff;
@@ -287,8 +454,126 @@ button,input{font:inherit}
   font-weight:700;
 }
 
-.message.success{display:block;background:rgba(58,135,61,.28);color:#8df194}
-.message.error{display:block;background:rgba(170,45,45,.28);color:#ff9d9d}
+.message.success{
+  display:block;
+  background:rgba(58,135,61,.28);
+  color:#8df194;
+}
+
+.message.error{
+  display:block;
+  background:rgba(170,45,45,.28);
+  color:#ff9d9d;
+}
+
+/* =========================
+   GM DASHBOARD
+========================= */
+
+.gm-header{
+  text-align:center;
+  margin:35px 0 25px;
+}
+
+.gm-header h1{
+  margin:0;
+  font-size:46px;
+}
+
+.gm-header p{
+  margin:8px 0 0;
+  opacity:.75;
+}
+
+.gm-user{
+  text-align:center;
+  margin-bottom:22px;
+}
+
+.gm-user-name{
+  font-size:28px;
+  font-weight:900;
+}
+
+.gm-user-email{
+  opacity:.65;
+  margin-top:5px;
+}
+
+.report-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.report-card{
+  padding:25px 18px;
+  min-height:155px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+
+.report-icon{
+  font-size:34px;
+  margin-bottom:8px;
+}
+
+.report-label{
+  font-size:13px;
+  letter-spacing:2px;
+  opacity:.65;
+}
+
+.report-number{
+  font-size:43px;
+  font-weight:900;
+  margin-top:7px;
+}
+
+.report-sub{
+  margin-top:5px;
+  opacity:.55;
+  font-size:13px;
+}
+
+.report-orange{
+  border-top:4px solid var(--orange);
+}
+
+.report-green{
+  border-top:4px solid var(--green);
+}
+
+.report-light{
+  border-top:4px solid var(--cream);
+}
+
+.gm-refresh{
+  width:100%;
+  margin-top:22px;
+  min-height:65px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(20,14,12,.7);
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+  font-size:19px;
+}
+
+.gm-message{
+  text-align:center;
+  margin-top:15px;
+  color:var(--red);
+  font-weight:700;
+}
+
+/* =========================
+   FEATURES / FOOTER
+========================= */
 
 .features{
   margin-top:35px;
@@ -300,9 +585,20 @@ button,input{font:inherit}
   gap:15px;
 }
 
-.feature-icon{font-size:34px}
-.feature-title{margin-top:7px;font-weight:700}
-.feature-sub{opacity:.65;font-size:13px;margin-top:4px}
+.feature-icon{
+  font-size:34px;
+}
+
+.feature-title{
+  margin-top:7px;
+  font-weight:700;
+}
+
+.feature-sub{
+  opacity:.65;
+  font-size:13px;
+  margin-top:4px;
+}
 
 .footer{
   text-align:center;
@@ -312,527 +608,2209 @@ button,input{font:inherit}
   opacity:.75;
 }
 
-.login{
-  max-width:560px;
-  margin:90px auto;
-  padding:32px;
+/* =========================
+   REDEEM MODAL
+========================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.72);
+  backdrop-filter:blur(5px);
 }
 
-.login h2{
+.modal-box{
+  width:min(500px,100%);
+  padding:25px;
+  border-radius:25px;
+  background:#211a17;
+  border:1px solid rgba(255,255,255,.2);
+  box-shadow:0 30px 100px rgba(0,0,0,.6);
+}
+
+.modal-box h2{
   margin:0;
-  font-size:32px;
+  font-size:28px;
 }
 
-.login p{opacity:.7}
+.modal-box p{
+  opacity:.7;
+}
 
-.field{
+.modal-coupons{
+  display:grid;
+  gap:10px;
   margin-top:18px;
 }
 
-.field label{
-  display:block;
-  margin-bottom:8px;
-  font-weight:700;
-}
-
-.field input{
+.coupon-select{
   width:100%;
-  padding:16px 17px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.25);
+  padding:17px;
+  border-radius:15px;
+  border:1px solid rgba(255,255,255,.18);
   background:rgba(255,255,255,.08);
   color:#fff;
+  font-weight:900;
   outline:none;
 }
 
-.login-btn{
-  width:100%;
-  margin-top:22px;
-  padding:17px;
+.modal-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:20px;
+}
+
+.modal-btn{
+  min-height:58px;
   border:0;
   border-radius:15px;
-  background:var(--orange);
-  color:#fff;
   font-weight:900;
   cursor:pointer;
 }
 
-#loginMessage{
-  margin-top:15px;
-  color:#ff9d9d;
-  font-weight:700;
+.modal-cancel{
+  background:rgba(255,255,255,.1);
+  color:#fff;
 }
 
+.modal-confirm{
+  background:var(--orange);
+  color:#fff;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
 @media(max-width:700px){
-  .page{width:94%;padding-top:18px}
-  .brand-logo{width:190px;max-width:58vw}
-  .title{margin-top:25px}
-  .title h1{font-size:34px}
-  .title p{font-size:16px}
-  .scanner-frame{min-height:300px}
-  .customer{grid-template-columns:1fr;text-align:center}
-  .customer-left{justify-content:center}
-  .divider{height:1px;width:100%}
-  .points{padding:10px}
-  .name{font-size:28px}
-  .points-number{font-size:56px}
-  .features{grid-template-columns:1fr}
+
+  .page{
+    width:94%;
+    padding-top:18px;
+  }
+
+  .brand-logo{
+    width:190px;
+    max-width:58vw;
+  }
+
+  .title{
+    margin-top:25px;
+  }
+
+  .title h1{
+    font-size:34px;
+  }
+
+  .title p{
+    font-size:16px;
+  }
+
+  .scanner-frame{
+    min-height:300px;
+  }
+
+  .customer{
+    grid-template-columns:1fr;
+    text-align:center;
+  }
+
+  .customer-left{
+    justify-content:center;
+  }
+
+  .divider{
+    height:1px;
+    width:100%;
+  }
+
+  .points{
+    padding:10px;
+  }
+
+  .name{
+    font-size:28px;
+  }
+
+  .points-number{
+    font-size:56px;
+  }
+
+  .features{
+    grid-template-columns:1fr;
+  }
+
+  .report-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .gm-header h1{
+    font-size:35px;
+  }
+
+  .report-card{
+    min-height:135px;
+  }
+
+  .report-number{
+    font-size:35px;
+  }
+
+  .modal-actions{
+    grid-template-columns:1fr;
+  }
 }
 </style>
 </head>
 
 <body>
 
+<!-- =====================================================
+     LOGIN
+===================================================== -->
+
 <div id="loginPage" class="page">
+
   <div class="topbar">
     <div class="brand">
-      <img class="brand-logo" src="logo.png" alt="Al Noor Modern Bakery & Cafe">
+      <img class="brand-logo"
+           src="logo.png"
+           alt="Al Noor Modern Bakery & Cafe">
     </div>
   </div>
 
   <div class="login panel">
+
     <h2>Staff Login</h2>
-    <p>Authorized Al Noor staff only</p>
+
+    <p>
+      Authorized Al Noor staff only
+    </p>
 
     <div class="field">
-      <label>Staff Email</label>
-      <input id="email" type="email" value="staff@alnoorloyalty.com" autocomplete="username">
+
+      <label>Email</label>
+
+      <input
+        id="email"
+        type="email"
+        placeholder="Enter your email"
+        autocomplete="username"
+      >
+
     </div>
 
     <div class="field">
+
       <label>Password</label>
-      <input id="password" type="password" autocomplete="current-password">
+
+      <input
+        id="password"
+        type="password"
+        autocomplete="current-password"
+      >
+
     </div>
 
-    <button id="loginBtn" class="login-btn">LOGIN</button>
+    <button
+      id="loginBtn"
+      class="login-btn">
+      LOGIN
+    </button>
+
     <div id="loginMessage"></div>
+
   </div>
+
 </div>
 
-<div id="appPage" class="page hidden">
+
+<!-- =====================================================
+     STAFF APP
+===================================================== -->
+
+<div id="staffPage" class="page hidden">
 
   <div class="topbar">
+
     <div class="brand">
-      <img class="brand-logo" src="logo.png" alt="Al Noor Modern Bakery & Cafe">
+
+      <img
+        class="brand-logo"
+        src="logo.png"
+        alt="Al Noor Modern Bakery & Cafe"
+      >
+
     </div>
+
   </div>
+
 
   <div class="title">
+
     <h1>Staff Scanner</h1>
-    <p>Scan customer QR code to add points</p>
+
+    <p>
+      Scan customer QR code to add points
+    </p>
+
   </div>
 
-  <div id="scannerPanel" class="panel scanner-panel">
+
+  <!-- SCANNER -->
+
+  <div
+    id="scannerPanel"
+    class="panel scanner-panel">
+
     <div class="scanner-frame">
+
       <div class="corner c1"></div>
       <div class="corner c2"></div>
       <div class="corner c3"></div>
       <div class="corner c4"></div>
 
-      <div id="scannerEmpty" class="scanner-empty">
+      <div
+        id="scannerEmpty"
+        class="scanner-empty">
+
         <div class="qr">▦</div>
-        <h2>Scan Customer QR Code</h2>
-        <p>Position the customer's QR code inside the frame</p>
+
+        <h2>
+          Scan Customer QR Code
+        </h2>
+
+        <p>
+          Position the customer's QR code inside the frame
+        </p>
+
       </div>
 
       <div id="reader"></div>
+
     </div>
+
   </div>
 
-  <div id="result" class="panel result hidden">
 
-    <div class="status">✓ Customer found! <span id="time" style="float:right;opacity:.8"></span></div>
+  <!-- CUSTOMER RESULT -->
+
+  <div
+    id="result"
+    class="panel result hidden">
+
+    <div class="status">
+
+      ✓ Customer found!
+
+      <span
+        id="time"
+        style="float:right;opacity:.8">
+      </span>
+
+    </div>
+
 
     <div class="customer">
+
       <div class="customer-left">
-        <div class="avatar">●</div>
-        <div>
-          <div class="label">CUSTOMER</div>
-          <div id="customerName" class="name">—</div>
-          <div class="id">ID: <span id="customerCode">—</span></div>
+
+        <div class="avatar">
+          ●
         </div>
+
+        <div>
+
+          <div class="label">
+            CUSTOMER
+          </div>
+
+          <div
+            id="customerName"
+            class="name">
+            —
+          </div>
+
+          <div class="id">
+
+            ID:
+            <span id="customerCode">
+              —
+            </span>
+
+          </div>
+
+        </div>
+
       </div>
+
 
       <div class="divider"></div>
 
+
       <div class="points">
-        <div class="star">★</div>
-        <div id="points" class="points-number">0</div>
-        <div class="points-text">CURRENT POINTS</div>
+
+        <div class="star">
+          ★
+        </div>
+
+        <div
+          id="points"
+          class="points-number">
+          0
+        </div>
+
+        <div class="points-text">
+          CURRENT POINTS
+        </div>
+
       </div>
+
     </div>
+
+
+    <!-- COUPONS -->
+
+    <div class="coupons-panel">
+
+      <div class="coupons-header">
+
+        <div class="coupons-title">
+          🎁 AVAILABLE REWARDS
+        </div>
+
+        <div
+          id="couponCount"
+          class="coupons-count">
+          0
+        </div>
+
+      </div>
+
+      <div
+        id="couponList"
+        class="coupon-list">
+
+        <div class="no-coupons">
+          No rewards available
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ACTIONS -->
 
     <div class="actions">
-      <button id="addPointBtn" class="action add">
-        <span style="font-size:34px">＋</span>
-        <span>+1 POINT<small>Add one loyalty point</small></span>
+
+      <button
+        id="addPointBtn"
+        class="action add">
+
+        <span style="font-size:34px">
+          ＋
+        </span>
+
+        <span>
+
+          +1 POINT
+
+          <small>
+            Add one loyalty point
+          </small>
+
+        </span>
+
       </button>
 
-      <button id="redeemBtn" class="action redeem">
-        <span style="font-size:30px">♧</span>
-        <span>REDEEM REWARD<small>10 points = FREE DRINK</small></span>
+
+      <button
+        id="redeemBtn"
+        class="action redeem">
+
+        <span style="font-size:30px">
+          🎁
+        </span>
+
+        <span>
+
+          REDEEM REWARD
+
+          <small>
+            Select FREE coupon
+          </small>
+
+        </span>
+
       </button>
 
-      <button id="nextBtn" class="action next">
-        ↻ &nbsp; SCAN NEXT CUSTOMER
+
+      <button
+        id="nextBtn"
+        class="action next">
+
+        ↻ &nbsp;
+        SCAN NEXT CUSTOMER
+
       </button>
+
     </div>
 
-    <div id="message" class="message"></div>
+
+    <div
+      id="message"
+      class="message">
+    </div>
+
   </div>
+
 
   <div class="features">
+
     <div>
-      <div class="feature-icon">🥐</div>
-      <div class="feature-title">FRESH BAKED</div>
-      <div class="feature-sub">Made fresh every day</div>
+
+      <div class="feature-icon">
+        🥐
+      </div>
+
+      <div class="feature-title">
+        FRESH BAKED
+      </div>
+
+      <div class="feature-sub">
+        Made fresh every day
+      </div>
+
     </div>
+
+
     <div>
-      <div class="feature-icon">☕</div>
-      <div class="feature-title">GREAT COFFEE</div>
-      <div class="feature-sub">Quality in every cup</div>
+
+      <div class="feature-icon">
+        ☕
+      </div>
+
+      <div class="feature-title">
+        GREAT COFFEE
+      </div>
+
+      <div class="feature-sub">
+        Quality in every cup
+      </div>
+
     </div>
+
+
     <div>
-      <div class="feature-icon">♡</div>
-      <div class="feature-title">LOYAL CUSTOMERS</div>
-      <div class="feature-sub">Reward every visit</div>
+
+      <div class="feature-icon">
+        ♡
+      </div>
+
+      <div class="feature-title">
+        LOYAL CUSTOMERS
+      </div>
+
+      <div class="feature-sub">
+        Reward every visit
+      </div>
+
     </div>
+
   </div>
 
-  <div class="footer">AL NOOR BAKERY & CAFE</div>
+
+  <div class="footer">
+    AL NOOR BAKERY & CAFE
+  </div>
+
 </div>
 
+
+<!-- =====================================================
+     GM REPORT
+===================================================== -->
+
+<div id="gmPage" class="page hidden">
+
+  <div class="topbar">
+
+    <div class="brand">
+
+      <img
+        class="brand-logo"
+        src="logo.png"
+        alt="Al Noor Modern Bakery & Cafe"
+      >
+
+    </div>
+
+  </div>
+
+
+  <div class="gm-header">
+
+    <h1>
+      GM REPORT
+    </h1>
+
+    <p>
+      Al Noor Loyalty Overview
+    </p>
+
+  </div>
+
+
+  <div class="gm-user">
+
+    <div
+      id="gmName"
+      class="gm-user-name">
+      GM
+    </div>
+
+    <div
+      id="gmEmail"
+      class="gm-user-email">
+      —
+    </div>
+
+  </div>
+
+
+  <div class="report-grid">
+
+
+    <div class="panel report-card report-orange">
+
+      <div class="report-icon">
+        👥
+      </div>
+
+      <div class="report-label">
+        CUSTOMERS
+      </div>
+
+      <div
+        id="reportCustomers"
+        class="report-number">
+        0
+      </div>
+
+      <div class="report-sub">
+        Total customers
+      </div>
+
+    </div>
+
+
+    <div class="panel report-card report-light">
+
+      <div class="report-icon">
+        🧾
+      </div>
+
+      <div class="report-label">
+        ORDERS / VISITS
+      </div>
+
+      <div
+        id="reportOrders"
+        class="report-number">
+        0
+      </div>
+
+      <div class="report-sub">
+        Total recorded visits
+      </div>
+
+    </div>
+
+
+    <div class="panel report-card report-green">
+
+      <div class="report-icon">
+        🎁
+      </div>
+
+      <div class="report-label">
+        FREE DRINKS EARNED
+      </div>
+
+      <div
+        id="reportEarned"
+        class="report-number">
+        0
+      </div>
+
+      <div class="report-sub">
+        Coupons issued
+      </div>
+
+    </div>
+
+
+    <div class="panel report-card report-light">
+
+      <div class="report-icon">
+        ✅
+      </div>
+
+      <div class="report-label">
+        REDEEMED
+      </div>
+
+      <div
+        id="reportRedeemed"
+        class="report-number">
+        0
+      </div>
+
+      <div class="report-sub">
+        Used free drinks
+      </div>
+
+    </div>
+
+
+    <div class="panel report-card report-orange">
+
+      <div class="report-icon">
+        🎟️
+      </div>
+
+      <div class="report-label">
+        AVAILABLE
+      </div>
+
+      <div
+        id="reportAvailable"
+        class="report-number">
+        0
+      </div>
+
+      <div class="report-sub">
+        Current free drinks
+      </div>
+
+    </div>
+
+
+    <div class="panel report-card report-green">
+
+      <div class="report-icon">
+        📅
+      </div>
+
+      <div class="report-label">
+        TODAY ORDERS
+      </div>
+
+      <div
+        id="reportTodayOrders"
+        class="report-number">
+        0
+      </div>
+
+      <div class="report-sub">
+        Today's activity
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+  <button
+    id="refreshReportBtn"
+    class="gm-refresh">
+
+    ↻ &nbsp;
+    REFRESH REPORT
+
+  </button>
+
+
+  <div
+    id="gmMessage"
+    class="gm-message">
+  </div>
+
+
+  <div class="footer">
+    AL NOOR BAKERY & CAFE
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     REDEEM MODAL
+===================================================== -->
+
+<div
+  id="redeemModal"
+  class="modal hidden">
+
+  <div class="modal-box">
+
+    <h2>
+      Redeem FREE DRINK
+    </h2>
+
+    <p>
+      Select the coupon number being used.
+    </p>
+
+    <div class="modal-coupons">
+
+      <select
+        id="couponSelect"
+        class="coupon-select">
+      </select>
+
+    </div>
+
+    <div class="modal-actions">
+
+      <button
+        id="cancelRedeemBtn"
+        class="modal-btn modal-cancel">
+
+        CANCEL
+
+      </button>
+
+      <button
+        id="confirmRedeemBtn"
+        class="modal-btn modal-confirm">
+
+        REDEEM
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
 <script>
-const SUPABASE_URL = "https://fgarlyoqobopudfkifbp.supabase.co";
-const SUPABASE_KEY = "sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+  "https://fgarlyoqobopudfkifbp.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
+
+
+/* =========================================================
+   STATE
+========================================================= */
 
 let scanner = null;
+
 let currentCustomer = null;
+
+let currentCustomerToken = null;
+
+let currentCoupons = [];
+
+let currentStaffProfile = null;
+
 let busy = false;
 
-const $ = id => document.getElementById(id);
+
+/* =========================================================
+   SHORTCUT
+========================================================= */
+
+const $ = id =>
+  document.getElementById(id);
+
+
+/* =========================================================
+   HEADERS
+========================================================= */
 
 function headers(){
-  const accessToken = sessionStorage.getItem("alnoor_access_token") || SUPABASE_KEY;
+
+  const accessToken =
+    sessionStorage.getItem(
+      "alnoor_access_token"
+    ) || SUPABASE_KEY;
+
   return {
+
     "apikey": SUPABASE_KEY,
-    "Authorization": "Bearer " + accessToken,
-    "Content-Type": "application/json"
+
+    "Authorization":
+      "Bearer " + accessToken,
+
+    "Content-Type":
+      "application/json"
+
   };
 }
 
-function showLogin(){
-  $("loginPage").classList.remove("hidden");
-  $("appPage").classList.add("hidden");
+
+/* =========================================================
+   HIDE ALL PAGES
+========================================================= */
+
+function hideAllPages(){
+
+  $("loginPage")
+    .classList.add("hidden");
+
+  $("staffPage")
+    .classList.add("hidden");
+
+  $("gmPage")
+    .classList.add("hidden");
+
 }
 
-function showApp(){
-  $("loginPage").classList.add("hidden");
-  $("appPage").classList.remove("hidden");
+
+/* =========================================================
+   SHOW STAFF
+========================================================= */
+
+function showStaff(){
+
+  hideAllPages();
+
+  $("staffPage")
+    .classList.remove("hidden");
+
   startScanner();
+
 }
+
+
+/* =========================================================
+   SHOW GM
+========================================================= */
+
+async function showGM(){
+
+  hideAllPages();
+
+  $("gmPage")
+    .classList.remove("hidden");
+
+  $("gmName").textContent =
+    currentStaffProfile?.full_name ||
+    "GM";
+
+  $("gmEmail").textContent =
+    sessionStorage.getItem(
+      "alnoor_staff_email"
+    ) || "—";
+
+  await loadGMReport();
+
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
 
 async function login(){
-  const email = $("email").value.trim();
-  const password = $("password").value;
+
+  const email =
+    $("email").value.trim();
+
+  const password =
+    $("password").value;
 
   $("loginMessage").textContent = "";
 
   if(!email || !password){
-    $("loginMessage").textContent = "Enter email and password.";
+
+    $("loginMessage").textContent =
+      "Enter email and password.";
+
     return;
+
   }
+
 
   $("loginBtn").disabled = true;
-  $("loginBtn").textContent = "LOGGING IN...";
+
+  $("loginBtn").textContent =
+    "LOGGING IN...";
+
 
   try{
-    const response = await fetch(SUPABASE_URL + "/auth/v1/token?grant_type=password", {
-      method:"POST",
-      headers:{
-        "apikey":SUPABASE_KEY,
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({email,password})
-    });
 
-    const data = await response.json();
+    const response =
+      await fetch(
+        SUPABASE_URL +
+        "/auth/v1/token?grant_type=password",
+        {
+          method:"POST",
+
+          headers:{
+            "apikey":SUPABASE_KEY,
+            "Content-Type":
+              "application/json"
+          },
+
+          body:JSON.stringify({
+            email,
+            password
+          })
+        }
+      );
+
+
+    const data =
+      await response.json();
+
 
     if(!response.ok){
-      throw new Error(data.error_description || data.msg || data.message || "Login failed.");
+
+      throw new Error(
+        data.error_description ||
+        data.msg ||
+        data.message ||
+        "Login failed."
+      );
+
     }
 
-    sessionStorage.setItem("alnoor_access_token", data.access_token);
-    sessionStorage.setItem("alnoor_refresh_token", data.refresh_token || "");
 
-    // Only active Al Noor staff may enter the scanner.
-    const staffCheck = await fetch(
-      SUPABASE_URL + "/rest/v1/rpc/get_my_staff_profile",
-      {
-        method:"POST",
-        headers:headers(),
-        body:"{}"
-      }
+    sessionStorage.setItem(
+      "alnoor_access_token",
+      data.access_token
     );
 
-    const staffData = await staffCheck.json();
+    sessionStorage.setItem(
+      "alnoor_refresh_token",
+      data.refresh_token || ""
+    );
 
-    if(!staffCheck.ok){
-      sessionStorage.removeItem("alnoor_access_token");
-      sessionStorage.removeItem("alnoor_refresh_token");
-      throw new Error(staffData.message || staffData.error || "This account is not authorized for staff access.");
+    sessionStorage.setItem(
+      "alnoor_staff_email",
+      email
+    );
+
+
+    /* GET PROFILE */
+
+    const staffResponse =
+      await fetch(
+        SUPABASE_URL +
+        "/rest/v1/rpc/get_my_staff_profile",
+        {
+          method:"POST",
+          headers:headers(),
+          body:"{}"
+        }
+      );
+
+
+    const staffData =
+      await staffResponse.json();
+
+
+    if(!staffResponse.ok){
+
+      sessionStorage.removeItem(
+        "alnoor_access_token"
+      );
+
+      sessionStorage.removeItem(
+        "alnoor_refresh_token"
+      );
+
+      throw new Error(
+        staffData.message ||
+        staffData.error ||
+        "This account is not authorized."
+      );
+
     }
 
-    sessionStorage.setItem("alnoor_staff_name", staffData.full_name || email);
-    showApp();
+
+    currentStaffProfile =
+      Array.isArray(staffData)
+        ? staffData[0]
+        : staffData;
+
+
+    if(!currentStaffProfile){
+
+      throw new Error(
+        "Staff profile not found."
+      );
+
+    }
+
+
+    sessionStorage.setItem(
+      "alnoor_staff_name",
+      currentStaffProfile.full_name || email
+    );
+
+
+    /* ROLE */
+
+    const role =
+      String(
+        currentStaffProfile.role || ""
+      ).toLowerCase();
+
+
+    if(role === "gm"){
+
+      await showGM();
+
+    }else if(role === "staff"){
+
+      showStaff();
+
+    }else{
+
+      throw new Error(
+        "Unknown staff role."
+      );
+
+    }
+
   }catch(err){
-    $("loginMessage").textContent = err.message;
+
+    $("loginMessage").textContent =
+      err.message;
+
   }finally{
+
     $("loginBtn").disabled = false;
-    $("loginBtn").textContent = "LOGIN";
+
+    $("loginBtn").textContent =
+      "LOGIN";
+
   }
+
 }
+
+
+/* =========================================================
+   EXTRACT CUSTOMER TOKEN
+========================================================= */
 
 function extractToken(text){
-  text = String(text || "").trim();
+
+  text =
+    String(text || "").trim();
+
 
   if(text.startsWith("ALNOOR:")){
+
     return null;
+
   }
 
+
   try{
-    const url = new URL(text);
-    const token = url.searchParams.get("token");
-    if(token) return token;
+
+    const url =
+      new URL(text);
+
+    const token =
+      url.searchParams.get("token");
+
+    if(token)
+      return token;
+
   }catch(e){}
 
-  const uuid = text.match(
-    /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i
-  );
 
-  return uuid ? uuid[0] : null;
+  const uuid =
+    text.match(
+      /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i
+    );
+
+
+  return uuid
+    ? uuid[0]
+    : null;
+
 }
+
+
+/* =========================================================
+   FIND CUSTOMER
+========================================================= */
 
 async function findCustomer(token){
-  const response = await fetch(
-    SUPABASE_URL + "/rest/v1/rpc/get_customer_by_token",
-    {
-      method:"POST",
-      headers:headers(),
-      body:JSON.stringify({p_token:token})
-    }
-  );
 
-  const data = await response.json();
+  const response =
+    await fetch(
+      SUPABASE_URL +
+      "/rest/v1/rpc/get_customer_by_token",
+      {
+        method:"POST",
+        headers:headers(),
+
+        body:JSON.stringify({
+          p_token:token
+        })
+      }
+    );
+
+
+  const data =
+    await response.json();
+
 
   if(!response.ok){
-    throw new Error(data.message || data.error || "Customer lookup failed.");
+
+    throw new Error(
+      data.message ||
+      data.error ||
+      "Customer lookup failed."
+    );
+
   }
 
-  const customer = Array.isArray(data) ? data[0] : data;
+
+  const customer =
+    Array.isArray(data)
+      ? data[0]
+      : data;
+
 
   if(!customer){
-    throw new Error("Customer not found.");
+
+    throw new Error(
+      "Customer not found."
+    );
+
   }
+
 
   return customer;
+
 }
+
+
+/* =========================================================
+   GET COUPONS
+========================================================= */
+
+async function getCoupons(token){
+
+  const response =
+    await fetch(
+      SUPABASE_URL +
+      "/rest/v1/rpc/get_customer_coupons",
+      {
+        method:"POST",
+
+        headers:headers(),
+
+        body:JSON.stringify({
+          p_token:token
+        })
+      }
+    );
+
+
+  const data =
+    await response.json();
+
+
+  if(!response.ok){
+
+    throw new Error(
+      data.message ||
+      data.error ||
+      "Could not load coupons."
+    );
+
+  }
+
+
+  return Array.isArray(data)
+    ? data
+    : [];
+
+}
+
+
+/* =========================================================
+   SCAN SUCCESS
+========================================================= */
 
 async function onScanSuccess(decodedText){
-  if(busy) return;
+
+  if(busy)
+    return;
+
   busy = true;
 
+
   try{
-    const token = extractToken(decodedText);
+
+    const token =
+      extractToken(decodedText);
+
 
     if(!token){
-      throw new Error("Invalid customer QR code.");
+
+      throw new Error(
+        "Invalid customer QR code."
+      );
+
     }
 
-    const customer = await findCustomer(token);
-    currentCustomer = customer;
 
-    // Switch to customer screen only. Hide the scanner completely.
-    $("scannerPanel").classList.add("hidden");
+    const customer =
+      await findCustomer(token);
+
+
+    currentCustomer =
+      customer;
+
+    currentCustomerToken =
+      token;
+
+
+    currentCoupons =
+      await getCoupons(token);
+
+
+    $("scannerPanel")
+      .classList.add("hidden");
+
+
     renderCustomer(customer);
-    showMessage("", false);
+
+    renderCoupons(currentCoupons);
+
+    showMessage("",false);
+
 
     if(scanner){
-      try{ await scanner.pause(true); }catch(e){}
+
+      try{
+
+        await scanner.pause(true);
+
+      }catch(e){}
+
     }
+
   }catch(err){
-    showMessage(err.message, true);
+
+    showMessage(
+      err.message,
+      true
+    );
+
   }finally{
-    setTimeout(()=> busy=false, 1200);
+
+    setTimeout(
+      ()=>busy=false,
+      1200
+    );
+
   }
+
 }
+
+
+/* =========================================================
+   SCAN FAILURE
+========================================================= */
 
 function onScanFailure(){
-  // Normal: scanner calls this continuously while searching.
+
+  /* normal scanner behavior */
+
 }
+
+
+/* =========================================================
+   START SCANNER
+========================================================= */
 
 function startScanner(){
-  $("scannerEmpty").style.display = "none";
 
-  if(scanner) return;
+  $("scannerEmpty")
+    .style.display = "none";
 
-  scanner = new Html5Qrcode("reader");
+
+  if(scanner)
+    return;
+
+
+  scanner =
+    new Html5Qrcode("reader");
+
 
   scanner.start(
-    {facingMode:"environment"},
+
+    {
+      facingMode:"environment"
+    },
+
     {
       fps:10,
-      qrbox:{width:250,height:250},
+
+      qrbox:{
+        width:250,
+        height:250
+      },
+
       aspectRatio:1.0
+
     },
+
     onScanSuccess,
+
     onScanFailure
+
   ).catch(err=>{
-    $("scannerEmpty").style.display = "block";
+
+    $("scannerEmpty")
+      .style.display = "block";
+
+
     $("scannerEmpty").innerHTML =
+
       '<div class="qr">▦</div>' +
+
       '<h2>Camera could not start</h2>' +
+
       '<p>Allow camera access and reload the page.</p>';
+
   });
+
 }
+
+
+/* =========================================================
+   RENDER CUSTOMER
+========================================================= */
 
 function renderCustomer(c){
-  $("result").classList.remove("hidden");
-  $("customerName").textContent = c.full_name || "Customer";
-  $("customerCode").textContent = c.customer_code || "—";
-  $("points").textContent = Number(c.points || 0);
-  $("time").textContent = new Date().toLocaleTimeString([], {
-    hour:"numeric",
-    minute:"2-digit"
-  });
+
+  $("result")
+    .classList.remove("hidden");
+
+
+  $("customerName")
+    .textContent =
+      c.full_name ||
+      "Customer";
+
+
+  $("customerCode")
+    .textContent =
+      c.customer_code ||
+      "—";
+
+
+  $("points")
+    .textContent =
+      Number(c.points || 0);
+
+
+  $("time")
+    .textContent =
+      new Date().toLocaleTimeString(
+        [],
+        {
+          hour:"numeric",
+          minute:"2-digit"
+        }
+      );
+
 }
+
+
+/* =========================================================
+   RENDER COUPONS
+========================================================= */
+
+function renderCoupons(coupons){
+
+  const available =
+    coupons.filter(
+      c =>
+        String(c.status).toUpperCase()
+        === "AVAILABLE"
+    );
+
+
+  currentCoupons =
+    available;
+
+
+  $("couponCount")
+    .textContent =
+      available.length;
+
+
+  const list =
+    $("couponList");
+
+
+  list.innerHTML = "";
+
+
+  if(available.length === 0){
+
+    list.innerHTML =
+      '<div class="no-coupons">' +
+      'No FREE DRINK available yet.' +
+      '</div>';
+
+    return;
+
+  }
+
+
+  available.forEach(coupon=>{
+
+    const item =
+      document.createElement("div");
+
+
+    item.className =
+      "coupon-item";
+
+
+    const number =
+      document.createElement("div");
+
+
+    number.className =
+      "coupon-number";
+
+
+    number.textContent =
+      coupon.coupon_code ||
+      "FREE";
+
+
+    const status =
+      document.createElement("div");
+
+
+    status.className =
+      "coupon-status";
+
+
+    status.textContent =
+      "AVAILABLE";
+
+
+    item.appendChild(number);
+
+    item.appendChild(status);
+
+    list.appendChild(item);
+
+  });
+
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
 
 function showMessage(text,error){
-  const box = $("message");
+
+  const box =
+    $("message");
+
 
   if(!text){
-    box.className = "message";
-    box.textContent = "";
+
+    box.className =
+      "message";
+
+    box.textContent =
+      "";
+
     return;
+
   }
 
-  box.textContent = text;
-  box.className = "message " + (error ? "error" : "success");
+
+  box.textContent =
+    text;
+
+
+  box.className =
+    "message " +
+    (error
+      ? "error"
+      : "success");
+
 }
+
+
+/* =========================================================
+   ADD POINT
+========================================================= */
 
 async function addPoint(){
-  if(!currentCustomer) return;
 
-  const button = $("addPointBtn");
-  button.disabled = true;
-
-  try{
-    const response = await fetch(
-      SUPABASE_URL + "/rest/v1/rpc/add_customer_point_auth",
-      {
-        method:"POST",
-        headers:headers(),
-        body:JSON.stringify({
-          p_customer_code:currentCustomer.customer_code
-        })
-      }
-    );
-
-    const data = await response.json();
-
-    if(!response.ok){
-      throw new Error(data.message || data.error || "Could not add point.");
-    }
-
-    currentCustomer = data;
-    renderCustomer(data);
-    showMessage("1 point added successfully.", false);
-  }catch(err){
-    showMessage(err.message, true);
-  }finally{
-    button.disabled = false;
-  }
-}
-
-async function redeemReward(){
-  if(!currentCustomer) return;
-
-  const points = Number(currentCustomer.points || 0);
-
-  if(points < 10){
-    showMessage("Not enough points. 10 points are required for a FREE DRINK.", true);
+  if(!currentCustomer)
     return;
-  }
 
-  const ok = confirm(
-    "Redeem FREE DRINK?\n\n" +
-    "Current points: " + points + "\n" +
-    "After redemption: " + (points - 10)
-  );
 
-  if(!ok) return;
+  const button =
+    $("addPointBtn");
 
-  const button = $("redeemBtn");
+
   button.disabled = true;
 
-  try{
-    const response = await fetch(
-      SUPABASE_URL + "/rest/v1/rpc/redeem_customer_reward_auth",
-      {
-        method:"POST",
-        headers:headers(),
-        body:JSON.stringify({
-          p_customer_code:currentCustomer.customer_code
-        })
-      }
-    );
 
-    const data = await response.json();
+  try{
+
+    const response =
+      await fetch(
+        SUPABASE_URL +
+        "/rest/v1/rpc/add_customer_point",
+        {
+          method:"POST",
+
+          headers:headers(),
+
+          body:JSON.stringify({
+            p_customer_code:
+              currentCustomer.customer_code
+          })
+        }
+      );
+
+
+    const data =
+      await response.json();
+
 
     if(!response.ok){
-      throw new Error(data.message || data.error || "Could not redeem reward.");
+
+      throw new Error(
+        data.message ||
+        data.error ||
+        "Could not add point."
+      );
+
     }
 
-    currentCustomer = data;
+
+    currentCustomer =
+      data;
+
+
     renderCustomer(data);
-    showMessage("FREE DRINK redeemed successfully. 10 points deducted.", false);
+
+
+    if(currentCustomerToken){
+
+      currentCoupons =
+        await getCoupons(
+          currentCustomerToken
+        );
+
+      renderCoupons(
+        currentCoupons
+      );
+
+    }
+
+
+    const points =
+      Number(data.points || 0);
+
+
+    if(points % 10 === 0){
+
+      showMessage(
+        "Point added. FREE DRINK coupon created.",
+        false
+      );
+
+    }else{
+
+      showMessage(
+        "1 point added successfully.",
+        false
+      );
+
+    }
+
   }catch(err){
-    showMessage(err.message, true);
+
+    showMessage(
+      err.message,
+      true
+    );
+
   }finally{
+
     button.disabled = false;
+
   }
+
 }
+
+
+/* =========================================================
+   OPEN REDEEM MODAL
+========================================================= */
+
+function openRedeemModal(){
+
+  if(!currentCustomer)
+    return;
+
+
+  const available =
+    currentCoupons.filter(
+      c =>
+        String(c.status).toUpperCase()
+        === "AVAILABLE"
+    );
+
+
+  if(available.length === 0){
+
+    showMessage(
+      "No FREE DRINK coupon available.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  const select =
+    $("couponSelect");
+
+
+  select.innerHTML =
+    "";
+
+
+  available.forEach(coupon=>{
+
+    const option =
+      document.createElement("option");
+
+
+    option.value =
+      coupon.coupon_code;
+
+
+    option.textContent =
+      coupon.coupon_code +
+      " — AVAILABLE";
+
+
+    select.appendChild(option);
+
+  });
+
+
+  $("redeemModal")
+    .classList.remove("hidden");
+
+}
+
+
+/* =========================================================
+   CLOSE REDEEM MODAL
+========================================================= */
+
+function closeRedeemModal(){
+
+  $("redeemModal")
+    .classList.add("hidden");
+
+}
+
+
+/* =========================================================
+   CONFIRM REDEEM
+========================================================= */
+
+async function confirmRedeem(){
+
+  if(!currentCustomer)
+    return;
+
+
+  const couponCode =
+    $("couponSelect").value;
+
+
+  if(!couponCode){
+
+    return;
+
+  }
+
+
+  const button =
+    $("confirmRedeemBtn");
+
+
+  button.disabled = true;
+
+  button.textContent =
+    "REDEEMING...";
+
+
+  try{
+
+    const response =
+      await fetch(
+        SUPABASE_URL +
+        "/rest/v1/rpc/redeem_customer_coupon",
+        {
+          method:"POST",
+
+          headers:headers(),
+
+          body:JSON.stringify({
+
+            p_customer_code:
+              currentCustomer.customer_code,
+
+            p_coupon_code:
+              couponCode
+
+          })
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if(!response.ok){
+
+      throw new Error(
+        data.message ||
+        data.error ||
+        "Could not redeem coupon."
+      );
+
+    }
+
+
+    currentCustomer =
+      data;
+
+
+    renderCustomer(data);
+
+
+    if(currentCustomerToken){
+
+      currentCoupons =
+        await getCoupons(
+          currentCustomerToken
+        );
+
+      renderCoupons(
+        currentCoupons
+      );
+
+    }
+
+
+    closeRedeemModal();
+
+
+    showMessage(
+      couponCode +
+      " redeemed successfully.",
+      false
+    );
+
+
+  }catch(err){
+
+    showMessage(
+      err.message,
+      true
+    );
+
+  }finally{
+
+    button.disabled = false;
+
+    button.textContent =
+      "REDEEM";
+
+  }
+
+}
+
+
+/* =========================================================
+   NEXT CUSTOMER
+========================================================= */
 
 async function nextCustomer(){
-  currentCustomer = null;
-  $("result").classList.add("hidden");
-  showMessage("", false);
 
-  // Return to scanner screen for the next customer.
-  $("scannerPanel").classList.remove("hidden");
+  currentCustomer =
+    null;
+
+  currentCustomerToken =
+    null;
+
+  currentCoupons =
+    [];
+
+
+  $("result")
+    .classList.add("hidden");
+
+
+  showMessage(
+    "",
+    false
+  );
+
+
+  $("scannerPanel")
+    .classList.remove("hidden");
+
 
   if(scanner){
-    try{ await scanner.resume(); }catch(e){}
+
+    try{
+
+      await scanner.resume();
+
+    }catch(e){}
+
   }else{
+
     startScanner();
+
   }
+
 }
 
-$("loginBtn").addEventListener("click", login);
 
-$("addPointBtn").addEventListener("click", addPoint);
-$("redeemBtn").addEventListener("click", redeemReward);
-$("nextBtn").addEventListener("click", nextCustomer);
+/* =========================================================
+   GM REPORT
+========================================================= */
 
-$("password").addEventListener("keydown", e=>{
-  if(e.key === "Enter") login();
-});
+async function loadGMReport(){
 
-if(sessionStorage.getItem("alnoor_access_token")){
-  showApp();
-}else{
-  showLogin();
+  $("gmMessage")
+    .textContent = "";
+
+
+  try{
+
+    const response =
+      await fetch(
+        SUPABASE_URL +
+        "/rest/v1/rpc/get_gm_report",
+        {
+          method:"POST",
+
+          headers:headers(),
+
+          body:"{}"
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if(!response.ok){
+
+      throw new Error(
+        data.message ||
+        data.error ||
+        "Could not load GM report."
+      );
+
+    }
+
+
+    const report =
+      Array.isArray(data)
+        ? data[0]
+        : data;
+
+
+    if(!report){
+
+      throw new Error(
+        "No report data returned."
+      );
+
+    }
+
+
+    $("reportCustomers")
+      .textContent =
+        Number(
+          report.total_customers || 0
+        ).toLocaleString();
+
+
+    $("reportOrders")
+      .textContent =
+        Number(
+          report.total_orders || 0
+        ).toLocaleString();
+
+
+    $("reportEarned")
+      .textContent =
+        Number(
+          report.free_drinks_earned || 0
+        ).toLocaleString();
+
+
+    $("reportRedeemed")
+      .textContent =
+        Number(
+          report.free_drinks_redeemed || 0
+        ).toLocaleString();
+
+
+    $("reportAvailable")
+      .textContent =
+        Number(
+          report.free_drinks_available || 0
+        ).toLocaleString();
+
+
+    $("reportTodayOrders")
+      .textContent =
+        Number(
+          report.today_orders || 0
+        ).toLocaleString();
+
+
+  }catch(err){
+
+    $("gmMessage")
+      .textContent =
+        err.message;
+
+  }
+
 }
+
+
+/* =========================================================
+   EVENTS
+========================================================= */
+
+$("loginBtn")
+  .addEventListener(
+    "click",
+    login
+  );
+
+
+$("password")
+  .addEventListener(
+    "keydown",
+    e=>{
+
+      if(e.key === "Enter")
+        login();
+
+    }
+  );
+
+
+$("addPointBtn")
+  .addEventListener(
+    "click",
+    addPoint
+  );
+
+
+$("redeemBtn")
+  .addEventListener(
+    "click",
+    openRedeemModal
+  );
+
+
+$("nextBtn")
+  .addEventListener(
+    "click",
+    nextCustomer
+  );
+
+
+$("cancelRedeemBtn")
+  .addEventListener(
+    "click",
+    closeRedeemModal
+  );
+
+
+$("confirmRedeemBtn")
+  .addEventListener(
+    "click",
+    confirmRedeem
+  );
+
+
+$("refreshReportBtn")
+  .addEventListener(
+    "click",
+    loadGMReport
+  );
+
+
+/* =========================================================
+   EXISTING SESSION
+========================================================= */
+
+async function restoreSession(){
+
+  const token =
+    sessionStorage.getItem(
+      "alnoor_access_token"
+    );
+
+
+  if(!token){
+
+    hideAllPages();
+
+    $("loginPage")
+      .classList.remove("hidden");
+
+    return;
+
+  }
+
+
+  try{
+
+    const response =
+      await fetch(
+        SUPABASE_URL +
+        "/rest/v1/rpc/get_my_staff_profile",
+        {
+          method:"POST",
+
+          headers:headers(),
+
+          body:"{}"
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if(!response.ok){
+
+      throw new Error(
+        "Session expired."
+      );
+
+    }
+
+
+    currentStaffProfile =
+      Array.isArray(data)
+        ? data[0]
+        : data;
+
+
+    if(!currentStaffProfile){
+
+      throw new Error(
+        "Staff profile not found."
+      );
+
+    }
+
+
+    const role =
+      String(
+        currentStaffProfile.role || ""
+      ).toLowerCase();
+
+
+    if(role === "gm"){
+
+      await showGM();
+
+    }else if(role === "staff"){
+
+      showStaff();
+
+    }else{
+
+      throw new Error(
+        "Unknown role."
+      );
+
+    }
+
+  }catch(err){
+
+    sessionStorage.removeItem(
+      "alnoor_access_token"
+    );
+
+    sessionStorage.removeItem(
+      "alnoor_refresh_token"
+    );
+
+    hideAllPages();
+
+    $("loginPage")
+      .classList.remove("hidden");
+
+    $("loginMessage")
+      .textContent =
+        "Please login again.";
+
+  }
+
+}
+
+
+restoreSession();
+
 </script>
 
 </body>
