@@ -31,7 +31,7 @@ body{
 
 .header{
     background:
-    linear-gradient(rgba(40,25,20,.82),rgba(40,25,20,.88)),
+    linear-gradient(rgba(40,25,20,.84),rgba(40,25,20,.9)),
     url("https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1000&q=80");
     background-size:cover;
     background-position:center;
@@ -64,6 +64,14 @@ body{
 
 .content{
     padding:24px 20px 35px;
+}
+
+.screen{
+    display:none;
+}
+
+.screen.active{
+    display:block;
 }
 
 input{
@@ -103,44 +111,66 @@ input:focus{
     margin:14px 0 22px;
 }
 
-.customer-card{
+.message{
     display:none;
+    margin-top:15px;
+    padding:14px;
+    border-radius:12px;
+    text-align:center;
+    font-weight:bold;
+}
+
+.success{
+    background:#e7f5e8;
+    color:#27652d;
+}
+
+.error{
+    background:#fde8e8;
+    color:#9b2525;
+}
+
+/* CUSTOMER SCREEN */
+
+.customer-card{
     background:#faf8f4;
-    border-radius:20px;
+    border-radius:22px;
     padding:22px;
     border:1px solid #e8e0d5;
-    margin-top:15px;
 }
 
 .customer-id{
     color:#8b6b45;
     font-size:13px;
     font-weight:bold;
+    letter-spacing:1px;
 }
 
 .customer-name{
-    font-size:25px;
+    font-size:28px;
     font-weight:bold;
-    margin:7px 0 18px;
+    margin:8px 0 22px;
 }
 
 .points-box{
     text-align:center;
     background:#2d2520;
     color:white;
-    border-radius:18px;
-    padding:20px;
-    margin-bottom:15px;
+    border-radius:20px;
+    padding:24px;
+    margin-bottom:16px;
 }
 
 .points-number{
-    font-size:46px;
+    font-size:58px;
     font-weight:bold;
+    line-height:1;
 }
 
 .points-label{
     font-size:12px;
-    letter-spacing:2px;
+    letter-spacing:3px;
+    margin-top:10px;
     opacity:.8;
 }
 
@@ -153,7 +183,7 @@ input:focus{
 .info{
     background:white;
     border-radius:14px;
-    padding:14px;
+    padding:15px;
     border:1px solid #eee;
 }
 
@@ -163,9 +193,9 @@ input:focus{
 }
 
 .info-value{
-    font-size:16px;
+    font-size:17px;
     font-weight:bold;
-    margin-top:5px;
+    margin-top:6px;
 }
 
 button{
@@ -194,29 +224,34 @@ button{
     color:#2d2520;
 }
 
+.back-btn{
+    background:white;
+    color:#2d2520;
+    border:1px solid #ddd;
+}
+
 button:disabled{
-    opacity:.5;
+    opacity:.45;
     cursor:not-allowed;
 }
 
-.message{
-    display:none;
-    margin-top:15px;
-    padding:14px;
-    border-radius:12px;
+.customer-title{
     text-align:center;
-    font-weight:bold;
+    margin-bottom:20px;
 }
 
-.success{
-    background:#e7f5e8;
-    color:#27652d;
+.customer-title h2{
+    margin:0;
+    font-size:24px;
 }
 
-.error{
-    background:#fde8e8;
-    color:#9b2525;
+.customer-title p{
+    margin:6px 0 0;
+    color:#888;
+    font-size:13px;
 }
+
+/* MODAL */
 
 .modal{
     display:none;
@@ -265,94 +300,185 @@ button:disabled{
 
 <div class="container">
 
+    <!-- HEADER -->
     <div class="header">
         <div class="logo">AL NOOR</div>
         <div class="subtitle">MODERN BAKERY</div>
         <div class="staff-mode">Staff Mode</div>
     </div>
 
+
     <div class="content">
 
-        <input
-            type="password"
-            id="staffPin"
-            placeholder="Staff PIN"
-            value="1234"
-        >
+        <!-- =========================
+             SCANNER SCREEN
+        ========================== -->
 
-        <div class="scanner-box">
-            <div id="reader"></div>
+        <div id="scannerScreen" class="screen active">
+
+            <input
+                type="password"
+                id="staffPin"
+                placeholder="Staff PIN"
+                value="1234"
+            >
+
+            <div class="scanner-box">
+                <div id="reader"></div>
+            </div>
+
+            <div class="scan-text">
+                Scan customer QR code
+            </div>
+
+            <div id="scanMessage" class="message"></div>
+
         </div>
 
-        <div class="scan-text">
-            Scan customer QR code
+
+        <!-- =========================
+             CUSTOMER SCREEN
+        ========================== -->
+
+        <div id="customerScreen" class="screen">
+
+            <div class="customer-title">
+                <h2>Customer Details</h2>
+                <p>Al Noor Loyalty Member</p>
+            </div>
+
+            <div class="customer-card">
+
+                <div
+                    class="customer-id"
+                    id="customerId"
+                >
+                    CUSTOMER
+                </div>
+
+                <div
+                    class="customer-name"
+                    id="customerName"
+                >
+                    Customer Name
+                </div>
+
+
+                <div class="points-box">
+
+                    <div
+                        class="points-number"
+                        id="points"
+                    >
+                        0
+                    </div>
+
+                    <div class="points-label">
+                        CURRENT POINTS
+                    </div>
+
+                </div>
+
+
+                <div class="info-grid">
+
+                    <div class="info">
+                        <div class="info-title">
+                            Visits
+                        </div>
+
+                        <div
+                            class="info-value"
+                            id="visits"
+                        >
+                            0
+                        </div>
+                    </div>
+
+
+                    <div class="info">
+                        <div class="info-title">
+                            Reward
+                        </div>
+
+                        <div
+                            class="info-value"
+                            id="reward"
+                        >
+                            No Reward
+                        </div>
+                    </div>
+
+
+                    <div class="info">
+                        <div class="info-title">
+                            Status
+                        </div>
+
+                        <div
+                            class="info-value"
+                            id="status"
+                        >
+                            Active
+                        </div>
+                    </div>
+
+
+                    <div class="info">
+                        <div class="info-title">
+                            Required
+                        </div>
+
+                        <div class="info-value">
+                            8 Points
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="add-btn"
+                    id="addPointBtn"
+                    onclick="addPoint()"
+                >
+                    +1 POINT / VISIT
+                </button>
+
+
+                <button
+                    class="redeem-btn"
+                    id="redeemBtn"
+                    onclick="openRedeem()"
+                >
+                    REDEEM REWARD
+                </button>
+
+
+                <button
+                    class="next-btn"
+                    onclick="scanNext()"
+                >
+                    SCAN NEXT CUSTOMER
+                </button>
+
+
+                <button
+                    class="back-btn"
+                    onclick="backToScanner()"
+                >
+                    BACK TO SCANNER
+                </button>
+
+            </div>
+
+            <div
+                id="customerMessage"
+                class="message"
+            ></div>
+
         </div>
 
-        <div id="message" class="message"></div>
-
-        <div id="customerCard" class="customer-card">
-
-            <div class="customer-id" id="customerId">
-                CUSTOMER
-            </div>
-
-            <div class="customer-name" id="customerName">
-                Customer Name
-            </div>
-
-            <div class="points-box">
-                <div class="points-number" id="points">0</div>
-                <div class="points-label">CURRENT POINTS</div>
-            </div>
-
-            <div class="info-grid">
-
-                <div class="info">
-                    <div class="info-title">Visits</div>
-                    <div class="info-value" id="visits">0</div>
-                </div>
-
-                <div class="info">
-                    <div class="info-title">Reward</div>
-                    <div class="info-value" id="reward">No Reward</div>
-                </div>
-
-                <div class="info">
-                    <div class="info-title">Status</div>
-                    <div class="info-value" id="status">Active</div>
-                </div>
-
-                <div class="info">
-                    <div class="info-title">Required</div>
-                    <div class="info-value">10 Points</div>
-                </div>
-
-            </div>
-
-            <button
-                class="add-btn"
-                id="addPointBtn"
-                onclick="addPoint()"
-            >
-                +1 POINT / VISIT
-            </button>
-
-            <button
-                class="redeem-btn"
-                id="redeemBtn"
-                onclick="openRedeem()"
-            >
-                REDEEM REWARD
-            </button>
-
-            <button
-                class="next-btn"
-                onclick="scanNext()"
-            >
-                SCAN NEXT CUSTOMER
-            </button>
-
-        </div>
 
         <div class="footer">
             Fresh Moments • Better Rewards
@@ -363,27 +489,45 @@ button:disabled{
 </div>
 
 
-<!-- REDEEM MODAL -->
+<!-- =========================
+     REDEEM MODAL
+========================== -->
 
-<div class="modal" id="redeemModal">
+<div
+    class="modal"
+    id="redeemModal"
+>
 
     <div class="modal-box">
 
-        <h2>Redeem Reward 🎁</h2>
+        <h2>
+            Redeem Reward 🎁
+        </h2>
 
         <p id="redeemCustomer"></p>
 
         <div class="modal-points">
+
             Current Points:
-            <strong id="redeemCurrentPoints">0</strong>
+            <strong id="redeemCurrentPoints">
+                0
+            </strong>
+
             <br><br>
+
             After Redemption:
-            <strong id="redeemAfterPoints">0</strong>
+            <strong id="redeemAfterPoints">
+                0
+            </strong>
+
         </div>
 
         <p>
-            Subtract <strong>10 points</strong><br>
-            for <strong>FREE DRINK</strong>?
+            Subtract
+            <strong>8 points</strong>
+            <br>
+            for
+            <strong>FREE DRINK</strong>?
         </p>
 
         <button
@@ -423,25 +567,74 @@ const SUPABASE_KEY =
 ========================================= */
 
 let scanner = null;
+
 let scannerRunning = false;
 
 let currentCustomer = null;
 
 let lastScannedText = "";
+
 let lastScanTime = 0;
+
+
+/* =========================================
+   SCREEN CONTROL
+========================================= */
+
+function showScannerScreen(){
+
+    document
+        .getElementById("customerScreen")
+        .classList.remove("active");
+
+    document
+        .getElementById("scannerScreen")
+        .classList.add("active");
+
+}
+
+
+function showCustomerScreen(){
+
+    document
+        .getElementById("scannerScreen")
+        .classList.remove("active");
+
+    document
+        .getElementById("customerScreen")
+        .classList.add("active");
+
+}
 
 
 /* =========================================
    MESSAGE
 ========================================= */
 
-function showMessage(text, type){
+function showScanMessage(text,type){
 
-    const box = document.getElementById("message");
+    const box =
+        document.getElementById("scanMessage");
 
     box.innerText = text;
 
-    box.className = "message " + type;
+    box.className =
+        "message " + type;
+
+    box.style.display = "block";
+
+}
+
+
+function showCustomerMessage(text,type){
+
+    const box =
+        document.getElementById("customerMessage");
+
+    box.innerText = text;
+
+    box.className =
+        "message " + type;
 
     box.style.display = "block";
 
@@ -458,32 +651,29 @@ async function startScanner(){
         return;
     }
 
-    scanner = new Html5Qrcode("reader");
-
     try{
 
-        /*
-         * FIRST TRY:
-         * Force rear camera
-         */
+        scanner =
+            new Html5Qrcode("reader");
+
 
         await scanner.start(
 
             {
-                facingMode: {
-                    exact: "environment"
+                facingMode:{
+                    exact:"environment"
                 }
             },
 
             {
-                fps: 10,
+                fps:10,
 
-                qrbox: {
-                    width: 250,
-                    height: 250
+                qrbox:{
+                    width:250,
+                    height:250
                 },
 
-                aspectRatio: 1.0
+                aspectRatio:1.0
 
             },
 
@@ -493,37 +683,40 @@ async function startScanner(){
 
         );
 
+
         scannerRunning = true;
 
-        console.log("Rear camera started");
+        console.log(
+            "Rear camera started"
+        );
 
     }
     catch(error){
 
         console.log(
-            "Exact rear camera failed:",
+            "Exact camera failed",
             error
         );
 
-        /*
-         * SECOND TRY:
-         * Rear camera without exact
-         */
 
         try{
+
+            scanner =
+                new Html5Qrcode("reader");
+
 
             await scanner.start(
 
                 {
-                    facingMode: "environment"
+                    facingMode:"environment"
                 },
 
                 {
-                    fps: 10,
+                    fps:10,
 
-                    qrbox: {
-                        width: 250,
-                        height: 250
+                    qrbox:{
+                        width:250,
+                        height:250
                     }
                 },
 
@@ -533,21 +726,18 @@ async function startScanner(){
 
             );
 
+
             scannerRunning = true;
 
-            console.log(
-                "Rear camera fallback started"
-            );
 
         }
         catch(error2){
 
             console.error(
-                "Camera failed:",
                 error2
             );
 
-            showMessage(
+            showScanMessage(
                 "Unable to start camera. Please allow camera permission.",
                 "error"
             );
@@ -560,34 +750,82 @@ async function startScanner(){
 
 
 /* =========================================
-   QR SCAN SUCCESS
+   STOP SCANNER
+========================================= */
+
+async function stopScanner(){
+
+    if(
+        scanner &&
+        scannerRunning
+    ){
+
+        try{
+
+            await scanner.stop();
+
+            scanner.clear();
+
+        }
+        catch(error){
+
+            console.log(
+                "Scanner stop:",
+                error
+            );
+
+        }
+
+    }
+
+    scannerRunning = false;
+
+}
+
+
+/* =========================================
+   QR SUCCESS
 ========================================= */
 
 async function onScanSuccess(decodedText){
 
     const now = Date.now();
 
-    /*
-     * Prevent the same QR from being
-     * scanned many times instantly
-     */
 
     if(
         decodedText === lastScannedText &&
         now - lastScanTime < 3000
     ){
+
         return;
+
     }
 
-    lastScannedText = decodedText;
-    lastScanTime = now;
+
+    lastScannedText =
+        decodedText;
+
+    lastScanTime =
+        now;
 
 
     console.log(
-        "QR scanned:",
+        "QR:",
         decodedText
     );
 
+
+    /*
+     * STOP CAMERA IMMEDIATELY
+     * AFTER SUCCESSFUL SCAN
+     */
+
+    await stopScanner();
+
+
+    /*
+     * LOAD CUSTOMER
+     */
 
     await loadCustomer(decodedText);
 
@@ -600,17 +838,13 @@ async function onScanSuccess(decodedText){
 
 function onScanFailure(error){
 
-    /*
-     * Normal QR scanning generates
-     * many temporary failures.
-     * We intentionally ignore them.
-     */
+    // Normal scanning failures ignored
 
 }
 
 
 /* =========================================
-   LOAD CUSTOMER FROM QR
+   LOAD CUSTOMER
 ========================================= */
 
 async function loadCustomer(qrText){
@@ -621,22 +855,24 @@ async function loadCustomer(qrText){
 
 
         /*
-         * Customer QR normally looks like:
+         * CUSTOMER QR:
          *
          * https://.../?token=UUID
          */
 
         try{
 
-            const url = new URL(qrText);
+            const url =
+                new URL(qrText);
 
-            token = url.searchParams.get("token");
+            token =
+                url.searchParams.get("token");
 
         }
         catch(e){
 
             /*
-             * If QR is directly a UUID
+             * Direct UUID
              */
 
             if(
@@ -652,7 +888,8 @@ async function loadCustomer(qrText){
 
 
         /*
-         * Old desktop QR format:
+         * OLD DESKTOP QR
+         *
          * ALNOOR:C0001
          */
 
@@ -669,57 +906,64 @@ async function loadCustomer(qrText){
             );
 
             return;
+
         }
 
 
         if(!token){
 
-            showMessage(
+            showScanMessage(
                 "Invalid Al Noor customer QR.",
                 "error"
             );
 
+            await startScanner();
+
             return;
+
         }
 
 
-        const response = await fetch(
+        const response =
+            await fetch(
 
-            SUPABASE_URL +
-            "/rest/v1/rpc/get_customer_by_token",
+                SUPABASE_URL +
+                "/rest/v1/rpc/get_customer_by_token",
 
-            {
+                {
 
-                method:"POST",
+                    method:"POST",
 
-                headers:{
-                    "Content-Type":
-                        "application/json",
+                    headers:{
 
-                    "apikey":
-                        SUPABASE_KEY,
+                        "Content-Type":
+                            "application/json",
 
-                    "Authorization":
-                        "Bearer " +
-                        SUPABASE_KEY
-                },
+                        "apikey":
+                            SUPABASE_KEY,
 
-                body:JSON.stringify({
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_KEY
 
-                    p_token: token
+                    },
 
-                })
+                    body:JSON.stringify({
 
-            }
+                        p_token:token
 
-        );
+                    })
+
+                }
+
+            );
 
 
-        const data = await response.json();
+        const data =
+            await response.json();
 
 
         console.log(
-            "Customer response:",
             data
         );
 
@@ -735,41 +979,54 @@ async function loadCustomer(qrText){
         }
 
 
-        if(!data || data.length === 0){
+        if(
+            !data ||
+            data.length === 0
+        ){
 
-            showMessage(
+            showScanMessage(
                 "Customer not found.",
                 "error"
             );
+
+            await startScanner();
 
             return;
 
         }
 
 
-        const customer = data[0];
+        currentCustomer =
+            data[0];
 
 
-        currentCustomer = customer;
-
-
-        displayCustomer(customer);
-
-
-        showMessage(
-            "Customer found successfully.",
-            "success"
+        displayCustomer(
+            currentCustomer
         );
+
+
+        /*
+         * OPEN CUSTOMER SCREEN
+         */
+
+        showCustomerScreen();
+
 
     }
     catch(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
 
-        showMessage(
+
+        showScanMessage(
             "Could not load customer.",
             "error"
         );
+
+
+        await startScanner();
 
     }
 
@@ -777,39 +1034,43 @@ async function loadCustomer(qrText){
 
 
 /* =========================================
-   LOAD CUSTOMER BY CUSTOMER CODE
+   OLD CUSTOMER CODE
 ========================================= */
 
 async function loadCustomerByCode(customerCode){
 
     try{
 
-        const response = await fetch(
+        const response =
+            await fetch(
 
-            SUPABASE_URL +
-            "/rest/v1/customers?customer_code=eq." +
-            encodeURIComponent(customerCode) +
-            "&select=customer_code,full_name,points,visits,total_spend,reward,status,join_date,last_visit",
+                SUPABASE_URL +
+                "/rest/v1/customers?customer_code=eq." +
+                encodeURIComponent(customerCode) +
+                "&select=customer_code,full_name,points,visits,total_spend,reward,status,join_date,last_visit",
 
-            {
+                {
 
-                method:"GET",
+                    method:"GET",
 
-                headers:{
-                    "apikey":
-                        SUPABASE_KEY,
+                    headers:{
 
-                    "Authorization":
-                        "Bearer " +
-                        SUPABASE_KEY
+                        "apikey":
+                            SUPABASE_KEY,
+
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_KEY
+
+                    }
+
                 }
 
-            }
-
-        );
+            );
 
 
-        const data = await response.json();
+        const data =
+            await response.json();
 
 
         if(!response.ok){
@@ -822,19 +1083,25 @@ async function loadCustomerByCode(customerCode){
         }
 
 
-        if(!data || data.length === 0){
+        if(
+            !data ||
+            data.length === 0
+        ){
 
-            showMessage(
+            showScanMessage(
                 "Customer not found.",
                 "error"
             );
+
+            await startScanner();
 
             return;
 
         }
 
 
-        currentCustomer = data[0];
+        currentCustomer =
+            data[0];
 
 
         displayCustomer(
@@ -842,20 +1109,24 @@ async function loadCustomerByCode(customerCode){
         );
 
 
-        showMessage(
-            "Customer found successfully.",
-            "success"
-        );
+        showCustomerScreen();
+
 
     }
     catch(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
 
-        showMessage(
+
+        showScanMessage(
             "Could not load customer.",
             "error"
         );
+
+
+        await startScanner();
 
     }
 
@@ -871,13 +1142,15 @@ function displayCustomer(customer){
     document.getElementById(
         "customerId"
     ).innerText =
-        customer.customer_code || "CUSTOMER";
+        customer.customer_code ||
+        "CUSTOMER";
 
 
     document.getElementById(
         "customerName"
     ).innerText =
-        customer.full_name || "Customer";
+        customer.full_name ||
+        "Customer";
 
 
     document.getElementById(
@@ -895,19 +1168,15 @@ function displayCustomer(customer){
     document.getElementById(
         "reward"
     ).innerText =
-        customer.reward || "No Reward";
+        customer.reward ||
+        "No Reward";
 
 
     document.getElementById(
         "status"
     ).innerText =
-        customer.status || "Active";
-
-
-    document.getElementById(
-        "customerCard"
-    ).style.display =
-        "block";
+        customer.status ||
+        "Active";
 
 
     updateRedeemButton();
@@ -916,17 +1185,12 @@ function displayCustomer(customer){
 
 
 /* =========================================
-   ADD ONE POINT
+   ADD POINT
 ========================================= */
 
 async function addPoint(){
 
     if(!currentCustomer){
-
-        showMessage(
-            "Scan a customer first.",
-            "error"
-        );
 
         return;
 
@@ -934,14 +1198,15 @@ async function addPoint(){
 
 
     const pin =
-        document.getElementById(
-            "staffPin"
-        ).value.trim();
+        document
+        .getElementById("staffPin")
+        .value
+        .trim();
 
 
     if(!pin){
 
-        showMessage(
+        showCustomerMessage(
             "Enter staff PIN.",
             "error"
         );
@@ -962,40 +1227,43 @@ async function addPoint(){
 
     try{
 
-        const response = await fetch(
+        const response =
+            await fetch(
 
-            SUPABASE_URL +
-            "/rest/v1/rpc/add_customer_point",
+                SUPABASE_URL +
+                "/rest/v1/rpc/add_customer_point",
 
-            {
+                {
 
-                method:"POST",
+                    method:"POST",
 
-                headers:{
-                    "Content-Type":
-                        "application/json",
+                    headers:{
 
-                    "apikey":
-                        SUPABASE_KEY,
+                        "Content-Type":
+                            "application/json",
 
-                    "Authorization":
-                        "Bearer " +
-                        SUPABASE_KEY
-                },
+                        "apikey":
+                            SUPABASE_KEY,
 
-                body:JSON.stringify({
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_KEY
 
-                    p_customer_code:
-                        currentCustomer.customer_code,
+                    },
 
-                    p_staff_pin:
-                        pin
+                    body:JSON.stringify({
 
-                })
+                        p_customer_code:
+                            currentCustomer.customer_code,
 
-            }
+                        p_staff_pin:
+                            pin
 
-        );
+                    })
+
+                }
+
+            );
 
 
         const data =
@@ -1022,7 +1290,7 @@ async function addPoint(){
         );
 
 
-        showMessage(
+        showCustomerMessage(
             "+1 Point added successfully.",
             "success"
         );
@@ -1030,9 +1298,12 @@ async function addPoint(){
     }
     catch(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
 
-        showMessage(
+
+        showCustomerMessage(
             error.message ||
             "Could not add point.",
             "error"
@@ -1056,11 +1327,6 @@ function openRedeem(){
 
     if(!currentCustomer){
 
-        showMessage(
-            "Scan a customer first.",
-            "error"
-        );
-
         return;
 
     }
@@ -1072,10 +1338,10 @@ function openRedeem(){
         );
 
 
-    if(points < 10){
+    if(points < 8){
 
-        showMessage(
-            "Customer needs 10 points for a FREE DRINK.",
+        showCustomerMessage(
+            "Customer needs 8 points for a FREE DRINK.",
             "error"
         );
 
@@ -1099,7 +1365,7 @@ function openRedeem(){
     document.getElementById(
         "redeemAfterPoints"
     ).innerText =
-        points - 10;
+        points - 8;
 
 
     document.getElementById(
@@ -1140,16 +1406,17 @@ async function confirmRedeem(){
 
 
     const pin =
-        document.getElementById(
-            "staffPin"
-        ).value.trim();
+        document
+        .getElementById("staffPin")
+        .value
+        .trim();
 
 
     if(!pin){
 
         closeRedeem();
 
-        showMessage(
+        showCustomerMessage(
             "Enter staff PIN.",
             "error"
         );
@@ -1161,40 +1428,43 @@ async function confirmRedeem(){
 
     try{
 
-        const response = await fetch(
+        const response =
+            await fetch(
 
-            SUPABASE_URL +
-            "/rest/v1/rpc/redeem_customer_reward",
+                SUPABASE_URL +
+                "/rest/v1/rpc/redeem_customer_reward",
 
-            {
+                {
 
-                method:"POST",
+                    method:"POST",
 
-                headers:{
-                    "Content-Type":
-                        "application/json",
+                    headers:{
 
-                    "apikey":
-                        SUPABASE_KEY,
+                        "Content-Type":
+                            "application/json",
 
-                    "Authorization":
-                        "Bearer " +
-                        SUPABASE_KEY
-                },
+                        "apikey":
+                            SUPABASE_KEY,
 
-                body:JSON.stringify({
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_KEY
 
-                    p_customer_code:
-                        currentCustomer.customer_code,
+                    },
 
-                    p_staff_pin:
-                        pin
+                    body:JSON.stringify({
 
-                })
+                        p_customer_code:
+                            currentCustomer.customer_code,
 
-            }
+                        p_staff_pin:
+                            pin
 
-        );
+                    })
+
+                }
+
+            );
 
 
         const data =
@@ -1224,19 +1494,23 @@ async function confirmRedeem(){
         );
 
 
-        showMessage(
-            "FREE DRINK redeemed successfully. 10 points deducted.",
+        showCustomerMessage(
+            "FREE DRINK redeemed successfully. 8 points deducted.",
             "success"
         );
 
     }
     catch(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
+
 
         closeRedeem();
 
-        showMessage(
+
+        showCustomerMessage(
             error.message ||
             "Could not redeem reward.",
             "error"
@@ -1248,7 +1522,7 @@ async function confirmRedeem(){
 
 
 /* =========================================
-   REDEEM BUTTON STATE
+   REDEEM BUTTON
 ========================================= */
 
 function updateRedeemButton(){
@@ -1275,7 +1549,7 @@ function updateRedeemButton(){
 
 
     button.disabled =
-        points < 10;
+        points < 8;
 
 }
 
@@ -1286,6 +1560,10 @@ function updateRedeemButton(){
 
 async function scanNext(){
 
+    /*
+     * CLEAR CUSTOMER
+     */
+
     currentCustomer = null;
 
     lastScannedText = "";
@@ -1293,28 +1571,52 @@ async function scanNext(){
     lastScanTime = 0;
 
 
-    document.getElementById(
-        "customerCard"
-    ).style.display =
-        "none";
+    /*
+     * HIDE CUSTOMER
+     */
+
+    showScannerScreen();
 
 
+    /*
+     * CLEAR MESSAGE
+     */
+
     document.getElementById(
-        "message"
+        "scanMessage"
     ).style.display =
         "none";
 
 
     /*
-     * Scanner remains running.
-     * No need to restart camera.
+     * START CAMERA AGAIN
      */
+
+    setTimeout(
+        function(){
+
+            startScanner();
+
+        },
+        300
+    );
 
 }
 
 
 /* =========================================
-   START WHEN PAGE LOADS
+   BACK TO SCANNER
+========================================= */
+
+async function backToScanner(){
+
+    await scanNext();
+
+}
+
+
+/* =========================================
+   PAGE LOAD
 ========================================= */
 
 window.addEventListener(
