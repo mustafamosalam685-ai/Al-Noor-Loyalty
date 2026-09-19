@@ -1,42 +1,1126 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0d0906"><title>Al Noor — Loyalty</title><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script><style>
-:root{--bg:#0d0906;--panel:#17100b;--cream:#f7efe1;--muted:#b9a58d;--gold:#d9a34a;--gold2:#f0c979;--line:rgba(255,255,255,.10)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}
-body{margin:0;color:#fff;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:linear-gradient(180deg,rgba(8,5,3,.78),rgba(8,5,3,.97)),url("cafe.jpg") center/cover fixed no-repeat;min-height:100vh}
-a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
-.app{width:min(720px,100%);margin:auto;padding:14px 12px 110px}
-.top{display:flex;align-items:center;gap:12px;padding:5px 4px 18px}
-.logo{width:64px;height:64px;object-fit:contain}.brand h1{font-family:Georgia,serif;margin:0;font-size:25px;letter-spacing:1.5px}.brand small{color:var(--gold2);letter-spacing:1.8px;font-size:9px}
-.glass{background:rgba(19,12,8,.80);border:1px solid var(--line);border-radius:26px;box-shadow:0 22px 60px rgba(0,0,0,.38);backdrop-filter:blur(18px)}
-.page-title{font-family:Georgia,serif;font-size:31px;margin:8px 0}.page-sub{color:var(--muted);line-height:1.5;font-size:13px}
-.card{padding:20px;margin-top:14px}.btn{display:inline-flex;justify-content:center;align-items:center;border:0;border-radius:13px;padding:12px 16px;background:linear-gradient(135deg,#e4ba68,#b97b31);color:#24160b;font-weight:800}.btn.full{width:100%}
-.badge{display:inline-block;padding:6px 9px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.8px;background:rgba(217,163,74,.16);color:var(--gold2);border:1px solid rgba(217,163,74,.25)}
-.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:18px}
-.bottom-nav{position:fixed;z-index:50;left:50%;bottom:12px;transform:translateX(-50%);width:min(720px,calc(100% - 20px));height:76px;padding:7px 8px;border-radius:25px;display:grid;grid-template-columns:repeat(5,1fr);align-items:center;background:rgba(15,10,7,.94);border:1px solid rgba(255,255,255,.12);box-shadow:0 18px 55px rgba(0,0,0,.6);backdrop-filter:blur(20px)}
-.nav{border:0;background:none;color:#968b80;height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:9px}.nav b{font-size:21px;font-weight:500;line-height:1}.nav.active{color:var(--gold2)}
-.nav.center .circle{width:58px;height:58px;border-radius:50%;margin-top:-25px;background:#17100b;border:1px solid var(--gold2);display:grid;place-items:center;box-shadow:0 0 0 6px rgba(217,163,74,.08)}.nav.center img{width:44px;height:44px;object-fit:contain}.nav.center span:last-child{color:var(--gold2);letter-spacing:1px}
-@media(max-width:500px){.app{padding:10px 10px 108px}.page-title{font-size:28px}.logo{width:56px;height:56px}}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
-.member{padding:20px;background:linear-gradient(135deg,#fffaf1,#ead8bf);color:#21170f;border-radius:28px}.member-top{display:flex;justify-content:space-between;gap:10px}.label{font-size:10px;letter-spacing:2px;color:#806548}.pill{font-size:10px;font-weight:800;background:#ead0a9;padding:8px 11px;border-radius:99px;color:#62451f}.main{display:grid;grid-template-columns:1fr 170px;gap:18px;align-items:center}.identity{display:flex;align-items:center;gap:14px;margin-top:22px}.avatar{width:62px;height:62px;border-radius:50%;background:#624522;color:#fff;display:grid;place-items:center;font-weight:800;font-size:22px}.hello{color:#806548;font-size:13px}.name{font-size:29px;font-weight:800}.id{font-size:12px;color:#5d4936}.qr{background:#fff;border-radius:16px;padding:10px;width:160px;height:160px;display:grid;place-items:center;margin-left:auto}.qr img,.qr canvas{max-width:100%;height:auto!important}.note{text-align:center;color:#72573b;font-size:10px;margin-top:7px}.points{margin-top:14px;padding:22px;display:grid;grid-template-columns:170px 1fr;gap:22px;align-items:center}.ring{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;margin:auto;background:conic-gradient(var(--gold2) 0%,rgba(255,255,255,.12) 0)}.ringin{width:126px;height:126px;border-radius:50%;background:#15100c;display:grid;place-items:center}.big{font-size:31px;font-weight:800}.small{font-size:10px;letter-spacing:1.5px;color:var(--muted)}.dots{display:flex;gap:7px;flex-wrap:wrap;margin:17px 0}.dot{width:15px;height:15px;border-radius:50%;background:#43372d}.dot.on{background:var(--gold2)}.point-title{font-size:20px;font-weight:800}.point-sub{font-size:12px;color:var(--muted);margin-top:3px}@media(max-width:600px){.main,.points{grid-template-columns:1fr}.qr{margin:auto}.points{text-align:center}.dots{justify-content:center}}
-</style></head><body><main class="app"><header class="top"><img class="logo" src="logo-1995.png"><div class="brand"><h1>AL NOOR</h1><small>MODERN BAKERY & CAFÉ • EST. 1995</small></div></header><div id="error" class="empty" style="display:none"></div><section id="card" style="display:none"><div class="member"><div class="member-top"><div class="label">AL NOOR • LOYALTY MEMBER</div><div class="pill">AL NOOR FAMILY</div></div><div class="main"><div><div class="identity"><div id="avatar" class="avatar">A</div><div><div class="hello">Welcome back,</div><div id="name" class="name">—</div><div class="id">Customer ID <b id="code">—</b></div></div></div></div><div><div class="qr"><div id="qrcode"></div></div><div class="note">Show this QR code at the counter</div></div></div></div><div class="points glass"><div class="ring" id="ring"><div class="ringin"><div id="pv" class="big">0/10</div><div class="small">POINTS</div></div></div><div><div id="pt" class="point-title">10 MORE POINTS</div><div class="point-sub">UNTIL YOUR NEXT FREE DRINK!</div><div id="dots" class="dots"></div></div></div></section></main><nav class="bottom-nav"><a class="nav active" href="index.html" data-page="index.html"><b>⌂</b><span>Home</span></a><a class="nav " href="rewards.html" data-page="rewards.html"><b>♧</b><span>Rewards</span></a><a class="nav center" href="alnoor.html" data-page="alnoor.html"><span class="circle"><img src="logo-1995.png"></span><span>AL NOOR</span></a><a class="nav " href="locations.html" data-page="locations.html"><b>⌖</b><span>Locations</span></a><a class="nav " href="menu.html" data-page="menu.html"><b>☰</b><span>Menu</span></a></nav><script>
-const SUPABASE_URL="https://fgarlyoqobopudfkifbp.supabase.co";
-const SUPABASE_KEY="sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
-function getToken(){return new URLSearchParams(location.search).get("token")||""}
-function go(page){const t=getToken();location.href=page+(t?"?token="+encodeURIComponent(t):"")}
-async function rpc(name,body){
- const r=await fetch(SUPABASE_URL+"/rest/v1/rpc/"+name,{method:"POST",headers:{"apikey":SUPABASE_KEY,"Content-Type":"application/json"},body:JSON.stringify(body)});
- const tx=await r.text();let d=null;try{d=tx?JSON.parse(tx):null}catch{}
- if(!r.ok)throw new Error((d&&(d.message||d.error))||tx||"Request failed");return d;
+<meta name="theme-color" content="#0d0906">
+
+<title>Al Noor — Loyalty</title>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+<style>
+:root{
+  --bg:#0d0906;
+  --panel:#17100b;
+  --cream:#f7efe1;
+  --muted:#b9a58d;
+  --gold:#d9a34a;
+  --gold2:#f0c979;
+  --line:rgba(255,255,255,.10);
 }
-function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-function fmtDate(v){if(!v)return "—";const d=new Date(v);return Number.isNaN(d.getTime())?v:d.toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"})}
+
+*{box-sizing:border-box}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  color:#fff;
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(8,5,3,.78),
+      rgba(8,5,3,.97)
+    ),
+    url("cafe.jpg") center/cover fixed no-repeat;
+  min-height:100vh;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+button,
+input{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.app{
+  width:min(720px,100%);
+  margin:auto;
+  padding:14px 12px 110px;
+}
+
+.top{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:5px 4px 18px;
+}
+
+.logo{
+  width:64px;
+  height:64px;
+  object-fit:contain;
+}
+
+.brand h1{
+  font-family:Georgia,serif;
+  margin:0;
+  font-size:25px;
+  letter-spacing:1.5px;
+}
+
+.brand small{
+  color:var(--gold2);
+  letter-spacing:1.8px;
+  font-size:9px;
+}
+
+.glass{
+  background:rgba(19,12,8,.80);
+  border:1px solid var(--line);
+  border-radius:26px;
+  box-shadow:0 22px 60px rgba(0,0,0,.38);
+  backdrop-filter:blur(18px);
+}
+
+.card{
+  padding:20px;
+  margin-top:14px;
+}
+
+.page-title{
+  font-family:Georgia,serif;
+  font-size:31px;
+  margin:8px 0;
+}
+
+.page-sub{
+  color:var(--muted);
+  line-height:1.5;
+  font-size:13px;
+}
+
+.btn{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border:0;
+  border-radius:14px;
+  padding:14px 16px;
+  background:linear-gradient(135deg,#e4ba68,#b97b31);
+  color:#24160b;
+  font-weight:800;
+  margin-top:14px;
+}
+
+.input{
+  width:100%;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  color:white;
+  border-radius:14px;
+  padding:14px;
+  outline:none;
+  margin-top:8px;
+}
+
+.input:focus{
+  border-color:var(--gold2);
+}
+
+.field{
+  margin-top:15px;
+}
+
+.field label{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  letter-spacing:1px;
+}
+
+.empty{
+  padding:28px;
+  text-align:center;
+  color:var(--muted);
+  border:1px dashed var(--line);
+  border-radius:18px;
+}
+
+.error{
+  color:#ffb6a8;
+  margin-top:12px;
+  font-size:12px;
+  text-align:center;
+}
+
+.success{
+  color:#e7c878;
+  margin-top:12px;
+  font-size:12px;
+  text-align:center;
+}
+
+/* MEMBER CARD */
+
+.member{
+  padding:20px;
+  background:linear-gradient(135deg,#fffaf1,#ead8bf);
+  color:#21170f;
+  border-radius:28px;
+}
+
+.member-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.label{
+  font-size:10px;
+  letter-spacing:2px;
+  color:#806548;
+}
+
+.pill{
+  font-size:10px;
+  font-weight:800;
+  background:#ead0a9;
+  padding:8px 11px;
+  border-radius:99px;
+  color:#62451f;
+}
+
+.main{
+  display:grid;
+  grid-template-columns:1fr 170px;
+  gap:18px;
+  align-items:center;
+}
+
+.identity{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-top:22px;
+}
+
+.avatar{
+  width:62px;
+  height:62px;
+  border-radius:50%;
+  background:#624522;
+  color:#fff;
+  display:grid;
+  place-items:center;
+  font-weight:800;
+  font-size:22px;
+}
+
+.hello{
+  color:#806548;
+  font-size:13px;
+}
+
+.name{
+  font-size:29px;
+  font-weight:800;
+}
+
+.id{
+  font-size:12px;
+  color:#5d4936;
+}
+
+.qr{
+  background:#fff;
+  border-radius:16px;
+  padding:10px;
+  width:160px;
+  height:160px;
+  display:grid;
+  place-items:center;
+  margin-left:auto;
+}
+
+.qr img,
+.qr canvas{
+  max-width:100%;
+  height:auto!important;
+}
+
+.note{
+  text-align:center;
+  color:#72573b;
+  font-size:10px;
+  margin-top:7px;
+}
+
+.points{
+  margin-top:14px;
+  padding:22px;
+  display:grid;
+  grid-template-columns:170px 1fr;
+  gap:22px;
+  align-items:center;
+}
+
+.ring{
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  margin:auto;
+  background:
+    conic-gradient(
+      var(--gold2) 0%,
+      rgba(255,255,255,.12) 0
+    );
+}
+
+.ringin{
+  width:126px;
+  height:126px;
+  border-radius:50%;
+  background:#15100c;
+  display:grid;
+  place-items:center;
+}
+
+.big{
+  font-size:31px;
+  font-weight:800;
+}
+
+.small{
+  font-size:10px;
+  letter-spacing:1.5px;
+  color:var(--muted);
+}
+
+.dots{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+  margin:17px 0;
+}
+
+.dot{
+  width:15px;
+  height:15px;
+  border-radius:50%;
+  background:#43372d;
+}
+
+.dot.on{
+  background:var(--gold2);
+}
+
+.point-title{
+  font-size:20px;
+  font-weight:800;
+}
+
+.point-sub{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:3px;
+}
+
+/* NAV */
+
+.bottom-nav{
+  position:fixed;
+  z-index:50;
+  left:50%;
+  bottom:12px;
+  transform:translateX(-50%);
+  width:min(720px,calc(100% - 20px));
+  height:76px;
+  padding:7px 8px;
+  border-radius:25px;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  align-items:center;
+  background:rgba(15,10,7,.94);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 18px 55px rgba(0,0,0,.6);
+  backdrop-filter:blur(20px);
+}
+
+.nav{
+  border:0;
+  background:none;
+  color:#968b80;
+  height:60px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  font-size:9px;
+}
+
+.nav b{
+  font-size:21px;
+  font-weight:500;
+  line-height:1;
+}
+
+.nav.active{
+  color:var(--gold2);
+}
+
+.nav.center .circle{
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  margin-top:-25px;
+  background:#17100b;
+  border:1px solid var(--gold2);
+  display:grid;
+  place-items:center;
+  box-shadow:0 0 0 6px rgba(217,163,74,.08);
+}
+
+.nav.center img{
+  width:44px;
+  height:44px;
+  object-fit:contain;
+}
+
+.nav.center span:last-child{
+  color:var(--gold2);
+  letter-spacing:1px;
+}
+
+@media(max-width:600px){
+
+  .main,
+  .points{
+    grid-template-columns:1fr;
+  }
+
+  .qr{
+    margin:auto;
+  }
+
+  .points{
+    text-align:center;
+  }
+
+  .dots{
+    justify-content:center;
+  }
+}
+
+@media(max-width:500px){
+
+  .app{
+    padding:10px 10px 108px;
+  }
+
+  .page-title{
+    font-size:28px;
+  }
+
+  .logo{
+    width:56px;
+    height:56px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<main class="app">
+
+<header class="top">
+
+<img class="logo" src="logo-1995.png">
+
+<div class="brand">
+<h1>AL NOOR</h1>
+<small>MODERN BAKERY & CAFÉ • EST. 1995</small>
+</div>
+
+</header>
+
+
+<!-- REGISTRATION -->
+
+<section id="registerBox" class="glass card">
+
+<div class="page-title">
+Welcome to Al Noor
+</div>
+
+<div class="page-sub">
+Create your Al Noor Loyalty Card and start collecting points with every visit.
+</div>
+
+<div class="field">
+<label>FULL NAME</label>
+<input
+id="fullName"
+class="input"
+type="text"
+placeholder="Enter your full name"
+autocomplete="name">
+</div>
+
+<div class="field">
+<label>MOBILE NUMBER</label>
+<input
+id="mobile"
+class="input"
+type="tel"
+placeholder="05XXXXXXXX"
+autocomplete="tel">
+</div>
+
+<div class="field">
+<label>EMAIL (OPTIONAL)</label>
+<input
+id="email"
+class="input"
+type="email"
+placeholder="example@email.com"
+autocomplete="email">
+</div>
+
+<button
+id="registerBtn"
+class="btn"
+onclick="registerCustomer()">
+CREATE MY LOYALTY CARD
+</button>
+
+<div id="registerMessage"></div>
+
+</section>
+
+
+<!-- CUSTOMER CARD -->
+
+<section
+id="card"
+style="display:none">
+
+<div class="member">
+
+<div class="member-top">
+
+<div class="label">
+AL NOOR • LOYALTY MEMBER
+</div>
+
+<div class="pill">
+AL NOOR FAMILY
+</div>
+
+</div>
+
+
+<div class="main">
+
+<div>
+
+<div class="identity">
+
+<div id="avatar" class="avatar">
+A
+</div>
+
+<div>
+
+<div class="hello">
+Welcome back,
+</div>
+
+<div id="name" class="name">
+—
+</div>
+
+<div class="id">
+Customer ID
+<b id="code">—</b>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div>
+
+<div class="qr">
+
+<div id="qrcode"></div>
+
+</div>
+
+<div class="note">
+Show this QR code at the counter
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="points glass">
+
+<div
+class="ring"
+id="ring">
+
+<div class="ringin">
+
+<div
+id="pv"
+class="big">
+0/10
+</div>
+
+<div class="small">
+POINTS
+</div>
+
+</div>
+
+</div>
+
+
+<div>
+
+<div
+id="pt"
+class="point-title">
+10 MORE POINTS
+</div>
+
+<div class="point-sub">
+UNTIL YOUR NEXT FREE DRINK!
+</div>
+
+<div
+id="dots"
+class="dots">
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<div
+id="error"
+class="empty"
+style="display:none">
+</div>
+
+</main>
+
+
+<!-- BOTTOM NAV -->
+
+<nav class="bottom-nav">
+
+<a
+class="nav active"
+href="index.html">
+<b>⌂</b>
+<span>Home</span>
+</a>
+
+<a
+class="nav"
+href="rewards.html">
+<b>♧</b>
+<span>Rewards</span>
+</a>
+
+<a
+class="nav center"
+href="alnoor.html">
+
+<span class="circle">
+<img src="logo-1995.png">
+</span>
+
+<span>AL NOOR</span>
+
+</a>
+
+<a
+class="nav"
+href="locations.html">
+<b>⌖</b>
+<span>Locations</span>
+</a>
+
+<a
+class="nav"
+href="menu.html">
+<b>☰</b>
+<span>Menu</span>
+</a>
+
+</nav>
+
+
+<script>
+
+const SUPABASE_URL =
+"https://fgarlyoqobopudfkifbp.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
+
+
+/* GET TOKEN */
+
+function getToken(){
+
+return new URLSearchParams(
+location.search
+).get("token") || "";
+
+}
+
+
+/* RPC */
+
+async function rpc(name,body){
+
+const r = await fetch(
+SUPABASE_URL +
+"/rest/v1/rpc/" +
+name,
+{
+method:"POST",
+
+headers:{
+"apikey":SUPABASE_KEY,
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify(body)
+
+}
+);
+
+const tx = await r.text();
+
+let d = null;
+
+try{
+d = tx ? JSON.parse(tx) : null;
+}catch{}
+
+if(!r.ok){
+
+throw new Error(
+(d && (d.message || d.error))
+|| tx
+|| "Request failed"
+);
+
+}
+
+return d;
+
+}
+
+
+/* ESCAPE */
+
+function esc(v){
+
+return String(v ?? "")
+.replace(/[&<>"']/g,m=>({
+
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+
+}[m]));
+
+}
+
+
+/* LOAD CUSTOMER */
+
+async function loadCustomer(token){
+
+const r =
+await rpc(
+"get_customer_by_token",
+{
+p_token:token
+}
+);
+
+const c =
+Array.isArray(r)
+? r[0]
+: r;
+
+if(!c){
+
+throw new Error(
+"Customer not found."
+);
+
+}
+
+
+/* SHOW CARD */
+
+document.getElementById(
+"registerBox"
+).style.display="none";
+
+document.getElementById(
+"card"
+).style.display="block";
+
+
+document.getElementById(
+"name"
+).textContent =
+c.full_name || "Al Noor Member";
+
+
+document.getElementById(
+"code"
+).textContent =
+c.customer_code || "—";
+
+
+/* AVATAR */
+
+const initials =
+(c.full_name || "A")
+.trim()
+.split(/\s+/)
+.slice(0,2)
+.map(x=>x[0])
+.join("")
+.toUpperCase();
+
+document.getElementById(
+"avatar"
+).textContent =
+initials;
+
+
+/* POINTS */
+
+const p =
+Math.max(
+0,
+Number(c.points || 0)
+);
+
+const cur =
+p % 10;
+
+const rem =
+cur ? 10-cur : 10;
+
+
+document.getElementById(
+"pv"
+).textContent =
+cur + "/10";
+
+
+document.getElementById(
+"pt"
+).textContent =
+rem + " MORE POINTS";
+
+
+const percent =
+cur * 10;
+
+
+document.getElementById(
+"ring"
+).style.background =
+"conic-gradient(" +
+"var(--gold2) 0 " +
+percent +
+"%," +
+"rgba(255,255,255,.12) " +
+percent +
+"% 100%)";
+
+
+/* POINT DOTS */
+
+document.getElementById(
+"dots"
+).innerHTML =
+Array.from(
+{length:10},
+(_,i)=>
+'<span class="dot ' +
+(i < cur ? "on" : "") +
+'"></span>'
+).join("");
+
+
+/* CUSTOMER QR */
+
+const qr =
+document.getElementById(
+"qrcode"
+);
+
+qr.innerHTML="";
+
+
+const customerUrl =
+location.origin +
+location.pathname +
+"?token=" +
+encodeURIComponent(token);
+
+
+new QRCode(
+qr,
+{
+text:customerUrl,
+width:138,
+height:138,
+colorDark:"#111",
+colorLight:"#fff",
+correctLevel:
+QRCode.CorrectLevel.H
+}
+);
+
+}
+
+
+/* REGISTER CUSTOMER */
+
+async function registerCustomer(){
+
+const btn =
+document.getElementById(
+"registerBtn"
+);
+
+const message =
+document.getElementById(
+"registerMessage"
+);
+
+
+const fullName =
+document.getElementById(
+"fullName"
+).value.trim();
+
+
+const mobile =
+document.getElementById(
+"mobile"
+).value.trim();
+
+
+const email =
+document.getElementById(
+"email"
+).value.trim();
+
+
+/* VALIDATION */
+
+if(!fullName){
+
+message.innerHTML =
+'<div class="error">Please enter your full name.</div>';
+
+return;
+
+}
+
+
+if(!mobile){
+
+message.innerHTML =
+'<div class="error">Please enter your mobile number.</div>';
+
+return;
+
+}
+
+
+/* LOADING */
+
+btn.disabled=true;
+
+btn.textContent =
+"CREATING YOUR CARD...";
+
+message.innerHTML="";
+
+
+try{
+
+/* CALL SUPABASE */
+
+const result =
+await rpc(
+"register_customer",
+{
+p_full_name:fullName,
+p_mobile:mobile,
+p_email:email || null
+}
+);
+
+
+/* RESULT */
+
+const customer =
+Array.isArray(result)
+? result[0]
+: result;
+
+
+if(
+!customer ||
+!customer.public_token
+){
+
+throw new Error(
+"Customer card was created but token was not returned."
+);
+
+}
+
+
+/* SAVE TOKEN */
+
+const token =
+customer.public_token;
+
+
+/* REDIRECT TO CUSTOMER CARD */
+
+history.replaceState(
+null,
+"",
+"?token=" +
+encodeURIComponent(token)
+);
+
+
+/* LOAD CARD */
+
+await loadCustomer(token);
+
+}
+catch(error){
+
+message.innerHTML =
+'<div class="error">' +
+esc(
+error.message ||
+"Could not create your loyalty card."
+) +
+'</div>';
+
+btn.disabled=false;
+
+btn.textContent =
+"CREATE MY LOYALTY CARD";
+
+}
+
+}
+
+
+/* START */
 
 (async()=>{
- const token=getToken();if(!token){document.getElementById("error").style.display="block";document.getElementById("error").textContent="No loyalty card token found.";return}
- try{const r=await rpc("get_customer_by_token",{p_token:token});const c=Array.isArray(r)?r[0]:r;if(!c)throw Error("Customer not found.");
- document.getElementById("card").style.display="block";document.getElementById("name").textContent=c.full_name||"Al Noor Member";document.getElementById("code").textContent=c.customer_code||"—";
- const initials=(c.full_name||"A").trim().split(/\s+/).slice(0,2).map(x=>x[0]).join("").toUpperCase();document.getElementById("avatar").textContent=initials;
- const p=Math.max(0,Number(c.points||0)),cur=p%10,rem=cur?10-cur:10;document.getElementById("pv").textContent=cur+"/10";document.getElementById("pt").textContent=rem+" MORE POINTS";document.getElementById("ring").style.background="conic-gradient(var(--gold2) 0 "+(cur*10)+"%,rgba(255,255,255,.12) "+(cur*10)+"% 100%)";document.getElementById("dots").innerHTML=Array.from({length:10},(_,i)=>'<span class="dot '+(i<cur?"on":"")+'"></span>');
- const qr=document.getElementById("qrcode");qr.innerHTML="";new QRCode(qr,{text:location.origin+location.pathname+"?token="+encodeURIComponent(token),width:138,height:138,colorDark:"#111",colorLight:"#fff",correctLevel:QRCode.CorrectLevel.H});
- }catch(e){document.getElementById("error").style.display="block";document.getElementById("error").textContent=e.message||"Could not load your card."}
+
+const token =
+getToken();
+
+
+/*
+If customer already has a token:
+open customer card.
+*/
+
+if(token){
+
+try{
+
+await loadCustomer(token);
+
+}
+catch(error){
+
+document.getElementById(
+"error"
+).style.display="block";
+
+document.getElementById(
+"error"
+).textContent =
+error.message ||
+"Could not load your card.";
+
+}
+
+return;
+
+}
+
+
+/*
+No token:
+show registration page.
+*/
+
+document.getElementById(
+"registerBox"
+).style.display="block";
+
 })();
-</script></body></html>
+
+</script>
+
+</body>
+</html>
