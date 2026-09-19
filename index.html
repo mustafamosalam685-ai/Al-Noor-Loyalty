@@ -1,193 +1,331 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<meta name="theme-color"
+      content="#65752b">
 
 <title>Al Noor Loyalty</title>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
 <style>
+
+*{
+    box-sizing:border-box;
+}
+
 body{
     margin:0;
     font-family:Arial,sans-serif;
-    background:#f5f5f5;
+    background:#f3f3f3;
     color:#222;
 }
 
 .container{
-    max-width:430px;
-    margin:30px auto;
+    max-width:500px;
+    margin:auto;
     padding:20px;
 }
 
 .card{
     background:white;
-    border-radius:22px;
+    border-radius:24px;
     padding:25px;
-    box-shadow:0 8px 30px rgba(0,0,0,.12);
-    text-align:center;
+    margin-top:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.12);
 }
 
 .logo{
-    font-size:28px;
-    font-weight:bold;
+    text-align:center;
     color:#65752b;
+    font-size:30px;
+    font-weight:bold;
+    letter-spacing:1px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#777;
+    margin-top:5px;
 }
 
 h2{
-    margin-bottom:20px;
+    text-align:center;
 }
 
 input{
     width:100%;
-    box-sizing:border-box;
-    padding:14px;
-    margin:8px 0;
+    padding:15px;
+    margin-top:12px;
     border:1px solid #ddd;
-    border-radius:10px;
+    border-radius:12px;
     font-size:16px;
 }
 
 button{
     width:100%;
-    padding:14px;
-    margin-top:12px;
+    padding:15px;
+    margin-top:14px;
     border:0;
-    border-radius:10px;
+    border-radius:12px;
     background:#65752b;
     color:white;
-    font-size:16px;
-    cursor:pointer;
-}
-
-.points{
-    font-size:55px;
+    font-size:17px;
     font-weight:bold;
-    margin:15px 0;
-    color:#65752b;
 }
 
-.info{
-    background:#f3f3f3;
-    border-radius:12px;
-    padding:12px;
-    margin:8px 0;
+.secondary{
+    background:#333;
 }
 
-#qrcode{
-    margin:20px auto;
-    width:200px;
+.message{
+    text-align:center;
+    margin-top:15px;
+}
+
+.error{
+    color:#b00020;
+}
+
+.success{
+    color:green;
 }
 
 .hidden{
     display:none;
 }
 
-.error{
-    color:#b00020;
-    margin-top:10px;
+.customer-name{
+    text-align:center;
+    font-size:25px;
+    font-weight:bold;
+    margin-top:15px;
 }
 
-.success{
-    color:green;
-    margin-top:10px;
+.points-box{
+    text-align:center;
+    margin:20px 0;
 }
+
+.points{
+    font-size:65px;
+    font-weight:bold;
+    color:#65752b;
+}
+
+.points-label{
+    color:#777;
+    font-size:14px;
+}
+
+.info{
+    background:#f5f5f5;
+    padding:13px;
+    margin-top:8px;
+    border-radius:12px;
+}
+
+.qr-box{
+    text-align:center;
+    margin-top:20px;
+}
+
+.qr-box img{
+    width:220px;
+    height:220px;
+    border-radius:10px;
+}
+
+.qr-title{
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.note{
+    text-align:center;
+    color:#777;
+    font-size:13px;
+    line-height:1.5;
+    margin-top:12px;
+}
+
+.refresh{
+    background:#555;
+}
+
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-    <!-- REGISTRATION -->
-    <div id="registerPage" class="card hidden">
 
-        <div class="logo">AL NOOR</div>
+<!-- =========================
+     REGISTRATION
+========================= -->
 
-        <h2>Join Al Noor Loyalty</h2>
+<div id="registerCard"
+     class="card">
 
-        <input id="fullName"
-               type="text"
-               placeholder="Full Name">
-
-        <input id="mobile"
-               type="tel"
-               placeholder="Mobile Number">
-
-        <input id="email"
-               type="email"
-               placeholder="Email (Optional)">
-
-        <button onclick="registerCustomer()">
-            Create Loyalty Card
-        </button>
-
-        <div id="registerMessage"></div>
-
+    <div class="logo">
+        AL NOOR
     </div>
 
-
-    <!-- CUSTOMER CARD -->
-    <div id="cardPage" class="card hidden">
-
-        <div class="logo">AL NOOR</div>
-
-        <h2 id="customerName"></h2>
-
-        <div class="info">
-            Customer ID:
-            <strong id="customerCode"></strong>
-        </div>
-
-        <div class="points" id="points">0</div>
-
-        <div>LOYALTY POINTS</div>
-
-        <div class="info">
-            Visits:
-            <strong id="visits"></strong>
-        </div>
-
-        <div class="info">
-            Reward:
-            <strong id="reward"></strong>
-        </div>
-
-        <div class="info">
-            Status:
-            <strong id="status"></strong>
-        </div>
-
-        <h3>Your QR Code</h3>
-
-        <div id="qrcode"></div>
-
-        <button onclick="location.reload()">
-            Refresh Card
-        </button>
-
+    <div class="subtitle">
+        Modern Bakery
     </div>
 
+    <h2>
+        Loyalty Registration
+    </h2>
 
-    <!-- ERROR -->
-    <div id="errorPage" class="card hidden">
+    <input
+        id="name"
+        type="text"
+        placeholder="Full Name"
+    >
 
-        <div class="logo">AL NOOR</div>
+    <input
+        id="mobile"
+        type="tel"
+        placeholder="Mobile Number"
+    >
 
-        <h2>Customer Not Found</h2>
+    <input
+        id="email"
+        type="email"
+        placeholder="Email (Optional)"
+    >
 
-        <p>
-            This loyalty card could not be found.
-        </p>
+    <button
+        onclick="registerCustomer()">
+        CREATE LOYALTY CARD
+    </button>
 
+    <div
+        id="registerMessage"
+        class="message">
     </div>
 
 </div>
 
 
+<!-- =========================
+     CUSTOMER CARD
+========================= -->
+
+<div id="customerCard"
+     class="card hidden">
+
+    <div class="logo">
+        AL NOOR
+    </div>
+
+    <div class="subtitle">
+        Loyalty Card
+    </div>
+
+    <div
+        id="customerName"
+        class="customer-name">
+    </div>
+
+
+    <!-- POINTS -->
+
+    <div class="points-box">
+
+        <div
+            id="points"
+            class="points">
+            0
+        </div>
+
+        <div class="points-label">
+            LOYALTY POINTS
+        </div>
+
+    </div>
+
+
+    <!-- CUSTOMER DATA -->
+
+    <div class="info">
+        Customer ID:
+        <strong id="customerCode"></strong>
+    </div>
+
+    <div class="info">
+        Visits:
+        <strong id="visits"></strong>
+    </div>
+
+    <div class="info">
+        Reward:
+        <strong id="reward"></strong>
+    </div>
+
+    <div class="info">
+        Status:
+        <strong id="status"></strong>
+    </div>
+
+
+    <!-- QR -->
+
+    <div class="qr-box">
+
+        <div class="qr-title">
+            YOUR CUSTOMER QR
+        </div>
+
+        <img
+            id="customerQR"
+            alt="Customer QR Code">
+
+        <div class="note">
+            Show this QR code to the staff
+            when you visit Al Noor.
+        </div>
+
+    </div>
+
+
+    <!-- SAVE -->
+
+    <button
+        onclick="saveCard()">
+        📱 SAVE MY LOYALTY CARD
+    </button>
+
+
+    <!-- REFRESH -->
+
+    <button
+        class="refresh"
+        onclick="refreshCustomer()">
+        🔄 REFRESH POINTS
+    </button>
+
+
+    <div
+        id="cardMessage"
+        class="message">
+    </div>
+
+</div>
+
+</div>
+
+
 <script>
+
 
 /* =========================
    SUPABASE
@@ -201,45 +339,39 @@ const SUPABASE_KEY =
 
 
 /* =========================
-   PAGE START
+   VARIABLES
 ========================= */
 
-window.onload = function(){
-
-    const params =
-        new URLSearchParams(window.location.search);
-
-    const token =
-        params.get("token");
-
-    const register =
-        params.get("register");
-
-    if(register === "1"){
-        showRegister();
-        return;
-    }
-
-    if(token){
-        loadCustomer(token);
-        return;
-    }
-
-    showRegister();
-};
+let currentToken = null;
 
 
 /* =========================
-   SHOW REGISTER
+   PAGE LOAD
 ========================= */
 
-function showRegister(){
+window.addEventListener(
+    "load",
+    function(){
 
-    document
-        .getElementById("registerPage")
-        .classList.remove("hidden");
+        const params =
+        new URLSearchParams(
+            window.location.search
+        );
 
-}
+        const token =
+        params.get("token");
+
+
+        if(token){
+
+            currentToken = token;
+
+            loadCustomer(token);
+
+        }
+
+    }
+);
 
 
 /* =========================
@@ -249,91 +381,143 @@ function showRegister(){
 async function registerCustomer(){
 
     const name =
-        document.getElementById("fullName")
-        .value.trim();
+    document.getElementById(
+        "name"
+    ).value.trim();
+
 
     const mobile =
-        document.getElementById("mobile")
-        .value.trim();
+    document.getElementById(
+        "mobile"
+    ).value.trim();
+
 
     const email =
-        document.getElementById("email")
-        .value.trim();
+    document.getElementById(
+        "email"
+    ).value.trim();
+
 
     const message =
-        document.getElementById("registerMessage");
+    document.getElementById(
+        "registerMessage"
+    );
 
-    if(!name || !mobile){
 
-        message.className="error";
-        message.innerText=
-            "Please enter your name and mobile number.";
+    if(!name){
+
+        message.className =
+        "message error";
+
+        message.innerText =
+        "Please enter your name.";
 
         return;
+
     }
 
-    message.className="";
-    message.innerText="Creating your loyalty card...";
+
+    if(!mobile){
+
+        message.className =
+        "message error";
+
+        message.innerText =
+        "Please enter your mobile number.";
+
+        return;
+
+    }
+
+
+    message.className =
+    "message";
+
+    message.innerText =
+    "Creating your loyalty card...";
+
 
     try{
 
         const response =
-            await fetch(
-                SUPABASE_URL +
-                "/rest/v1/rpc/register_customer",
-                {
-                    method:"POST",
+        await fetch(
 
-                    headers:{
-                        "Content-Type":
-                            "application/json",
+            SUPABASE_URL +
+            "/rest/v1/rpc/register_customer",
 
-                        "apikey":
-                            SUPABASE_KEY,
+            {
 
-                        "Authorization":
-                            "Bearer " + SUPABASE_KEY
-                    },
+                method:"POST",
 
-                    body:JSON.stringify({
+                headers:{
 
-                        p_full_name:name,
-                        p_mobile:mobile,
-                        p_email:email || null
+                    "Content-Type":
+                    "application/json",
 
-                    })
-                }
-            );
+                    "apikey":
+                    SUPABASE_KEY,
+
+                    "Authorization":
+                    "Bearer " +
+                    SUPABASE_KEY
+
+                },
+
+                body:JSON.stringify({
+
+                    p_full_name:
+                    name,
+
+                    p_mobile:
+                    mobile,
+
+                    p_email:
+                    email || null
+
+                })
+
+            }
+
+        );
+
 
         if(!response.ok){
 
-            const error =
-                await response.text();
+            throw new Error(
+                await response.text()
+            );
 
-            throw new Error(error);
         }
 
-        const customer =
-            await response.json();
 
-        const token =
-            customer.public_token;
+        const customer =
+        await response.json();
+
+
+        currentToken =
+        customer.public_token;
+
 
         window.location.href =
             window.location.pathname +
             "?token=" +
-            encodeURIComponent(token);
+            encodeURIComponent(
+                currentToken
+            );
 
     }
+
     catch(error){
 
-        message.className="error";
+        message.className =
+        "message error";
 
         message.innerText =
-            "Registration failed. Please try again.";
+        "Error: " +
+        error.message;
 
-        console.error(error);
     }
+
 }
 
 
@@ -343,121 +527,303 @@ async function registerCustomer(){
 
 async function loadCustomer(token){
 
+    document.getElementById(
+        "registerCard"
+    ).classList.add("hidden");
+
+
+    document.getElementById(
+        "customerCard"
+    ).classList.remove("hidden");
+
+
+    const message =
+    document.getElementById(
+        "cardMessage"
+    );
+
+
+    message.className =
+    "message";
+
+
+    message.innerText =
+    "Loading your loyalty card...";
+
+
     try{
 
         const response =
-            await fetch(
-                SUPABASE_URL +
-                "/rest/v1/rpc/get_customer_by_token",
-                {
-                    method:"POST",
+        await fetch(
 
-                    headers:{
-                        "Content-Type":
-                            "application/json",
+            SUPABASE_URL +
+            "/rest/v1/rpc/get_customer_by_token",
 
-                        "apikey":
-                            SUPABASE_KEY,
+            {
 
-                        "Authorization":
-                            "Bearer " + SUPABASE_KEY
-                    },
+                method:"POST",
 
-                    body:JSON.stringify({
-                        p_token:token
-                    })
-                }
-            );
+                headers:{
+
+                    "Content-Type":
+                    "application/json",
+
+                    "apikey":
+                    SUPABASE_KEY,
+
+                    "Authorization":
+                    "Bearer " +
+                    SUPABASE_KEY
+
+                },
+
+                body:JSON.stringify({
+
+                    p_token:
+                    token
+
+                })
+
+            }
+
+        );
+
 
         if(!response.ok){
 
             throw new Error(
                 await response.text()
             );
+
         }
+
 
         const data =
-            await response.json();
+        await response.json();
 
-        if(!data || data.length === 0){
 
-            showError();
-            return;
+        if(!data ||
+           data.length === 0){
+
+            throw new Error(
+                "Customer not found."
+            );
+
         }
 
-        const customer = data[0];
 
-        document.getElementById(
-            "customerName"
-        ).innerText =
-            customer.full_name;
-
-        document.getElementById(
-            "customerCode"
-        ).innerText =
-            customer.customer_code;
-
-        document.getElementById(
-            "points"
-        ).innerText =
-            customer.points;
-
-        document.getElementById(
-            "visits"
-        ).innerText =
-            customer.visits;
-
-        document.getElementById(
-            "reward"
-        ).innerText =
-            customer.reward || "No Reward";
-
-        document.getElementById(
-            "status"
-        ).innerText =
-            customer.status || "Active";
+        const customer =
+        data[0];
 
 
-        document
-            .getElementById("cardPage")
-            .classList.remove("hidden");
-
-
-        /* CUSTOMER QR */
-
-        document
-            .getElementById("qrcode")
-            .innerHTML="";
-
-        new QRCode(
-            document.getElementById("qrcode"),
-            {
-                text:window.location.href,
-                width:200,
-                height:200
-            }
+        displayCustomer(
+            customer,
+            token
         );
 
+
+        message.className =
+        "message success";
+
+        message.innerText =
+        "✓ Card updated";
+
+
     }
+
     catch(error){
 
-        console.error(error);
+        message.className =
+        "message error";
 
-        showError();
+        message.innerText =
+        error.message;
+
     }
+
 }
 
 
 /* =========================
-   ERROR
+   DISPLAY CUSTOMER
 ========================= */
 
-function showError(){
+function displayCustomer(
+    customer,
+    token
+){
 
-    document
-        .getElementById("errorPage")
-        .classList.remove("hidden");
+    document.getElementById(
+        "customerName"
+    ).innerText =
+    customer.full_name || "";
+
+
+    document.getElementById(
+        "customerCode"
+    ).innerText =
+    customer.customer_code || "";
+
+
+    document.getElementById(
+        "points"
+    ).innerText =
+    customer.points ?? 0;
+
+
+    document.getElementById(
+        "visits"
+    ).innerText =
+    customer.visits ?? 0;
+
+
+    document.getElementById(
+        "reward"
+    ).innerText =
+    customer.reward ||
+    "No Reward";
+
+
+    document.getElementById(
+        "status"
+    ).innerText =
+    customer.status ||
+    "Active";
+
+
+    /*
+       QR يحتوي على نفس رابط
+       كارت العميل.
+    */
+
+    const customerURL =
+        window.location.origin +
+        window.location.pathname +
+        "?token=" +
+        encodeURIComponent(
+            token
+        );
+
+
+    document.getElementById(
+        "customerQR"
+    ).src =
+        "https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=" +
+        encodeURIComponent(
+            customerURL
+        );
+
 }
+
+
+/* =========================
+   REFRESH POINTS
+========================= */
+
+async function refreshCustomer(){
+
+    if(!currentToken){
+        return;
+    }
+
+
+    await loadCustomer(
+        currentToken
+    );
+
+}
+
+
+/* =========================
+   SAVE CARD
+========================= */
+
+async function saveCard(){
+
+    const message =
+    document.getElementById(
+        "cardMessage"
+    );
+
+
+    /*
+       Android / supported browsers
+    */
+
+    if(
+        window.matchMedia(
+            "(display-mode: browser)"
+        ).matches &&
+        window.deferredPrompt
+    ){
+
+        window.deferredPrompt.prompt();
+
+        const result =
+        await window.deferredPrompt.userChoice;
+
+        window.deferredPrompt =
+        null;
+
+        return;
+
+    }
+
+
+    /*
+       iPhone
+    */
+
+    const isIOS =
+        /iPhone|iPad|iPod/i.test(
+            navigator.userAgent
+        );
+
+
+    if(isIOS){
+
+        message.className =
+        "message success";
+
+        message.innerHTML =
+        "📱 To save AL NOOR:<br><br>" +
+        "Tap <b>Share</b> in Safari " +
+        "then choose <b>Add to Home Screen</b>.";
+
+        return;
+
+    }
+
+
+    /*
+       Other devices
+    */
+
+    message.className =
+    "message success";
+
+    message.innerHTML =
+    "Open your browser menu and choose " +
+    "<b>Add to Home Screen</b>.";
+
+}
+
+
+/* =========================
+   PWA INSTALL
+========================= */
+
+window.addEventListener(
+    "beforeinstallprompt",
+    function(event){
+
+        event.preventDefault();
+
+        window.deferredPrompt =
+        event;
+
+    }
+);
 
 </script>
 
