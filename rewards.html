@@ -1,0 +1,40 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0d0906"><title>Al Noor — Rewards</title><style>
+:root{--bg:#0d0906;--panel:#17100b;--cream:#f7efe1;--muted:#b9a58d;--gold:#d9a34a;--gold2:#f0c979;--line:rgba(255,255,255,.10)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;color:#fff;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:linear-gradient(180deg,rgba(8,5,3,.78),rgba(8,5,3,.97)),url("cafe.jpg") center/cover fixed no-repeat;min-height:100vh}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.app{width:min(720px,100%);margin:auto;padding:14px 12px 110px}
+.top{display:flex;align-items:center;gap:12px;padding:5px 4px 18px}
+.logo{width:64px;height:64px;object-fit:contain}.brand h1{font-family:Georgia,serif;margin:0;font-size:25px;letter-spacing:1.5px}.brand small{color:var(--gold2);letter-spacing:1.8px;font-size:9px}
+.glass{background:rgba(19,12,8,.80);border:1px solid var(--line);border-radius:26px;box-shadow:0 22px 60px rgba(0,0,0,.38);backdrop-filter:blur(18px)}
+.page-title{font-family:Georgia,serif;font-size:31px;margin:8px 0}.page-sub{color:var(--muted);line-height:1.5;font-size:13px}
+.card{padding:20px;margin-top:14px}.btn{display:inline-flex;justify-content:center;align-items:center;border:0;border-radius:13px;padding:12px 16px;background:linear-gradient(135deg,#e4ba68,#b97b31);color:#24160b;font-weight:800}.btn.full{width:100%}
+.badge{display:inline-block;padding:6px 9px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.8px;background:rgba(217,163,74,.16);color:var(--gold2);border:1px solid rgba(217,163,74,.25)}
+.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:18px}
+.bottom-nav{position:fixed;z-index:50;left:50%;bottom:12px;transform:translateX(-50%);width:min(720px,calc(100% - 20px));height:76px;padding:7px 8px;border-radius:25px;display:grid;grid-template-columns:repeat(5,1fr);align-items:center;background:rgba(15,10,7,.94);border:1px solid rgba(255,255,255,.12);box-shadow:0 18px 55px rgba(0,0,0,.6);backdrop-filter:blur(20px)}
+.nav{border:0;background:none;color:#968b80;height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:9px}.nav b{font-size:21px;font-weight:500;line-height:1}.nav.active{color:var(--gold2)}
+.nav.center .circle{width:58px;height:58px;border-radius:50%;margin-top:-25px;background:#17100b;border:1px solid var(--gold2);display:grid;place-items:center;box-shadow:0 0 0 6px rgba(217,163,74,.08)}.nav.center img{width:44px;height:44px;object-fit:contain}.nav.center span:last-child{color:var(--gold2);letter-spacing:1px}
+@media(max-width:500px){.app{padding:10px 10px 108px}.page-title{font-size:28px}.logo{width:56px;height:56px}}
+
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stat{padding:18px;text-align:center}.stat strong{display:block;font-size:28px;color:var(--gold2)}.stat span{font-size:11px;color:var(--muted)}.reward{display:grid;grid-template-columns:52px 1fr auto;gap:12px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:17px;margin-top:10px;background:rgba(255,255,255,.035)}.cup{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:rgba(217,163,74,.13);color:var(--gold2);font-size:22px}.reward h3{margin:0;font-size:14px}.reward p{margin:4px 0 0;color:var(--muted);font-size:11px}.status{padding:7px 9px;border-radius:999px;background:rgba(116,211,154,.14);color:#8de2aa;font-size:9px;font-weight:800}@media(max-width:500px){.reward{grid-template-columns:48px 1fr}.status{grid-column:2;width:max-content}}
+</style></head><body><main class="app"><header class="top"><img class="logo" src="logo-1995.png"><div class="brand"><h1>AL NOOR</h1><small>REWARDS • EST. 1995</small></div></header><h1 class="page-title">Your Rewards</h1><p class="page-sub">Your free drinks and reward history.</p><div class="stats"><div class="stat glass"><strong id="earned">0</strong><span>FREE DRINKS EARNED</span></div><div class="stat glass"><strong id="available">0</strong><span>AVAILABLE NOW</span></div></div><section class="card glass"><h2 style="margin:0;font-family:Georgia,serif">Reward History</h2><p class="page-sub">Redeemed rewards appear here with their date and coupon number.</p><div id="history"></div></section></main><nav class="bottom-nav"><a class="nav " href="#" onclick="go('index.html');return false"><b>⌂</b><span>Home</span></a><a class="nav active" href="#" onclick="go('rewards.html');return false"><b>♧</b><span>Rewards</span></a><a class="nav center" href="#" onclick="go('alnoor.html');return false"><span class="circle"><img src="logo-1995.png"></span><span>AL NOOR</span></a><a class="nav " href="#" onclick="go("locations.html");return false"><b>⌖</b><span>Locations</span></a><a class="nav " href="#" onclick="go("menu.html");return false"><b>☰</b><span>Menu</span></a></nav><script>
+const SUPABASE_URL="https://fgarlyoqobopudfkifbp.supabase.co";
+const SUPABASE_KEY="sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
+function getToken(){return new URLSearchParams(location.search).get("token")||""}
+function go(page){const t=getToken();location.href=page+(t?"?token="+encodeURIComponent(t):"")}
+async function rpc(name,body){
+ const r=await fetch(SUPABASE_URL+"/rest/v1/rpc/"+name,{method:"POST",headers:{"apikey":SUPABASE_KEY,"Content-Type":"application/json"},body:JSON.stringify(body)});
+ const tx=await r.text();let d=null;try{d=tx?JSON.parse(tx):null}catch{}
+ if(!r.ok)throw new Error((d&&(d.message||d.error))||tx||"Request failed");return d;
+}
+function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function fmtDate(v){if(!v)return "—";const d=new Date(v);return Number.isNaN(d.getTime())?v:d.toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"})}
+
+(async()=>{const t=getToken();if(!t){document.getElementById("history").innerHTML='<div class="empty">Open Rewards from your loyalty card.</div>';return}
+try{const rr=await rpc("get_customer_by_token",{p_token:t});const c=Array.isArray(rr)?rr[0]:rr;if(!c)throw Error("Customer not found.");const earned=Math.min(5,Math.floor(Number(c.points||0)/10));document.getElementById("earned").textContent=earned;
+let rows=[];try{const h=await rpc("get_customer_reward_history",{p_token:t});rows=Array.isArray(h)?h:[]}catch(e){}
+const available=rows.filter(x=>(x.status||"AVAILABLE")==="AVAILABLE").length;document.getElementById("available").textContent=available||earned;
+if(!rows.length){document.getElementById("history").innerHTML='<div class="empty">No reward history yet.<br><span style="font-size:11px">After redemption, the date and coupon number will appear here.</span></div>';return}
+document.getElementById("history").innerHTML=rows.map(x=>'<div class="reward"><div class="cup">☕</div><div><h3>FREE DRINK</h3><p>'+fmtDate(x.redeemed_at||x.issued_at)+' • Coupon #'+esc(x.coupon_number||x.coupon_code||"—")+'</p></div><span class="status">'+esc(x.status||"AVAILABLE")+'</span></div>').join("");
+}catch(e){document.getElementById("history").innerHTML='<div class="empty">Unable to load rewards right now.</div>'}})();
+</script></body></html>
