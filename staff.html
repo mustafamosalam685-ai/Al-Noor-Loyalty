@@ -513,9 +513,10 @@ let busy = false;
 const $ = id => document.getElementById(id);
 
 function headers(){
+  const accessToken = sessionStorage.getItem("alnoor_access_token") || SUPABASE_KEY;
   return {
     "apikey": SUPABASE_KEY,
-    "Authorization": "Bearer " + SUPABASE_KEY,
+    "Authorization": "Bearer " + accessToken,
     "Content-Type": "application/json"
   };
 }
@@ -564,6 +565,25 @@ async function login(){
     sessionStorage.setItem("alnoor_access_token", data.access_token);
     sessionStorage.setItem("alnoor_refresh_token", data.refresh_token || "");
 
+    // Only active Al Noor staff may enter the scanner.
+    const staffCheck = await fetch(
+      SUPABASE_URL + "/rest/v1/rpc/get_my_staff_profile",
+      {
+        method:"POST",
+        headers:headers(),
+        body:"{}"
+      }
+    );
+
+    const staffData = await staffCheck.json();
+
+    if(!staffCheck.ok){
+      sessionStorage.removeItem("alnoor_access_token");
+      sessionStorage.removeItem("alnoor_refresh_token");
+      throw new Error(staffData.message || staffData.error || "This account is not authorized for staff access.");
+    }
+
+    sessionStorage.setItem("alnoor_staff_name", staffData.full_name || email);
     showApp();
   }catch(err){
     $("loginMessage").textContent = err.message;
@@ -701,21 +721,17 @@ function showMessage(text,error){
 async function addPoint(){
   if(!currentCustomer) return;
 
-  const pin = prompt("Enter staff PIN:");
-  if(pin === null) return;
-
   const button = $("addPointBtn");
   button.disabled = true;
 
   try{
     const response = await fetch(
-      SUPABASE_URL + "/rest/v1/rpc/add_customer_point",
+      SUPABASE_URL + "/rest/v1/rpc/add_customer_point_auth",
       {
         method:"POST",
         headers:headers(),
         body:JSON.stringify({
-          p_customer_code:currentCustomer.customer_code,
-          p_staff_pin:pin
+          p_customer_code:currentCustomer.customer_code
         })
       }
     );
@@ -754,21 +770,17 @@ async function redeemReward(){
 
   if(!ok) return;
 
-  const pin = prompt("Enter staff PIN:");
-  if(pin === null) return;
-
   const button = $("redeemBtn");
   button.disabled = true;
 
   try{
     const response = await fetch(
-      SUPABASE_URL + "/rest/v1/rpc/redeem_customer_reward",
+      SUPABASE_URL + "/rest/v1/rpc/redeem_customer_reward_auth",
       {
         method:"POST",
         headers:headers(),
         body:JSON.stringify({
-          p_customer_code:currentCustomer.customer_code,
-          p_staff_pin:pin
+          p_customer_code:currentCustomer.customer_code
         })
       }
     );
