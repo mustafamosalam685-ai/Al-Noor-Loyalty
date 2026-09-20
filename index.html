@@ -60,21 +60,10 @@ async function registerCustomer(){
  if(ce){msg.textContent=ce.message;return;}
  const token=customer.public_token;
  saveToken(token);
- msg.textContent="Account created. Setting up Face ID…";
- const {data:passkey,error:pe}=await sb.auth.registerPasskey();
- if(pe){
-   console.error("Passkey registration error:",pe);
-   let friendly="Face ID setup was not completed.";
-   if(pe.code==="passkey_disabled") friendly="Passkey is not enabled in Al Noor yet. Please check Supabase → Authentication → Passkeys.";
-   else if(pe.code==="webauthn_credential_exists") friendly="A Passkey is already registered for this account.";
-   else if(/cancel/i.test(pe.message||"")) friendly="Face ID setup was cancelled. You can try again from this page.";
-   else if(/not.?supported|secure context/i.test(pe.message||"")) friendly="This browser or connection does not support Passkeys here. Open the live HTTPS site in Safari.";
-   msg.textContent=friendly;
-   setTimeout(()=>location.href="index.html?token="+encodeURIComponent(token),1800);
-   return;
- }
- msg.textContent="Passkey saved successfully. Opening your card…";
- setTimeout(()=>location.href="index.html?token="+encodeURIComponent(token),500);
+ msg.textContent="Account created. Opening your loyalty card…";
+ // Passkey registration is intentionally NOT started automatically.
+ // The customer can set it up after the loyalty card is created.
+ setTimeout(()=>location.href="index.html?token="+encodeURIComponent(token),400);
 }
 
 async function useFaceID(){
@@ -151,7 +140,7 @@ async function useFaceID(){
      if(error.code==="passkey_disabled"){
        setMsg("Passkey is not enabled in Supabase yet.");
      }else if(error.code==="webauthn_credential_not_found"){
-       setMsg("No Al Noor Passkey is saved on this device yet. Create your loyalty account first.");
+       setMsg("No Al Noor Passkey is saved on this device yet. Use SET UP / USE FACE ID after opening your loyalty card.");
      }else if(/cancel/i.test(error.message||"")){
        setMsg("Face ID was cancelled. Tap again to retry.");
      }else{
@@ -198,7 +187,7 @@ async function loadCustomer(token){
   <div class="progress">${Array.from({length:10},(_,i)=>`<span class="dot ${i<pct?'on':''}"></span>`).join("")}</div>
   <div class="message">${remaining===0?"You are ready for your next free drink.":remaining+" MORE POINTS UNTIL YOUR NEXT FREE DRINK!"}</div>
  </div>
- <button id="passkeyBtn" class="secondary" onclick="useFaceID()">Continue with Face ID</button>
+ <button id="passkeyBtn" class="secondary" onclick="useFaceID()">SET UP / USE FACE ID</button>
  <button class="secondary" onclick="logoutCustomer()">LOG OUT / USE ANOTHER ACCOUNT</button>
  <div class="msg" id="msg"></div>`;
  new QRCode(document.getElementById("qr"),{text:location.origin+location.pathname+"?token="+encodeURIComponent(token),width:160,height:160,colorDark:"#211914",colorLight:"#ffffff"});
@@ -221,7 +210,7 @@ function showWelcome(){
  app.innerHTML=`
  <div class="eyebrow">Welcome to Al Noor</div>
  <div class="title">Your Loyalty Card</div>
- <div class="sub">Create your Al Noor account and use Face ID on supported devices for secure access.</div>
+ <div class="sub">Create your Al Noor account. Face ID / Passkey can be added after your loyalty card is created.</div>
  <div class="form">
   <div class="field"><label>FULL NAME</label><input id="name" autocomplete="name" placeholder="Your name"></div>
   <div class="field"><label>MOBILE</label><input id="mobile" autocomplete="tel" inputmode="tel" placeholder="+971 5X XXX XXXX"></div>
