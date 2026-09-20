@@ -15,7 +15,7 @@ body{margin:0;background:radial-gradient(circle at top,#2a2019 0,#17120f 55%);co
 h1{text-align:center;font-size:30px;margin:0 0 10px}
 .sub{text-align:center;color:var(--muted);line-height:1.6;font-size:14px;margin:0 auto 24px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:26px;padding:22px;box-shadow:0 18px 45px #0007}
-.status{background:#18130f;border:1px solid var(--line);border-radius:16px;padding:15px;font-size:13px;line-height:1.55;margin-bottom:16px;word-break:break-word}
+.status{background:#18130f;border:1px solid var(--line);border-radius:16px;padding:15px;font-size:13px;line-height:1.6;margin-bottom:16px;word-break:break-word}
 .status b{color:var(--gold)}
 button{width:100%;border:0;border-radius:16px;padding:17px;background:var(--gold);color:#1d150f;font-weight:900;font-size:15px;cursor:pointer}
 button:disabled{opacity:.55}
@@ -29,15 +29,13 @@ button:disabled{opacity:.55}
 <div class="wrap">
   <img class="logo" src="logo-1995.png" alt="Al Noor">
   <h1>Activate Face ID</h1>
-  <p class="sub">This page is only for creating your Al Noor passkey on this device.</p>
+  <p class="sub">Direct WebAuthn registration test for your signed-in Al Noor account.</p>
 
   <div class="card">
-    <div id="status" class="status">Checking your Al Noor account...</div>
-    <button id="btn" onclick="createPasskey()">ACTIVATE FACE ID</button>
+    <div id="status" class="status">Checking account and WebAuthn...</div>
+    <button id="btn" onclick="registerFaceID()">ACTIVATE FACE ID</button>
     <a class="secondary" href="card.html">← Back to Loyalty Card</a>
-    <div class="small">
-      Keep this page open on the same Al Noor HTTPS website. Face ID can only be registered after you are signed in.
-    </div>
+    <div class="small">Do not open this HTML file from Files. Open it from the Al Noor GitHub Pages HTTPS website.</div>
   </div>
 </div>
 
@@ -57,21 +55,106 @@ const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
 const statusEl=document.getElementById("status");
 const btn=document.getElementById("btn");
 
-function show(message, cls=""){
+function esc(v){
+  return String(v??"").replace(/[&<>"']/g,m=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
+}
+
+function status(msg, cls=""){
   statusEl.className="status "+cls;
-  statusEl.innerHTML=message;
+  statusEl.innerHTML=msg;
+}
+
+function b64urlToBytes(value){
+  const s=String(value).replace(/-/g,"+").replace(/_/g,"/");
+  const pad=s.length%4===0?"":"=".repeat(4-(s.length%4));
+  const bin=atob(s+pad);
+  const bytes=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+  return bytes;
+}
+
+function bytesToB64url(buffer){
+  const bytes=new Uint8Array(buffer);
+  let bin="";
+  const chunk=0x8000;
+  for(let i=0;i<bytes.length;i+=chunk){
+    bin+=String.fromCharCode(...bytes.subarray(i,i+chunk));
+  }
+  return btoa(bin).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+}
+
+/*
+  Supabase returns WebAuthn creation options as JSON with binary
+  fields encoded as base64url. Safari's native JSON parser is used
+  when available; otherwise we convert the required binary fields.
+*/
+function creationOptionsFromJSON(json){
+  if(window.PublicKeyCredential &&
+     typeof PublicKeyCredential.parseCreationOptionsFromJSON==="function"){
+    return PublicKeyCredential.parseCreationOptionsFromJSON(json);
+  }
+
+  const o=structuredClone(json);
+
+  if(typeof o.challenge==="string"){
+    o.challenge=b64urlToBytes(o.challenge).buffer;
+  }
+
+  if(o.user && typeof o.user.id==="string"){
+    o.user.id=b64urlToBytes(o.user.id).buffer;
+  }
+
+  if(Array.isArray(o.excludeCredentials)){
+    o.excludeCredentials=o.excludeCredentials.map(c=>({
+      ...c,
+      id: typeof c.id==="string" ? b64urlToBytes(c.id).buffer : c.id
+    }));
+  }
+
+  return o;
+}
+
+/*
+  Supabase expects the JSON form of the credential response.
+  This mirrors the current supabase-js serializer.
+*/
+function serializeRegistrationCredential(credential){
+  if(typeof credential.toJSON==="function"){
+    return credential.toJSON();
+  }
+
+  const response=credential.response;
+
+  return {
+    id:credential.id,
+    rawId:credential.id,
+    response:{
+      attestationObject:bytesToB64url(response.attestationObject),
+      clientDataJSON:bytesToB64url(response.clientDataJSON)
+    },
+    type:"public-key",
+    clientExtensionResults:
+      typeof credential.getClientExtensionResults==="function"
+        ? credential.getClientExtensionResults()
+        : {},
+    authenticatorAttachment:credential.authenticatorAttachment ?? undefined
+  };
 }
 
 async function check(){
   try{
     if(!window.isSecureContext){
-      show("<b>HTTPS:</b> Not secure. Open the GitHub Pages HTTPS website.","err");
+      status("<b>HTTPS:</b> NOT SECURE","err");
       btn.disabled=true;
       return;
     }
 
-    if(!window.PublicKeyCredential){
-      show("<b>WebAuthn:</b> Not supported by this browser.","err");
+    if(!window.PublicKeyCredential ||
+       !navigator.credentials ||
+       typeof navigator.credentials.create!=="function"){
+      status("<b>WebAuthn:</b> Browser does not support credential creation.","err");
       btn.disabled=true;
       return;
     }
@@ -80,87 +163,103 @@ async function check(){
     if(error) throw error;
 
     if(!session){
-      show("<b>Session:</b> No active login session.<br><br>Sign in normally first, then open this page.","err");
+      status("<b>Session:</b> No active session. Sign in normally first.","err");
       btn.disabled=true;
       return;
     }
 
-    const user=session.user;
-    show(
+    const {data:userData,error:userError}=await sb.auth.getUser();
+    if(userError) throw userError;
+
+    status(
       "<b>Session:</b> OK<br>"+
-      "<b>Account:</b> "+(user.email||"signed in")+"<br>"+
-      "<b>Origin:</b> "+location.origin+
+      "<b>Email:</b> "+esc(userData.user?.email||"")+
+      "<br><b>Origin:</b> "+esc(location.origin)+
       "<br><b>RP ID:</b> mustafamosalam685-ai.github.io",
       ""
     );
     btn.disabled=false;
   }catch(e){
-    show("<b>Check failed:</b> "+escapeHtml(e?.message||String(e)),"err");
+    status("<b>Check failed:</b> "+esc(e?.message||String(e)),"err");
     btn.disabled=true;
   }
 }
 
-async function createPasskey(){
+async function registerFaceID(){
   btn.disabled=true;
-  show("Starting Face ID registration...<br><br><b>Wait for the iPhone security prompt.</b>");
+  status("Step 1/3 — Requesting a registration challenge...");
 
   try{
-    if(!window.isSecureContext)
-      throw new Error("The page is not running in a secure HTTPS context.");
-
-    if(!window.PublicKeyCredential)
-      throw new Error("This browser does not provide WebAuthn.");
-
     const {data:{session},error:sessionError}=await sb.auth.getSession();
     if(sessionError) throw sessionError;
-    if(!session) throw new Error("No active Supabase session. Sign in normally first.");
+    if(!session) throw new Error("No active session. Sign in normally first.");
 
-    /*
-      This is Supabase's official full registration ceremony:
-      challenge -> navigator.credentials.create() -> verification.
-    */
-    const result=await sb.auth.registerPasskey();
+    // STEP 1: ask Supabase for WebAuthn creation options
+    const {data:registration,error:startError}=
+      await sb.auth.passkey.startRegistration();
 
-    if(result?.error){
-      throw result.error;
-    }
+    if(startError) throw startError;
+    if(!registration?.options) throw new Error("Supabase did not return registration options.");
 
-    show(
-      "✅ <b>Face ID is activated.</b><br><br>"+
-      "Your passkey was registered for this Al Noor account on this device.",
+    const publicKey=creationOptionsFromJSON(registration.options);
+
+    status(
+      "Step 2/3 — Starting <b>WebAuthn CREATE</b>.<br><br>"+
+      "The next screen must be the iPhone passkey creation flow."
+    );
+
+    // STEP 2: directly invoke browser CREATE, not GET/sign-in
+    const credential=await navigator.credentials.create({publicKey});
+
+    if(!credential) throw new Error("The browser returned no credential.");
+
+    status("Step 3/3 — Verifying the new passkey with Supabase...");
+
+    const serialized=serializeRegistrationCredential(credential);
+
+    // STEP 3: send the created credential back for verification
+    const {data:passkey,error:verifyError}=
+      await sb.auth.passkey.verifyRegistration({
+        challengeId:registration.challenge_id,
+        credential:serialized
+      });
+
+    if(verifyError) throw verifyError;
+
+    status(
+      "✅ <b>FACE ID ACTIVATED SUCCESSFULLY</b><br><br>"+
+      "Passkey ID: "+esc(passkey?.id||credential.id),
       "ok"
     );
+
     btn.textContent="FACE ID ACTIVE";
 
-    setTimeout(()=>{
-      location.href="card.html";
-    },1800);
+    setTimeout(()=>location.href="card.html",1800);
 
   }catch(e){
-    const name=e?.name||"";
+    const name=e?.name||"UnknownError";
+    const msg=e?.message||String(e);
     const code=e?.code||"";
-    const message=e?.message||String(e);
 
-    let extra="";
-    if(name==="NotAllowedError" || /not allowed|denied|permission/i.test(message)){
-      extra="<br><br><b>Browser result:</b> WebAuthn registration was blocked before the passkey was saved.";
+    let hint="";
+    if(name==="NotAllowedError"){
+      hint="<br><br><b>IMPORTANT:</b> iPhone/browser blocked the CREATE ceremony. This test confirms the failure is before Supabase verification.";
+    }else if(code==="webauthn_credential_exists"){
+      hint="<br><br>This device may already have a passkey registered for this account.";
+    }else if(code==="passkey_disabled"){
+      hint="<br><br>Supabase Passkey authentication is disabled.";
     }
 
-    show(
-      "<b>Face ID registration failed.</b><br>"+
-      "<b>Error:</b> "+escapeHtml(name||"Unknown")+"<br>"+
-      (code ? "<b>Code:</b> "+escapeHtml(code)+"<br>" : "")+
-      "<b>Message:</b> "+escapeHtml(message)+extra,
+    status(
+      "<b>FACE ID REGISTRATION FAILED</b><br>"+
+      "<b>Error:</b> "+esc(name)+"<br>"+
+      (code?"<b>Code:</b> "+esc(code)+"<br>":"")+
+      "<b>Message:</b> "+esc(msg)+hint,
       "err"
     );
+
     btn.disabled=false;
   }
-}
-
-function escapeHtml(s){
-  return String(s).replace(/[&<>"']/g,m=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  }[m]));
 }
 
 check();
