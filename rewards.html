@@ -20,8 +20,18 @@ a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
 </style></head><body><main class="app"><header class="top"><img class="logo" src="logo-1995.png"><div class="brand"><h1>AL NOOR</h1><small>REWARDS • EST. 1995</small></div></header><h1 class="page-title">Your Rewards</h1><p class="page-sub">Your free drinks and reward history.</p><div class="stats"><div class="stat glass"><strong id="earned">0</strong><span>FREE DRINKS EARNED</span></div><div class="stat glass"><strong id="available">0</strong><span>AVAILABLE NOW</span></div></div><section class="card glass"><h2 style="margin:0;font-family:Georgia,serif">Reward History</h2><p class="page-sub">Redeemed rewards appear here with their date and coupon number.</p><div id="history"></div></section></main><nav class="bottom-nav"><a class="nav " href="index.html" data-page="index.html"><b>⌂</b><span>Home</span></a><a class="nav active" href="rewards.html" data-page="rewards.html"><b>♧</b><span>Rewards</span></a><a class="nav center" href="alnoor.html" data-page="alnoor.html"><span class="circle"><img src="logo-1995.png"></span><span>AL NOOR</span></a><a class="nav " href="locations.html" data-page="locations.html"><b>⌖</b><span>Locations</span></a><a class="nav " href="menu.html" data-page="menu.html"><b>☰</b><span>Menu</span></a></nav><script>
 const SUPABASE_URL="https://fgarlyoqobopudfkifbp.supabase.co";
 const SUPABASE_KEY="sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
-function getToken(){return new URLSearchParams(location.search).get("token")||""}
-function go(page){const t=getToken();location.href=page+(t?"?token="+encodeURIComponent(t):"")}
+function getToken(){
+  const fromUrl=new URLSearchParams(location.search).get("token");
+  if(fromUrl){
+    localStorage.setItem("alnoor_public_token",fromUrl);
+    return fromUrl;
+  }
+  return localStorage.getItem("alnoor_public_token")||"";
+}
+function go(page){
+  const t=getToken();
+  location.href=page+(t?"?token="+encodeURIComponent(t):"");
+}
 async function rpc(name,body){
  const r=await fetch(SUPABASE_URL+"/rest/v1/rpc/"+name,{method:"POST",headers:{"apikey":SUPABASE_KEY,"Content-Type":"application/json"},body:JSON.stringify(body)});
  const tx=await r.text();let d=null;try{d=tx?JSON.parse(tx):null}catch{}
@@ -30,11 +40,37 @@ async function rpc(name,body){
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
 function fmtDate(v){if(!v)return "—";const d=new Date(v);return Number.isNaN(d.getTime())?v:d.toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"})}
 
+document.querySelectorAll(".bottom-nav a").forEach(a=>{
+  a.addEventListener("click",e=>{
+    e.preventDefault();
+    go(a.getAttribute("href"));
+  });
+});
+
 (async()=>{const t=getToken();if(!t){document.getElementById("history").innerHTML='<div class="empty">Open Rewards from your loyalty card.</div>';return}
 try{const rr=await rpc("get_customer_by_token",{p_token:t});const c=Array.isArray(rr)?rr[0]:rr;if(!c)throw Error("Customer not found.");const earned=Math.min(5,Math.floor(Number(c.points||0)/10));document.getElementById("earned").textContent=earned;
 let rows=[];try{const h=await rpc("get_customer_reward_history",{p_token:t});rows=Array.isArray(h)?h:[]}catch(e){}
-const available=rows.filter(x=>(x.status||"AVAILABLE")==="AVAILABLE").length;document.getElementById("available").textContent=available||earned;
-if(!rows.length){document.getElementById("history").innerHTML='<div class="empty">No reward history yet.<br><span style="font-size:11px">After redemption, the date and coupon number will appear here.</span></div>';return}
-document.getElementById("history").innerHTML=rows.map(x=>'<div class="reward"><div class="cup">☕</div><div><h3>FREE DRINK</h3><p>'+fmtDate(x.redeemed_at||x.issued_at)+' • Coupon #'+esc(x.coupon_number||x.coupon_code||"—")+'</p></div><span class="status">'+esc(x.status||"AVAILABLE")+'</span></div>').join("");
+const available=rows.filter(x=>String(x.status||"AVAILABLE").toUpperCase()==="AVAILABLE").length;
+const redeemed=rows.filter(x=>String(x.status||"").toUpperCase()==="REDEEMED").length;
+document.getElementById("earned").textContent=Math.max(earned, redeemed);
+document.getElementById("available").textContent=available;
+
+if(!rows.length){
+  document.getElementById("history").innerHTML='<div class="empty">No free drinks yet.<br><span style="font-size:11px">Earn 10 points to receive a FREE DRINK.</span></div>';
+  return;
+}
+
+const sorted=[...rows].sort((a,b)=>{
+  const da=new Date(a.redeemed_at||a.issued_at||0).getTime();
+  const db=new Date(b.redeemed_at||b.issued_at||0).getTime();
+  return db-da;
+});
+
+document.getElementById("history").innerHTML=sorted.map(x=>{
+  const st=String(x.status||"AVAILABLE").toUpperCase();
+  const date=x.redeemed_at||x.issued_at;
+  const label=st==="REDEEMED"?"REDEEMED":"AVAILABLE";
+  return '<div class="reward"><div class="cup">☕</div><div><h3>FREE DRINK</h3><p>'+fmtDate(date)+' • Coupon #'+esc(x.coupon_number||x.coupon_code||"—")+'</p></div><span class="status">'+label+'</span></div>';
+}).join("");
 }catch(e){document.getElementById("history").innerHTML='<div class="empty">Unable to load rewards right now.</div>'}})();
 </script></body></html>
