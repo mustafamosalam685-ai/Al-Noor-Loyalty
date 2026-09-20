@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#17120f">
+<title>Al Noor — Safari Passkey Test</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#17120f;color:#f3ead9;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:520px;margin:auto;padding:35px 18px 50px}
+.logo{display:block;width:120px;margin:5px auto 28px}
+h1{text-align:center;font-size:29px;margin:0 0 10px}
+p{text-align:center;color:#aa9d8d;line-height:1.55;font-size:14px}
+.card{margin-top:24px;background:#211914;border:1px solid #4a392d;border-radius:25px;padding:22px;box-shadow:0 15px 40px #0008}
+.row{padding:12px 0;border-bottom:1px solid #3c2e25;font-size:13px;line-height:1.45}
+.row:last-child{border-bottom:0}
+.label{color:#aa9d8d}
+.value{font-weight:800;word-break:break-word}
+.good{color:#9bd69a}.bad{color:#e7aaa0}
+button{width:100%;margin-top:20px;padding:17px;border:0;border-radius:16px;background:#c9a96a;color:#17120f;font-size:15px;font-weight:900}
+button:disabled{opacity:.5}
+#result{margin-top:18px;background:#17120f;border:1px solid #4a392d;border-radius:16px;padding:15px;font-size:13px;line-height:1.6;word-break:break-word}
+.note{font-size:11px;color:#817569;margin-top:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <img class="logo" src="logo-1995.png" alt="Al Noor">
+  <h1>Safari Passkey Test</h1>
+  <p>This page tests the iPhone browser directly. It does not connect to Supabase and does not change your Al Noor account.</p>
+
+  <div class="card">
+    <div class="row"><span class="label">Secure HTTPS:</span> <span id="https" class="value">Checking…</span></div>
+    <div class="row"><span class="label">WebAuthn API:</span> <span id="webauthn" class="value">Checking…</span></div>
+    <div class="row"><span class="label">Platform authenticator:</span> <span id="platform" class="value">Checking…</span></div>
+    <div class="row"><span class="label">Current origin:</span> <span id="origin" class="value"></span></div>
+
+    <button id="testBtn" onclick="runTest()">TEST FACE ID / PASSKEY</button>
+    <div id="result">Press the button once. The browser should show the native passkey/Face ID creation screen.</div>
+    <div class="note">Important: open this page directly in Safari from the GitHub Pages HTTPS address. Do not open the HTML from Files or inside another app.</div>
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+
+function set(id,text,ok){
+  $(id).textContent=text;
+  $(id).className="value "+(ok===true?"good":ok===false?"bad":"");
+}
+
+function randomBytes(n){
+  const a=new Uint8Array(n);
+  crypto.getRandomValues(a);
+  return a;
+}
+
+function bytesToBase64Url(bytes){
+  let s="";
+  for(const b of bytes)s+=String.fromCharCode(b);
+  return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+}
+
+async function init(){
+  set("https",location.protocol==="https:" && window.isSecureContext
+    ? "YES" : "NO",location.protocol==="https:" && window.isSecureContext);
+
+  const supported=!!(window.PublicKeyCredential &&
+    navigator.credentials &&
+    typeof navigator.credentials.create==="function");
+
+  set("webauthn",supported?"YES":"NO",supported);
+
+  let available="Not checked";
+  let ok=null;
+
+  try{
+    if(PublicKeyCredential &&
+       typeof PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable==="function"){
+      ok=await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+      available=ok?"YES":"NO";
+    }
+  }catch(e){
+    available="ERROR: "+e.name;
+  }
+
+  set("platform",available,ok);
+  $("origin").textContent=location.origin;
+  $("testBtn").disabled=!supported || !window.isSecureContext;
+}
+
+async function runTest(){
+  const btn=$("testBtn");
+  btn.disabled=true;
+  $("result").textContent="Starting WebAuthn CREATE…";
+
+  try{
+    if(location.protocol!=="https:" || !window.isSecureContext)
+      throw new Error("This page is not running in a secure HTTPS context.");
+
+    if(!window.PublicKeyCredential || !navigator.credentials?.create)
+      throw new Error("WebAuthn credential creation is not available in this browser.");
+
+    const challenge=randomBytes(32);
+    const userId=randomBytes(16);
+
+    /*
+      This is deliberately a browser-only diagnostic.
+      The challenge is random and is NOT sent to Supabase.
+      A successful result proves Safari can create a platform passkey
+      for this exact GitHub Pages origin.
+    */
+    const credential=await navigator.credentials.create({
+      publicKey:{
+        challenge,
+        rp:{
+          name:"Al Noor Loyalty",
+          id:location.hostname
+        },
+        user:{
+          id:userId,
+          name:"safari-test@alnoor.local",
+          displayName:"Al Noor Safari Test"
+        },
+        pubKeyCredParams:[
+          {type:"public-key",alg:-7},
+          {type:"public-key",alg:-257}
+        ],
+        authenticatorSelection:{
+          authenticatorAttachment:"platform",
+          residentKey:"required",
+          requireResidentKey:true,
+          userVerification:"preferred"
+        },
+        timeout:60000,
+        attestation:"none"
+      }
+    });
+
+    if(!credential)throw new Error("Safari returned no credential.");
+
+    $("result").innerHTML=
+      '<span class="good"><b>✅ PASSKEY CREATION WORKED</b></span><br><br>'+
+      'Safari successfully created a platform credential for:<br>'+
+      '<b>'+escapeHtml(location.hostname)+'</b><br><br>'+
+      'Credential ID: <b>'+escapeHtml(credential.id)+'</b><br><br>'+
+      'This means the iPhone/Safari WebAuthn layer is working. The remaining issue is in the Al Noor/Supabase registration configuration.';
+
+  }catch(e){
+    $("result").innerHTML=
+      '<span class="bad"><b>❌ PASSKEY CREATION FAILED</b></span><br><br>'+
+      '<b>Name:</b> '+escapeHtml(e?.name||"UnknownError")+'<br>'+
+      '<b>Message:</b> '+escapeHtml(e?.message||String(e))+'<br><br>'+
+      'No Supabase code was used by this test.';
+
+  }finally{
+    btn.disabled=false;
+  }
+}
+
+function escapeHtml(v){
+  return String(v).replace(/[&<>"']/g,m=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
+}
+
+init();
+</script>
+</body>
+</html>
