@@ -1,37 +1,113 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Al Noor Loyalty Card</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#17120f">
+<title>Al Noor Loyalty Card</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
-body{margin:0;background:#120e0b;color:#f3e7d0;font-family:Arial;text-align:center}.wrap{max-width:520px;margin:auto;padding:25px 18px 100px}.card{background:#211912;border:1px solid #80653c;border-radius:25px;padding:22px}.logo{width:58px;height:58px;border:1px solid #b99555;border-radius:50%;display:grid;place-items:center;margin:0 auto 12px;color:#c9a15e;font-weight:bold}.brand{color:#c9a15e;letter-spacing:3px;font-size:13px}.pill{display:inline-block;border:1px solid #927443;border-radius:20px;padding:7px 12px;font-size:11px;color:#d7bd8a;margin:20px 0}.name{font-size:28px;font-weight:bold}.id{color:#9f927f;font-size:12px;margin-top:6px}.qr{width:300px;height:300px;max-width:100%;background:#fff;border-radius:20px;margin:24px auto 14px;display:grid;place-items:center}.points,.face{margin-top:16px;padding:20px;border-radius:20px;background:#19130f;border:1px solid #55442c}.circle{width:110px;height:110px;border-radius:50%;border:8px solid #8e7042;display:grid;place-items:center;margin:auto}.circle b{font-size:28px}.circle small{display:block}.more{margin-top:12px;color:#c8b99f;font-size:12px}button{width:100%;padding:15px;border:0;border-radius:14px;background:#c9a15e;color:#17120e;font-weight:bold;margin-top:12px}button.alt{background:transparent;color:#c9a15e;border:1px solid #6f5835}.status{color:#c9a15e;font-size:12px;min-height:18px;margin-top:10px}.error{padding:60px 20px;color:#e0b3a5}
-</style></head><body><main id="app" class="wrap">Loading...</main>
+:root{--panel:#211914;--cream:#f3ead9;--gold:#c9a96a;--muted:#aa9d8d;--line:#3b2d24}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#2a2019,#17120f 55%);color:var(--cream);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:520px;margin:auto;padding:28px 18px 115px}.top{text-align:center}.logo{width:78px;height:78px;border:1px solid #8f7548;border-radius:50%;display:grid;place-items:center;margin:5px auto 13px;color:var(--gold);font-weight:900;font-size:22px}.brand{color:var(--gold);font-size:12px;letter-spacing:2px}.card{margin-top:20px;background:var(--panel);border:1px solid var(--line);border-radius:28px;padding:22px;box-shadow:0 18px 45px #0007}
+.member{display:inline-block;border:1px solid #80653c;border-radius:20px;padding:7px 13px;color:#d7bd8a;font-size:10px;letter-spacing:1.5px;margin-bottom:17px}.welcome{color:var(--muted);font-size:13px}.name{font-size:28px;font-weight:800;margin:5px 0}.id{color:#8f8377;font-size:12px;letter-spacing:1px}
+.qrbox{width:300px;height:300px;max-width:100%;background:#fff;border-radius:20px;margin:24px auto 14px;display:grid;place-items:center}.qrnote{text-align:center;color:var(--muted);font-size:12px}
+.points{margin-top:17px;background:#19130f;border:1px solid #4b3b2e;border-radius:22px;padding:20px;text-align:center}.circle{width:112px;height:112px;border-radius:50%;border:8px solid #8e7042;margin:auto;display:flex;flex-direction:column;align-items:center;justify-content:center}.circle strong{font-size:29px}.circle span{font-size:10px;letter-spacing:2px;color:var(--muted)}.more{margin-top:13px;color:#c8b99f;font-size:12px}.dots{display:flex;justify-content:center;gap:7px;margin-top:14px}.dot{width:10px;height:10px;border-radius:50%;background:#55442c}.dot.on{background:var(--gold)}
+.face{margin-top:17px;background:#19130f;border:1px solid #4b3b2e;border-radius:22px;padding:18px}.face h3{margin:0 0 7px;font-size:17px}.face p{margin:0 0 14px;color:var(--muted);font-size:12px;line-height:1.5}
+button{width:100%;padding:15px;border:0;border-radius:14px;font-weight:800;cursor:pointer}.facebtn{background:var(--gold);color:#1d150f}.signout{margin-top:10px;background:transparent;color:var(--gold);border:1px solid #6f5835}.status{text-align:center;color:var(--gold);font-size:12px;min-height:18px;margin-top:9px;line-height:1.5}.error{text-align:center;padding:55px 20px;color:#e0b3a5}.error p{color:var(--muted)}
+.bottom{position:fixed;left:0;right:0;bottom:0;background:rgba(15,11,8,.97);border-top:1px solid #3d3021;display:flex;justify-content:center;padding:9px 6px calc(9px + env(safe-area-inset-bottom));z-index:20}.nav{width:20%;max-width:105px;text-align:center;color:#9f927f;font-size:10px;text-decoration:none}.nav span{display:block;font-size:20px;margin-bottom:3px}.active{color:var(--gold)}.center{width:38px;height:38px;border-radius:50%;border:1px solid #8e7042;margin:-3px auto 2px;display:grid;place-items:center;color:var(--gold);font-weight:900;font-size:13px}
+</style>
+</head>
+<body>
+<div id="app" class="wrap">Loading your Al Noor card...</div>
+
 <script>
-const URL="https://fgarlyoqobopudfkifbp.supabase.co",KEY="sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
-const sb=supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,experimental:{passkey:true}}});
-const esc=x=>String(x??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
-async function customer(){
- const {data:{session}}=await sb.auth.getSession();
- if(session){const r=await sb.rpc("get_my_customer");if(!r.error&&r.data)return r.data}
- const t=new URLSearchParams(location.search).get("token")||localStorage.getItem("alnoor_public_token");
- if(t){const r=await sb.rpc("get_customer_by_token",{p_token:t});if(!r.error&&r.data)return r.data}
- return null
+const SUPABASE_URL="https://fgarlyoqobopudfkifbp.supabase.co";
+const SUPABASE_KEY="sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,experimental:{passkey:true}}});
+
+function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
+
+async function loadCustomer(){
+  const token=new URLSearchParams(location.search).get("token");
+  if(token){
+    const r=await sb.rpc("get_customer_by_token",{p_token:token});
+    if(!r.error&&r.data)return Array.isArray(r.data)?r.data[0]:r.data;
+  }
+  const {data:{session}}=await sb.auth.getSession();
+  if(session){
+    const r=await sb.rpc("get_my_customer");
+    if(!r.error&&r.data)return Array.isArray(r.data)?r.data[0]:r.data;
+  }
+  return null;
 }
-async function passkeyExists(){try{const r=await sb.auth.passkey.list();return !r.error&&Array.isArray(r.data)&&r.data.length>0}catch(e){return false}}
-async function activate(){
- const b=document.getElementById("face");if(b)b.disabled=true;document.getElementById("status").textContent="Waiting for Face ID / device verification...";
- try{
-  const {data:{session}}=await sb.auth.getSession();if(!session){document.getElementById("status").textContent="Please sign in first.";return}
-  if(!window.isSecureContext||!window.PublicKeyCredential){document.getElementById("status").textContent="Passkey is not supported here.";return}
-  const r=await sb.auth.registerPasskey();if(r.error){document.getElementById("status").textContent=r.error.message;return}
-  document.getElementById("status").textContent="Face ID is now active on this device.";setTimeout(render,700)
- }catch(e){document.getElementById("status").textContent=e?.message||"Face ID activation failed."}
- finally{if(b)b.disabled=false}
+
+async function activateFaceID(){
+  const btn=document.getElementById("faceBtn"),status=document.getElementById("faceStatus");
+  btn.disabled=true;status.textContent="Waiting for Face ID / device verification...";
+  try{
+    if(!window.isSecureContext)throw new Error("Please open the secure HTTPS Al Noor website.");
+    if(!window.PublicKeyCredential)throw new Error("Passkey is not supported on this device/browser.");
+    const {data:{session}}=await sb.auth.getSession();
+    if(!session)throw new Error("Please sign in first, then activate Face ID.");
+    const {error}=await sb.auth.registerPasskey();
+    if(error)throw new Error(error.message||"Face ID activation failed.");
+    status.textContent="Face ID is now active on this device.";
+    btn.textContent="FACE ID ACTIVE";
+  }catch(e){status.textContent=e?.message||"Face ID activation failed."}
+  finally{btn.disabled=false}
 }
-async function logout(){await sb.auth.signOut();localStorage.removeItem("alnoor_public_token");location.href="login.html"}
+
+async function signOut(){await sb.auth.signOut();localStorage.removeItem("alnoor_public_token");location.href="login.html";}
+
 async function render(){
- const c=await customer();if(!c){app.innerHTML='<div class="error"><h2>Customer card not found</h2><button onclick="location.href=\'login.html\'">SIGN IN</button></div>';return}
- if(c.public_token)localStorage.setItem("alnoor_public_token",c.public_token);
- const p=Number(c.points||0),n=p%10,more=n?10-n:10,active=await passkeyExists();
- app.innerHTML=`<div class="logo">AN</div><div class="brand">AL NOOR LOYALTY</div><section class="card"><div class="pill">AL NOOR FAMILY</div><div>Welcome back</div><div class="name">${esc(c.full_name)}</div><div class="id">CUSTOMER ID · ${esc(c.customer_code)}</div><div class="qr"><div id="q"></div></div><div style="color:#a99d8b;font-size:12px">Show this QR code at the counter</div><div class="points"><div class="circle"><div><b>${n}/10</b><small>POINTS</small></div></div><div class="more">${more} MORE POINTS UNTIL YOUR NEXT FREE DRINK!</div></div><div class="face"><h3>${active?"✓ Face ID Active":"Activate Face ID"}</h3><p style="color:#a99d8b;font-size:12px">${active?"This device already has a Passkey for your Al Noor account.":"Activate Face ID once on this device. Then you can sign in without typing your email."}</p>${active?"":'<button id="face" onclick="activate()">ACTIVATE FACE ID</button>'}<div id="status" class="status"></div></div><button class="alt" onclick="logout()">SIGN OUT</button></section>`;
- if(c.public_token)new QRCode(q,{text:String(c.public_token),width:272,height:272,colorDark:"#111",colorLight:"#fff",correctLevel:QRCode.CorrectLevel.H})
+  const c=await loadCustomer();
+  if(!c){
+    app.innerHTML=`<div class="error"><h2>Customer card not found</h2><p>Please sign in again.</p><button onclick="location.href='login.html'">SIGN IN</button></div>`;
+    return;
+  }
+  if(c.public_token)localStorage.setItem("alnoor_public_token",c.public_token);
+  const p=Math.max(0,Number(c.points||0)),n=p%10,more=n===0?10:10-n;
+
+  app.innerHTML=`
+  <div class="top"><div class="logo">AN</div><div class="brand">AL NOOR LOYALTY</div></div>
+  <section class="card">
+    <div class="member">AL NOOR • LOYALTY MEMBER</div>
+    <div class="welcome">Welcome back</div>
+    <div class="name">${esc(c.full_name)}</div>
+    <div class="id">CUSTOMER ID · ${esc(c.customer_code)}</div>
+
+    <div class="qrbox"><div id="customerQr"></div></div>
+    <div class="qrnote">Show this QR code at the counter</div>
+
+    <div class="points">
+      <div class="circle"><strong>${n}/10</strong><span>POINTS</span></div>
+      <div class="more">${more} MORE POINTS UNTIL YOUR NEXT FREE DRINK!</div>
+      <div class="dots">${Array.from({length:10},(_,i)=>`<div class="dot ${i<n?"on":""}"></div>`).join("")}</div>
+    </div>
+
+    <div class="face">
+      <h3>Activate Face ID</h3>
+      <p>Activate Face ID once on this device. After that, you can use Face ID to sign in without typing your email.</p>
+      <button id="faceBtn" class="facebtn" onclick="activateFaceID()">ACTIVATE FACE ID</button>
+      <div id="faceStatus" class="status"></div>
+    </div>
+
+    <button class="signout" onclick="signOut()">SIGN OUT</button>
+  </section>
+
+  <div class="bottom">
+    <a class="nav active" href="card.html?token=${encodeURIComponent(c.public_token||"")}"><span>⌂</span>Home</a>
+    <a class="nav" href="rewards.html"><span>🎁</span>Rewards</a>
+    <a class="nav" href="alnoor.html"><div class="center">AN</div>Al Noor</a>
+    <a class="nav" href="locations.html"><span>⌖</span>Locations</a>
+    <a class="nav" href="menu.html"><span>☰</span>Menu</a>
+  </div>`;
+
+  if(c.public_token)new QRCode(document.getElementById("customerQr"),{text:String(c.public_token),width:272,height:272,colorDark:"#111111",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H});
 }
 render();
-</script></body></html>
+</script>
+</body>
+</html>
