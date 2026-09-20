@@ -7,11 +7,22 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
 <style>
 :root{--bg:#17120f;--panel:#211914;--cream:#f3ead9;--gold:#c9a96a;--muted:#aa9d8d;--line:#3b2d24}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#2a2019,#17120f 55%);color:var(--cream);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.wrap{max-width:520px;margin:auto;padding:35px 18px}.logo{width:145px;display:block;margin:8px auto 28px}.eyebrow{text-align:center;color:var(--gold);font-size:11px;letter-spacing:2px}.title{text-align:center;font-size:30px;margin:10px 0}.sub{text-align:center;color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:25px}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:28px;padding:22px;box-shadow:0 18px 45px #0007}.field{margin-top:15px}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:8px}.field input{width:100%;padding:15px;border-radius:14px;border:1px solid #4a392d;background:#2b211b;color:#fff;outline:none}
-button,.btn{width:100%;padding:16px;border-radius:15px;border:0;font-weight:800;font-size:14px;cursor:pointer}.primary{background:var(--gold);color:#1d150f}.secondary{margin-top:10px;background:#33271f;color:var(--cream);border:1px solid #4a392d}
-.status{text-align:center;color:var(--gold);font-size:12px;min-height:20px;margin-top:14px;line-height:1.5}.footer{text-align:center;color:#766b60;font-size:11px;margin-top:22px}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#2a2019,#17120f 55%);color:var(--cream);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:520px;margin:auto;padding:35px 18px}
+.logo{width:145px;display:block;margin:8px auto 28px}
+.eyebrow{text-align:center;color:var(--gold);font-size:11px;letter-spacing:2px}
+.title{text-align:center;font-size:30px;margin:10px 0}
+.sub{text-align:center;color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:25px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:28px;padding:22px;box-shadow:0 18px 45px #0007}
+.field{margin-top:5px}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:8px}
+.field input{width:100%;padding:15px;border-radius:14px;border:1px solid #4a392d;background:#2b211b;color:#fff;outline:none}
+button{width:100%;padding:16px;border-radius:15px;border:0;font-weight:800;font-size:14px;cursor:pointer}
+.primary{margin-top:12px;background:var(--gold);color:#1d150f}
+.secondary{margin-top:10px;background:#33271f;color:var(--cream);border:1px solid #4a392d}
+.status{text-align:center;color:var(--gold);font-size:12px;min-height:20px;margin-top:14px;line-height:1.5}
+.footer{text-align:center;color:#766b60;font-size:11px;margin-top:22px}
 </style>
 </head>
 <body>
@@ -20,90 +31,106 @@ button,.btn{width:100%;padding:16px;border-radius:15px;border:0;font-weight:800;
 <div class="eyebrow">AL NOOR • LOYALTY</div>
 <div class="title">Welcome Back</div>
 <div class="sub">Sign in to your Al Noor Loyalty Card.</div>
+
 <div class="panel">
-<button id="passkeyBtn" class="primary">CONTINUE WITH FACE ID</button>
-<div class="status" id="passkeyStatus"></div>
-<div style="text-align:center;color:#766b60;margin:16px 0">OR</div>
-<div class="field"><label>Email</label><input id="email" type="email" autocomplete="email" placeholder="Enter your email"></div>
-<button id="emailBtn" class="secondary">SEND SIGN-IN LINK</button>
-<div id="emailStatus" class="status"></div>
-<button class="secondary" onclick="location.href='register.html'">CREATE NEW ACCOUNT</button>
+  <div class="field">
+    <label>Email</label>
+    <input id="email" type="email" autocomplete="email" placeholder="Enter your email">
+  </div>
+
+  <button id="emailBtn" class="primary">SEND SIGN-IN LINK</button>
+  <div id="emailStatus" class="status"></div>
+
+  <button class="secondary" onclick="location.href='register.html'">CREATE NEW ACCOUNT</button>
 </div>
+
 <div class="footer">AL NOOR • LOYALTY MEMBER</div>
 </div>
 
 <script>
 const SUPABASE_URL="https://fgarlyoqobopudfkifbp.supabase.co";
 const SUPABASE_KEY="sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
-const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,experimental:{passkey:true}}});
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
+  auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
+});
 
 async function finishLogin(){
   const {data:{session}}=await sb.auth.getSession();
   if(!session)return false;
 
   let r=await sb.rpc("get_my_customer");
-  let customer=!r.error && r.data ? (Array.isArray(r.data)?r.data[0]:r.data) : null;
+  let customer=!r.error && r.data
+    ? (Array.isArray(r.data)?r.data[0]:r.data)
+    : null;
 
   if(!customer){
     const user=session.user;
     const meta=user.user_metadata||{};
+
     if(!meta.full_name || !meta.mobile){
       throw new Error("Your account has no loyalty profile yet. Please use CREATE NEW ACCOUNT.");
     }
+
     r=await sb.rpc("register_customer_authenticated",{
       p_full_name:meta.full_name,
       p_mobile:meta.mobile,
       p_email:user.email||""
     });
+
     if(r.error)throw new Error(r.error.message||"Could not create your loyalty card.");
     customer=r.data;
   }
 
   if(!customer)throw new Error("Loyalty card not found.");
-  if(customer.public_token)localStorage.setItem("alnoor_public_token",customer.public_token);
+
+  if(customer.public_token){
+    localStorage.setItem("alnoor_public_token",customer.public_token);
+  }
+
   location.href="card.html?token="+encodeURIComponent(customer.public_token);
   return true;
-}
-
-async function passkeyLogin(){
-  const s=document.getElementById("passkeyStatus");
-  const b=document.getElementById("passkeyBtn");
-  b.disabled=true;s.textContent="Waiting for Face ID / device verification...";
-  try{
-    if(!window.isSecureContext)throw new Error("Please open the secure HTTPS Al Noor website.");
-    if(!window.PublicKeyCredential)throw new Error("Passkey is not supported on this device/browser.");
-    const {error}=await sb.auth.signInWithPasskey();
-    if(error)throw new Error(error.message||"Face ID sign-in failed.");
-    await finishLogin();
-  }catch(e){s.textContent=e?.message||"Face ID sign-in was cancelled or failed."}
-  finally{b.disabled=false}
 }
 
 async function emailLogin(){
   const email=document.getElementById("email").value.trim().toLowerCase();
   const s=document.getElementById("emailStatus");
   const b=document.getElementById("emailBtn");
-  if(!email){s.textContent="Enter your email.";return}
-  b.disabled=true;s.textContent="Sending sign-in link...";
+
+  if(!email){
+    s.textContent="Enter your email.";
+    return;
+  }
+
+  b.disabled=true;
+  s.textContent="Sending sign-in link...";
+
   try{
     const {error}=await sb.auth.signInWithOtp({
       email,
-      options:{emailRedirectTo:new URL("login.html",location.href).href}
+      options:{
+        emailRedirectTo:new URL("login.html",location.href).href
+      }
     });
+
     if(error)throw new Error(error.message);
+
     s.textContent="Check your email and open the sign-in link on this device.";
-  }catch(e){s.textContent=e?.message||"Could not send sign-in link."}
-  finally{b.disabled=false}
+  }catch(e){
+    s.textContent=e?.message||"Could not send sign-in link.";
+  }finally{
+    b.disabled=false;
+  }
 }
 
-document.getElementById("passkeyBtn").onclick=passkeyLogin;
 document.getElementById("emailBtn").onclick=emailLogin;
 
 (async()=>{
   try{
     const {data:{session}}=await sb.auth.getSession();
     if(session)await finishLogin();
-  }catch(e){document.getElementById("emailStatus").textContent=e.message}
+  }catch(e){
+    document.getElementById("emailStatus").textContent=e.message;
+  }
 })();
 </script>
 </body>
