@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#17120f">
+<title>Al Noor — Face ID Setup</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
+<style>
+:root{--bg:#17120f;--panel:#211914;--cream:#f3ead9;--gold:#c9a96a;--muted:#aa9d8d;--line:#4a392d}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at top,#2a2019 0,#17120f 55%);color:var(--cream);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+.wrap{max-width:520px;margin:auto;padding:34px 18px 50px}
+.logo{width:125px;display:block;margin:8px auto 28px;object-fit:contain}
+h1{text-align:center;font-size:30px;margin:0 0 10px}
+.sub{text-align:center;color:var(--muted);line-height:1.6;font-size:14px;margin:0 auto 24px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:26px;padding:22px;box-shadow:0 18px 45px #0007}
+.status{background:#18130f;border:1px solid var(--line);border-radius:16px;padding:15px;font-size:13px;line-height:1.55;margin-bottom:16px;word-break:break-word}
+.status b{color:var(--gold)}
+button{width:100%;border:0;border-radius:16px;padding:17px;background:var(--gold);color:#1d150f;font-weight:900;font-size:15px;cursor:pointer}
+button:disabled{opacity:.55}
+.secondary{display:block;text-align:center;margin-top:15px;color:var(--gold);text-decoration:none;font-weight:700}
+.small{color:#85796d;font-size:11px;line-height:1.5;margin-top:18px;text-align:center}
+.ok{color:#b9dfb4}
+.err{color:#e5b0a6}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <img class="logo" src="logo-1995.png" alt="Al Noor">
+  <h1>Activate Face ID</h1>
+  <p class="sub">This page is only for creating your Al Noor passkey on this device.</p>
+
+  <div class="card">
+    <div id="status" class="status">Checking your Al Noor account...</div>
+    <button id="btn" onclick="createPasskey()">ACTIVATE FACE ID</button>
+    <a class="secondary" href="card.html">← Back to Loyalty Card</a>
+    <div class="small">
+      Keep this page open on the same Al Noor HTTPS website. Face ID can only be registered after you are signed in.
+    </div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL="https://fgarlyoqobopudfkifbp.supabase.co";
+const SUPABASE_KEY="sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
+
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
+  auth:{
+    persistSession:true,
+    autoRefreshToken:true,
+    detectSessionInUrl:true,
+    experimental:{passkey:true}
+  }
+});
+
+const statusEl=document.getElementById("status");
+const btn=document.getElementById("btn");
+
+function show(message, cls=""){
+  statusEl.className="status "+cls;
+  statusEl.innerHTML=message;
+}
+
+async function check(){
+  try{
+    if(!window.isSecureContext){
+      show("<b>HTTPS:</b> Not secure. Open the GitHub Pages HTTPS website.","err");
+      btn.disabled=true;
+      return;
+    }
+
+    if(!window.PublicKeyCredential){
+      show("<b>WebAuthn:</b> Not supported by this browser.","err");
+      btn.disabled=true;
+      return;
+    }
+
+    const {data:{session},error}=await sb.auth.getSession();
+    if(error) throw error;
+
+    if(!session){
+      show("<b>Session:</b> No active login session.<br><br>Sign in normally first, then open this page.","err");
+      btn.disabled=true;
+      return;
+    }
+
+    const user=session.user;
+    show(
+      "<b>Session:</b> OK<br>"+
+      "<b>Account:</b> "+(user.email||"signed in")+"<br>"+
+      "<b>Origin:</b> "+location.origin+
+      "<br><b>RP ID:</b> mustafamosalam685-ai.github.io",
+      ""
+    );
+    btn.disabled=false;
+  }catch(e){
+    show("<b>Check failed:</b> "+escapeHtml(e?.message||String(e)),"err");
+    btn.disabled=true;
+  }
+}
+
+async function createPasskey(){
+  btn.disabled=true;
+  show("Starting Face ID registration...<br><br><b>Wait for the iPhone security prompt.</b>");
+
+  try{
+    if(!window.isSecureContext)
+      throw new Error("The page is not running in a secure HTTPS context.");
+
+    if(!window.PublicKeyCredential)
+      throw new Error("This browser does not provide WebAuthn.");
+
+    const {data:{session},error:sessionError}=await sb.auth.getSession();
+    if(sessionError) throw sessionError;
+    if(!session) throw new Error("No active Supabase session. Sign in normally first.");
+
+    /*
+      This is Supabase's official full registration ceremony:
+      challenge -> navigator.credentials.create() -> verification.
+    */
+    const result=await sb.auth.registerPasskey();
+
+    if(result?.error){
+      throw result.error;
+    }
+
+    show(
+      "✅ <b>Face ID is activated.</b><br><br>"+
+      "Your passkey was registered for this Al Noor account on this device.",
+      "ok"
+    );
+    btn.textContent="FACE ID ACTIVE";
+
+    setTimeout(()=>{
+      location.href="card.html";
+    },1800);
+
+  }catch(e){
+    const name=e?.name||"";
+    const code=e?.code||"";
+    const message=e?.message||String(e);
+
+    let extra="";
+    if(name==="NotAllowedError" || /not allowed|denied|permission/i.test(message)){
+      extra="<br><br><b>Browser result:</b> WebAuthn registration was blocked before the passkey was saved.";
+    }
+
+    show(
+      "<b>Face ID registration failed.</b><br>"+
+      "<b>Error:</b> "+escapeHtml(name||"Unknown")+"<br>"+
+      (code ? "<b>Code:</b> "+escapeHtml(code)+"<br>" : "")+
+      "<b>Message:</b> "+escapeHtml(message)+extra,
+      "err"
+    );
+    btn.disabled=false;
+  }
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g,m=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
+}
+
+check();
+</script>
+</body>
+</html>
