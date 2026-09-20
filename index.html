@@ -3,12 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#17120f">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
 <title>Al Noor Loyalty</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0/dist/umd/supabase.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
@@ -36,10 +30,6 @@
 </nav>
 
 <script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => navigator.serviceWorker.register("./service-worker.js").catch(() => {}));
-}
-
 const SUPABASE_URL="https://fgarlyoqobopudfkifbp.supabase.co";
 const SUPABASE_KEY="sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
 const {createClient}=supabase;
@@ -70,7 +60,7 @@ async function registerCustomer(){
  if(ce){msg.textContent=ce.message;return;}
  const token=customer.public_token;
  saveToken(token);
- msg.textContent="Account created. Setting up your Passkey…";
+ msg.textContent="Account created. Setting up Face ID…";
  const {data:passkey,error:pe}=await sb.auth.registerPasskey();
  if(pe){
    console.error("Passkey registration error:",pe);
@@ -89,14 +79,100 @@ async function registerCustomer(){
 
 async function useFaceID(){
  const msg=document.getElementById("msg");
- if(!window.PublicKeyCredential){msg.textContent="Passkeys are not supported in this browser.";return;}
- msg.textContent="Waiting for Face ID…";
- const {data,error}=await sb.auth.signInWithPasskey();
- if(error){msg.textContent="No Al Noor Face ID is saved on this device yet. If this is your first time, create your card first.";return;}
- const {data:customer,error:ce}=await sb.rpc("get_my_customer");
- if(ce||!customer){msg.textContent=ce?.message||"Customer account not found.";return;}
- saveToken(customer.public_token);
- location.href="index.html?token="+encodeURIComponent(customer.public_token);
+ const setMsg=(text)=>{
+   if(msg) msg.textContent=text;
+   else alert(text);
+ };
+
+ if(!window.isSecureContext){
+   setMsg("Please open the live HTTPS Al Noor website.");
+   return;
+ }
+
+ if(!window.PublicKeyCredential){
+   setMsg("Passkeys are not supported in this browser.");
+   return;
+ }
+
+ try{
+   setMsg("Checking your Al Noor account…");
+
+   const {data:{session}}=await sb.auth.getSession();
+
+   if(session){
+     setMsg("Starting Face ID setup…");
+
+     // If the customer is already signed in, registerPasskey() is the
+     // correct first-time enrollment flow.
+     const {data:keys,error:listError}=await sb.auth.passkey.list();
+
+     if(!listError && Array.isArray(keys) && keys.length===0){
+       const {error:registerError}=await sb.auth.registerPasskey();
+
+       if(registerError){
+         console.error("Passkey registration error:",registerError);
+         if(registerError.code==="passkey_disabled"){
+           setMsg("Passkey is not enabled in Supabase yet.");
+         }else if(registerError.code==="webauthn_credential_exists"){
+           setMsg("This device already has an Al Noor Passkey.");
+         }else if(/cancel/i.test(registerError.message||"")){
+           setMsg("Face ID setup was cancelled. Tap again to retry.");
+         }else{
+           setMsg(registerError.message||"Face ID setup could not be completed.");
+         }
+         return;
+       }
+
+       setMsg("Face ID saved successfully.");
+       setTimeout(()=>location.reload(),700);
+       return;
+     }
+
+     // A passkey already exists for this authenticated account.
+     const {data:customer,error:ce}=await sb.rpc("get_my_customer");
+     if(ce||!customer){
+       setMsg(ce?.message||"Customer account not found.");
+       return;
+     }
+
+     saveToken(customer.public_token);
+     location.href="index.html?token="+encodeURIComponent(customer.public_token);
+     return;
+   }
+
+   // No active session: this is the actual Passkey sign-in flow.
+   setMsg("Waiting for Face ID…");
+
+   const {data,error}=await sb.auth.signInWithPasskey();
+
+   if(error){
+     console.error("Passkey sign-in error:",error);
+
+     if(error.code==="passkey_disabled"){
+       setMsg("Passkey is not enabled in Supabase yet.");
+     }else if(error.code==="webauthn_credential_not_found"){
+       setMsg("No Al Noor Passkey is saved on this device yet. Create your loyalty account first.");
+     }else if(/cancel/i.test(error.message||"")){
+       setMsg("Face ID was cancelled. Tap again to retry.");
+     }else{
+       setMsg(error.message||"Face ID sign-in failed.");
+     }
+     return;
+   }
+
+   const {data:customer,error:ce}=await sb.rpc("get_my_customer");
+   if(ce||!customer){
+     setMsg(ce?.message||"Customer account not found.");
+     return;
+   }
+
+   saveToken(customer.public_token);
+   location.href="index.html?token="+encodeURIComponent(customer.public_token);
+
+ }catch(err){
+   console.error("Passkey error:",err);
+   setMsg(err?.message||"Passkey could not be completed. Please try again.");
+ }
 }
 
 async function loadCustomer(token){
@@ -122,7 +198,7 @@ async function loadCustomer(token){
   <div class="progress">${Array.from({length:10},(_,i)=>`<span class="dot ${i<pct?'on':''}"></span>`).join("")}</div>
   <div class="message">${remaining===0?"You are ready for your next free drink.":remaining+" MORE POINTS UNTIL YOUR NEXT FREE DRINK!"}</div>
  </div>
- <button class="secondary" onclick="useFaceID()">Continue with Face ID</button>`;
+ <button id="passkeyBtn" class="secondary" onclick="useFaceID()">Continue with Face ID</button><div class="msg" id="msg"></div>`;
  new QRCode(document.getElementById("qr"),{text:location.origin+location.pathname+"?token="+encodeURIComponent(token),width:160,height:160,colorDark:"#211914",colorLight:"#ffffff"});
 }
 
@@ -136,7 +212,7 @@ function showWelcome(){
   <div class="field"><label>MOBILE</label><input id="mobile" autocomplete="tel" inputmode="tel" placeholder="+971 5X XXX XXXX"></div>
   <div class="field"><label>EMAIL</label><input id="email" autocomplete="email" type="email" placeholder="you@example.com"></div>
   <button onclick="registerCustomer()">CREATE MY LOYALTY CARD + FACE ID</button>
-  <div class="passkey"><button class="secondary" onclick="useFaceID()">I ALREADY HAVE A PASSKEY</button></div>
+  <div class="passkey"><button class="secondary" onclick="useFaceID()">I ALREADY HAVE A PASSKEY</button></div><div class="msg">First-time customers create the account first; then Face ID is registered on this device.</div>
   <div class="msg" id="msg"></div>
  </div>`;
 }
