@@ -3,74 +3,52 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
 <title>Al Noor Loyalty</title>
-
-<meta name="theme-color" content="#17120f">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Al Noor Loyalty">
-
-<link rel="manifest" href="manifest.json">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0/dist/umd/supabase.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
 <style>
-:root{
-  --bg:#17120f;
-  --panel:#211914;
-  --cream:#f3ead9;
-  --gold:#c9a96a;
-  --muted:#aa9d8d;
-  --line:#3b2d24
-}
+:root{--bg:#17120f;--panel:#211914;--cream:#f3ead9;--gold:#c9a96a;--muted:#aa9d8d;--line:#3b2d24}
 *{box-sizing:border-box}
-body{
-  margin:0;
-  background:radial-gradient(circle at top,#2a2019 0,#17120f 48%);
-  color:var(--cream);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  min-height:100vh
-}
+body{margin:0;background:radial-gradient(circle at top,#2a2019 0,#17120f 48%);color:var(--cream);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
 .wrap{max-width:520px;margin:auto;padding:22px 18px 105px}
 .logo{width:145px;display:block;margin:4px auto 22px;object-fit:contain}
 .eyebrow{font-size:11px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;text-align:center}
 .title{text-align:center;font-size:30px;margin:7px 0 8px}
 .sub{text-align:center;color:var(--muted);font-size:14px;line-height:1.5;margin-bottom:24px}
-.card{
-  background:linear-gradient(145deg,#f4ecdc,#e6d7bd);
-  color:#211914;border-radius:28px;padding:23px;
-  box-shadow:0 18px 45px #0008;margin-bottom:16px
-}
+.card{background:linear-gradient(145deg,#f4ecdc,#e6d7bd);color:#211914;border-radius:28px;padding:23px;box-shadow:0 18px 45px #0008;margin-bottom:16px}
 .cardTop{display:flex;justify-content:space-between;align-items:center}
 .badge{font-size:10px;letter-spacing:1.4px;font-weight:800}
 .pill{background:#211914;color:#f3ead9;padding:7px 11px;border-radius:999px;font-size:10px;letter-spacing:1px}
-.initial{
-  width:46px;height:46px;border-radius:50%;background:#2b211b;color:#f3ead9;
-  display:grid;place-items:center;font-weight:800;font-size:17px;margin:20px 0 10px
-}
+.initial{width:46px;height:46px;border-radius:50%;background:#2b211b;color:#f3ead9;display:grid;place-items:center;font-weight:800;font-size:17px;margin:20px 0 10px}
 .welcome{font-size:12px;color:#746657}
 .name{font-size:27px;font-weight:800;margin-top:3px}
 .id{font-size:12px;color:#746657;margin-top:5px}
 
 .qrbox{
-  background:#fff;border-radius:18px;padding:14px;
-  width:300px;height:300px;max-width:86vw;max-height:86vw;
-  margin:22px auto 14px;display:grid;place-items:center;
+  background:#fff;
+  border-radius:18px;
+  padding:14px;
+  width:300px;
+  height:300px;
+  max-width:86vw;
+  max-height:86vw;
+  margin:22px auto 14px;
+  display:grid;
+  place-items:center;
   box-shadow:0 8px 25px rgba(0,0,0,.16)
 }
 .qrbox img,.qrbox canvas{
-  width:100% !important;height:100% !important;
-  max-width:272px;max-height:272px;display:block
+  width:100% !important;
+  height:100% !important;
+  max-width:272px;
+  max-height:272px;
+  display:block
 }
 .hint{text-align:center;font-size:13px;color:#746657;font-weight:600}
 
-.points{
-  background:var(--panel);border:1px solid var(--line);
-  border-radius:24px;padding:20px;margin-bottom:16px
-}
+.points{background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:20px;margin-bottom:16px}
 .pointsHead{display:flex;justify-content:space-between;align-items:center}
 .pointsNum{font-size:40px;font-weight:800}
 .pointsLabel{font-size:10px;letter-spacing:2px;color:var(--gold)}
@@ -82,34 +60,19 @@ body{
 .form{background:var(--panel);border:1px solid var(--line);border-radius:26px;padding:22px}
 .field{margin-bottom:14px}
 .field label{display:block;font-size:11px;color:var(--muted);margin-bottom:7px}
-.field input{
-  width:100%;border:1px solid #4a392d;background:#18130f;color:var(--cream);
-  border-radius:14px;padding:14px;font-size:15px;outline:none
-}
+.field input{width:100%;border:1px solid #4a392d;background:#18130f;color:var(--cream);border-radius:14px;padding:14px;font-size:15px;outline:none}
 .field input:focus{border-color:var(--gold)}
-button{
-  width:100%;border:0;border-radius:15px;padding:15px;
-  background:var(--gold);color:#1d150f;font-size:14px;font-weight:800;cursor:pointer
-}
+button{width:100%;border:0;border-radius:15px;padding:15px;background:var(--gold);color:#1d150f;font-size:14px;font-weight:800;cursor:pointer}
 .secondary{background:#33271f;color:var(--cream);border:1px solid #4a392d;margin-top:10px}
 .msg{font-size:12px;text-align:center;color:var(--muted);margin-top:12px;min-height:18px}
 .loading{text-align:center;color:var(--muted);padding:40px 0}
 .passkey{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
 
-.nav{
-  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-  width:min(520px,100%);height:78px;background:#17120ff2;
-  backdrop-filter:blur(16px);border-top:1px solid #3b2d24;
-  display:grid;grid-template-columns:1fr 1fr 74px 1fr 1fr;
-  align-items:center;padding:7px 10px env(safe-area-inset-bottom,7px);z-index:5
-}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(520px,100%);height:78px;background:#17120ff2;backdrop-filter:blur(16px);border-top:1px solid #3b2d24;display:grid;grid-template-columns:1fr 1fr 74px 1fr 1fr;align-items:center;padding:7px 10px env(safe-area-inset-bottom,7px);z-index:5}
 .nav a{text-decoration:none;color:#8f8274;font-size:10px;text-align:center}
 .nav a.active{color:var(--cream)}
 .navIcon{font-size:19px;display:block;margin-bottom:4px}
-.center{
-  width:56px;height:56px;border-radius:50%;background:#efe3ce;
-  display:grid;place-items:center;box-shadow:0 5px 20px #0008
-}
+.center{width:56px;height:56px;border-radius:50%;background:#efe3ce;display:grid;place-items:center;box-shadow:0 5px 20px #0008}
 .center img{width:42px;height:42px;object-fit:contain}
 
 @media(max-width:480px){
@@ -123,18 +86,17 @@ button{
 </head>
 
 <body>
-
 <div class="wrap">
-  <img class="logo" src="logo-1995.png" alt="Al Noor">
-  <div id="app"><div class="loading">Loading Al Noor Loyalty…</div></div>
+<img class="logo" src="logo-1995.png" alt="Al Noor">
+<div id="app"><div class="loading">Loading Al Noor Loyalty…</div></div>
 </div>
 
 <nav class="nav">
-  <a class="active" href="index.html"><span class="navIcon">⌂</span>Home</a>
-  <a href="rewards.html"><span class="navIcon">♢</span>Rewards</a>
-  <a class="center" href="alnoor.html"><img src="logo-1995.png" alt="Al Noor"></a>
-  <a href="locations.html"><span class="navIcon">⌖</span>Locations</a>
-  <a href="menu.html"><span class="navIcon">☰</span>Menu</a>
+<a class="active" href="index.html"><span class="navIcon">⌂</span>Home</a>
+<a href="rewards.html"><span class="navIcon">♢</span>Rewards</a>
+<a class="center" href="alnoor.html"><img src="logo-1995.png" alt="Al Noor"></a>
+<a href="locations.html"><span class="navIcon">⌖</span>Locations</a>
+<a href="menu.html"><span class="navIcon">☰</span>Menu</a>
 </nav>
 
 <script>
@@ -161,7 +123,11 @@ const TOKEN_KEY="alnoor_public_token";
 
 function esc(v){
   return String(v??"").replace(/[&<>"']/g,m=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
   }[m]));
 }
 
@@ -175,17 +141,16 @@ function tokenFromUrl(){
 }
 
 function saveToken(t){
-  if(t) localStorage.setItem(TOKEN_KEY,t);
+  if(t)localStorage.setItem(TOKEN_KEY,t);
 }
 
 function getToken(){
-  return tokenFromUrl() || localStorage.getItem(TOKEN_KEY);
+  return tokenFromUrl()||localStorage.getItem(TOKEN_KEY);
 }
 
 /* =========================
    REGISTER CUSTOMER
-   IMPORTANT:
-   NO AUTOMATIC PASSKEY HERE.
+   NO AUTOMATIC PASSKEY
 ========================= */
 
 async function registerCustomer(){
@@ -253,7 +218,7 @@ async function useFaceID(){
   const msg=document.getElementById("msg");
 
   const setMsg=(text)=>{
-    if(msg) msg.textContent=text;
+    if(msg)msg.textContent=text;
     else alert(text);
   };
 
@@ -279,7 +244,7 @@ async function useFaceID(){
 
       const {data:keys,error:listError}=await sb.auth.passkey.list();
 
-      if(!listError && Array.isArray(keys) && keys.length===0){
+      if(!listError&&Array.isArray(keys)&&keys.length===0){
 
         const {error:registerError}=await sb.auth.registerPasskey();
 
@@ -376,23 +341,18 @@ async function loadCustomer(token){
   );
 
   if(error||!data?.length){
-
     localStorage.removeItem(TOKEN_KEY);
     showWelcome();
     return;
   }
 
   const c=data[0];
-
   const points=Number(c.points||0);
   const pct=Math.min(10,points%10);
   const remaining=points%10===0?0:10-(points%10);
 
   app.innerHTML=`
-
-    <div class="eyebrow">
-      Al Noor • Loyalty Member
-    </div>
+    <div class="eyebrow">Al Noor • Loyalty Member</div>
 
     <div class="card">
 
@@ -401,19 +361,13 @@ async function loadCustomer(token){
         <div class="pill">AL NOOR FAMILY</div>
       </div>
 
-      <div class="initial">
-        ${esc(initials(c.full_name))}
-      </div>
+      <div class="initial">${esc(initials(c.full_name))}</div>
 
       <div class="welcome">Welcome back,</div>
 
-      <div class="name">
-        ${esc(c.full_name)}
-      </div>
+      <div class="name">${esc(c.full_name)}</div>
 
-      <div class="id">
-        Customer ID: ${esc(c.customer_code)}
-      </div>
+      <div class="id">Customer ID: ${esc(c.customer_code)}</div>
 
       <div class="qrbox" id="qr"></div>
 
@@ -448,8 +402,8 @@ async function loadCustomer(token){
       <div class="message">
         ${
           remaining===0
-          ? "You are ready for your next free drink."
-          : remaining+" MORE POINTS UNTIL YOUR NEXT FREE DRINK!"
+          ?"You are ready for your next free drink."
+          :remaining+" MORE POINTS UNTIL YOUR NEXT FREE DRINK!"
         }
       </div>
 
@@ -481,13 +435,10 @@ async function loadCustomer(token){
         location.pathname+
         "?token="+
         encodeURIComponent(token),
-
       width:272,
       height:272,
-
       colorDark:"#211914",
       colorLight:"#ffffff",
-
       correctLevel:QRCode.CorrectLevel.H
     }
   );
@@ -503,7 +454,7 @@ async function logoutCustomer(){
 
   try{
 
-    if(msg) msg.textContent="Signing out…";
+    if(msg)msg.textContent="Signing out…";
 
     await sb.auth.signOut();
 
@@ -543,31 +494,17 @@ function showWelcome(){
 
       <div class="field">
         <label>FULL NAME</label>
-        <input
-          id="name"
-          autocomplete="name"
-          placeholder="Your name"
-        >
+        <input id="name" autocomplete="name" placeholder="Your name">
       </div>
 
       <div class="field">
         <label>MOBILE</label>
-        <input
-          id="mobile"
-          autocomplete="tel"
-          inputmode="tel"
-          placeholder="+971 5X XXX XXXX"
-        >
+        <input id="mobile" autocomplete="tel" inputmode="tel" placeholder="+971 5X XXX XXXX">
       </div>
 
       <div class="field">
         <label>EMAIL</label>
-        <input
-          id="email"
-          autocomplete="email"
-          type="email"
-          placeholder="you@example.com"
-        >
+        <input id="email" autocomplete="email" type="email" placeholder="you@example.com">
       </div>
 
       <button onclick="registerCustomer()">
@@ -634,23 +571,6 @@ async function start(){
 
 start();
 
-/* =========================
-   PWA SERVICE WORKER
-========================= */
-
-if("serviceWorker" in navigator){
-
-  window.addEventListener("load",()=>{
-
-    navigator.serviceWorker
-      .register("./service-worker.js")
-      .then(()=>console.log("Al Noor Service Worker registered"))
-      .catch(err=>console.error("Service Worker error:",err));
-
-  });
-
-}
 </script>
-
 </body>
 </html>
