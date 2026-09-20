@@ -1,1126 +1,139 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-
-<meta name="theme-color" content="#0d0906">
-
-<title>Al Noor — Loyalty</title>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Al Noor Loyalty</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0/dist/umd/supabase.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-
 <style>
-:root{
-  --bg:#0d0906;
-  --panel:#17100b;
-  --cream:#f7efe1;
-  --muted:#b9a58d;
-  --gold:#d9a34a;
-  --gold2:#f0c979;
-  --line:rgba(255,255,255,.10);
-}
-
-*{box-sizing:border-box}
-
-html{
-  scroll-behavior:smooth;
-}
-
-body{
-  margin:0;
-  color:#fff;
-  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(8,5,3,.78),
-      rgba(8,5,3,.97)
-    ),
-    url("cafe.jpg") center/cover fixed no-repeat;
-  min-height:100vh;
-}
-
-a{
-  color:inherit;
-  text-decoration:none;
-}
-
-button,
-input{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
-
-.app{
-  width:min(720px,100%);
-  margin:auto;
-  padding:14px 12px 110px;
-}
-
-.top{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:5px 4px 18px;
-}
-
-.logo{
-  width:64px;
-  height:64px;
-  object-fit:contain;
-}
-
-.brand h1{
-  font-family:Georgia,serif;
-  margin:0;
-  font-size:25px;
-  letter-spacing:1.5px;
-}
-
-.brand small{
-  color:var(--gold2);
-  letter-spacing:1.8px;
-  font-size:9px;
-}
-
-.glass{
-  background:rgba(19,12,8,.80);
-  border:1px solid var(--line);
-  border-radius:26px;
-  box-shadow:0 22px 60px rgba(0,0,0,.38);
-  backdrop-filter:blur(18px);
-}
-
-.card{
-  padding:20px;
-  margin-top:14px;
-}
-
-.page-title{
-  font-family:Georgia,serif;
-  font-size:31px;
-  margin:8px 0;
-}
-
-.page-sub{
-  color:var(--muted);
-  line-height:1.5;
-  font-size:13px;
-}
-
-.btn{
-  width:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  border:0;
-  border-radius:14px;
-  padding:14px 16px;
-  background:linear-gradient(135deg,#e4ba68,#b97b31);
-  color:#24160b;
-  font-weight:800;
-  margin-top:14px;
-}
-
-.input{
-  width:100%;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.12);
-  color:white;
-  border-radius:14px;
-  padding:14px;
-  outline:none;
-  margin-top:8px;
-}
-
-.input:focus{
-  border-color:var(--gold2);
-}
-
-.field{
-  margin-top:15px;
-}
-
-.field label{
-  display:block;
-  color:var(--muted);
-  font-size:11px;
-  letter-spacing:1px;
-}
-
-.empty{
-  padding:28px;
-  text-align:center;
-  color:var(--muted);
-  border:1px dashed var(--line);
-  border-radius:18px;
-}
-
-.error{
-  color:#ffb6a8;
-  margin-top:12px;
-  font-size:12px;
-  text-align:center;
-}
-
-.success{
-  color:#e7c878;
-  margin-top:12px;
-  font-size:12px;
-  text-align:center;
-}
-
-/* MEMBER CARD */
-
-.member{
-  padding:20px;
-  background:linear-gradient(135deg,#fffaf1,#ead8bf);
-  color:#21170f;
-  border-radius:28px;
-}
-
-.member-top{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.label{
-  font-size:10px;
-  letter-spacing:2px;
-  color:#806548;
-}
-
-.pill{
-  font-size:10px;
-  font-weight:800;
-  background:#ead0a9;
-  padding:8px 11px;
-  border-radius:99px;
-  color:#62451f;
-}
-
-.main{
-  display:grid;
-  grid-template-columns:1fr 170px;
-  gap:18px;
-  align-items:center;
-}
-
-.identity{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  margin-top:22px;
-}
-
-.avatar{
-  width:62px;
-  height:62px;
-  border-radius:50%;
-  background:#624522;
-  color:#fff;
-  display:grid;
-  place-items:center;
-  font-weight:800;
-  font-size:22px;
-}
-
-.hello{
-  color:#806548;
-  font-size:13px;
-}
-
-.name{
-  font-size:29px;
-  font-weight:800;
-}
-
-.id{
-  font-size:12px;
-  color:#5d4936;
-}
-
-.qr{
-  background:#fff;
-  border-radius:16px;
-  padding:10px;
-  width:160px;
-  height:160px;
-  display:grid;
-  place-items:center;
-  margin-left:auto;
-}
-
-.qr img,
-.qr canvas{
-  max-width:100%;
-  height:auto!important;
-}
-
-.note{
-  text-align:center;
-  color:#72573b;
-  font-size:10px;
-  margin-top:7px;
-}
-
-.points{
-  margin-top:14px;
-  padding:22px;
-  display:grid;
-  grid-template-columns:170px 1fr;
-  gap:22px;
-  align-items:center;
-}
-
-.ring{
-  width:150px;
-  height:150px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  margin:auto;
-  background:
-    conic-gradient(
-      var(--gold2) 0%,
-      rgba(255,255,255,.12) 0
-    );
-}
-
-.ringin{
-  width:126px;
-  height:126px;
-  border-radius:50%;
-  background:#15100c;
-  display:grid;
-  place-items:center;
-}
-
-.big{
-  font-size:31px;
-  font-weight:800;
-}
-
-.small{
-  font-size:10px;
-  letter-spacing:1.5px;
-  color:var(--muted);
-}
-
-.dots{
-  display:flex;
-  gap:7px;
-  flex-wrap:wrap;
-  margin:17px 0;
-}
-
-.dot{
-  width:15px;
-  height:15px;
-  border-radius:50%;
-  background:#43372d;
-}
-
-.dot.on{
-  background:var(--gold2);
-}
-
-.point-title{
-  font-size:20px;
-  font-weight:800;
-}
-
-.point-sub{
-  font-size:12px;
-  color:var(--muted);
-  margin-top:3px;
-}
-
-/* NAV */
-
-.bottom-nav{
-  position:fixed;
-  z-index:50;
-  left:50%;
-  bottom:12px;
-  transform:translateX(-50%);
-  width:min(720px,calc(100% - 20px));
-  height:76px;
-  padding:7px 8px;
-  border-radius:25px;
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  align-items:center;
-  background:rgba(15,10,7,.94);
-  border:1px solid rgba(255,255,255,.12);
-  box-shadow:0 18px 55px rgba(0,0,0,.6);
-  backdrop-filter:blur(20px);
-}
-
-.nav{
-  border:0;
-  background:none;
-  color:#968b80;
-  height:60px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
-  font-size:9px;
-}
-
-.nav b{
-  font-size:21px;
-  font-weight:500;
-  line-height:1;
-}
-
-.nav.active{
-  color:var(--gold2);
-}
-
-.nav.center .circle{
-  width:58px;
-  height:58px;
-  border-radius:50%;
-  margin-top:-25px;
-  background:#17100b;
-  border:1px solid var(--gold2);
-  display:grid;
-  place-items:center;
-  box-shadow:0 0 0 6px rgba(217,163,74,.08);
-}
-
-.nav.center img{
-  width:44px;
-  height:44px;
-  object-fit:contain;
-}
-
-.nav.center span:last-child{
-  color:var(--gold2);
-  letter-spacing:1px;
-}
-
-@media(max-width:600px){
-
-  .main,
-  .points{
-    grid-template-columns:1fr;
-  }
-
-  .qr{
-    margin:auto;
-  }
-
-  .points{
-    text-align:center;
-  }
-
-  .dots{
-    justify-content:center;
-  }
-}
-
-@media(max-width:500px){
-
-  .app{
-    padding:10px 10px 108px;
-  }
-
-  .page-title{
-    font-size:28px;
-  }
-
-  .logo{
-    width:56px;
-    height:56px;
-  }
-}
+:root{--bg:#17120f;--panel:#211914;--cream:#f3ead9;--gold:#c9a96a;--muted:#aa9d8d;--line:#3b2d24}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at top,#2a2019 0,#17120f 48%);color:var(--cream);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+.wrap{max-width:520px;margin:auto;padding:22px 18px 105px}.logo{width:145px;display:block;margin:4px auto 22px;object-fit:contain}.eyebrow{font-size:11px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;text-align:center}.title{text-align:center;font-size:30px;margin:7px 0 8px}.sub{text-align:center;color:var(--muted);font-size:14px;line-height:1.5;margin-bottom:24px}
+.card{background:linear-gradient(145deg,#f4ecdc,#e6d7bd);color:#211914;border-radius:28px;padding:23px;box-shadow:0 18px 45px #0008;margin-bottom:16px}.cardTop{display:flex;justify-content:space-between;align-items:center}.badge{font-size:10px;letter-spacing:1.4px;font-weight:800}.pill{background:#211914;color:#f3ead9;padding:7px 11px;border-radius:999px;font-size:10px;letter-spacing:1px}.initial{width:46px;height:46px;border-radius:50%;background:#2b211b;color:#f3ead9;display:grid;place-items:center;font-weight:800;font-size:17px;margin:20px 0 10px}.welcome{font-size:12px;color:#746657}.name{font-size:27px;font-weight:800;margin-top:3px}.id{font-size:12px;color:#746657;margin-top:5px}.qrbox{background:white;border-radius:18px;padding:15px;width:190px;height:190px;margin:22px auto 14px;display:grid;place-items:center}.qrbox img{max-width:160px}.hint{text-align:center;font-size:11px;color:#746657}.points{background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:20px;margin-bottom:16px}.pointsHead{display:flex;justify-content:space-between;align-items:center}.pointsNum{font-size:40px;font-weight:800}.pointsLabel{font-size:10px;letter-spacing:2px;color:var(--gold)}.progress{display:flex;gap:6px;margin:15px 0}.dot{height:7px;flex:1;border-radius:9px;background:#3a2d24}.dot.on{background:var(--gold)}.message{font-size:13px;color:#cfc2b1}.form{background:var(--panel);border:1px solid var(--line);border-radius:26px;padding:22px}.field{margin-bottom:14px}.field label{display:block;font-size:11px;color:var(--muted);margin-bottom:7px}.field input{width:100%;border:1px solid #4a392d;background:#18130f;color:var(--cream);border-radius:14px;padding:14px;font-size:15px;outline:none}.field input:focus{border-color:var(--gold)}button{width:100%;border:0;border-radius:15px;padding:15px;background:var(--gold);color:#1d150f;font-size:14px;font-weight:800;cursor:pointer}.secondary{background:#33271f;color:var(--cream);border:1px solid #4a392d;margin-top:10px}.msg{font-size:12px;text-align:center;color:var(--muted);margin-top:12px;min-height:18px}.hide{display:none}.loading{text-align:center;color:var(--muted);padding:40px 0}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(520px,100%);height:78px;background:#17120ff2;backdrop-filter:blur(16px);border-top:1px solid #3b2d24;display:grid;grid-template-columns:1fr 1fr 74px 1fr 1fr;align-items:center;padding:7px 10px env(safe-area-inset-bottom,7px);z-index:5}.nav a{text-decoration:none;color:#8f8274;font-size:10px;text-align:center}.nav a.active{color:var(--cream)}.navIcon{font-size:19px;display:block;margin-bottom:4px}.center{width:56px;height:56px;border-radius:50%;background:#efe3ce;display:grid;place-items:center;box-shadow:0 5px 20px #0008}.center img{width:42px;height:42px;object-fit:contain}
+.passkey{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
 </style>
 </head>
-
 <body>
-
-<main class="app">
-
-<header class="top">
-
-<img class="logo" src="logo-1995.png">
-
-<div class="brand">
-<h1>AL NOOR</h1>
-<small>MODERN BAKERY & CAFÉ • EST. 1995</small>
+<div class="wrap">
+<img class="logo" src="logo-1995.png" alt="Al Noor">
+<div id="app"><div class="loading">Loading Al Noor Loyalty…</div></div>
 </div>
 
-</header>
-
-
-<!-- REGISTRATION -->
-
-<section id="registerBox" class="glass card">
-
-<div class="page-title">
-Welcome to Al Noor
-</div>
-
-<div class="page-sub">
-Create your Al Noor Loyalty Card and start collecting points with every visit.
-</div>
-
-<div class="field">
-<label>FULL NAME</label>
-<input
-id="fullName"
-class="input"
-type="text"
-placeholder="Enter your full name"
-autocomplete="name">
-</div>
-
-<div class="field">
-<label>MOBILE NUMBER</label>
-<input
-id="mobile"
-class="input"
-type="tel"
-placeholder="05XXXXXXXX"
-autocomplete="tel">
-</div>
-
-<div class="field">
-<label>EMAIL (OPTIONAL)</label>
-<input
-id="email"
-class="input"
-type="email"
-placeholder="example@email.com"
-autocomplete="email">
-</div>
-
-<button
-id="registerBtn"
-class="btn"
-onclick="registerCustomer()">
-CREATE MY LOYALTY CARD
-</button>
-
-<div id="registerMessage"></div>
-
-</section>
-
-
-<!-- CUSTOMER CARD -->
-
-<section
-id="card"
-style="display:none">
-
-<div class="member">
-
-<div class="member-top">
-
-<div class="label">
-AL NOOR • LOYALTY MEMBER
-</div>
-
-<div class="pill">
-AL NOOR FAMILY
-</div>
-
-</div>
-
-
-<div class="main">
-
-<div>
-
-<div class="identity">
-
-<div id="avatar" class="avatar">
-A
-</div>
-
-<div>
-
-<div class="hello">
-Welcome back,
-</div>
-
-<div id="name" class="name">
-—
-</div>
-
-<div class="id">
-Customer ID
-<b id="code">—</b>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<div>
-
-<div class="qr">
-
-<div id="qrcode"></div>
-
-</div>
-
-<div class="note">
-Show this QR code at the counter
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="points glass">
-
-<div
-class="ring"
-id="ring">
-
-<div class="ringin">
-
-<div
-id="pv"
-class="big">
-0/10
-</div>
-
-<div class="small">
-POINTS
-</div>
-
-</div>
-
-</div>
-
-
-<div>
-
-<div
-id="pt"
-class="point-title">
-10 MORE POINTS
-</div>
-
-<div class="point-sub">
-UNTIL YOUR NEXT FREE DRINK!
-</div>
-
-<div
-id="dots"
-class="dots">
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<div
-id="error"
-class="empty"
-style="display:none">
-</div>
-
-</main>
-
-
-<!-- BOTTOM NAV -->
-
-<nav class="bottom-nav">
-
-<a
-class="nav active"
-href="index.html">
-<b>⌂</b>
-<span>Home</span>
-</a>
-
-<a
-class="nav"
-href="rewards.html">
-<b>♧</b>
-<span>Rewards</span>
-</a>
-
-<a
-class="nav center"
-href="alnoor.html">
-
-<span class="circle">
-<img src="logo-1995.png">
-</span>
-
-<span>AL NOOR</span>
-
-</a>
-
-<a
-class="nav"
-href="locations.html">
-<b>⌖</b>
-<span>Locations</span>
-</a>
-
-<a
-class="nav"
-href="menu.html">
-<b>☰</b>
-<span>Menu</span>
-</a>
-
+<nav class="nav">
+<a class="active" href="index.html"><span class="navIcon">⌂</span>Home</a>
+<a href="rewards.html"><span class="navIcon">♢</span>Rewards</a>
+<a class="center" href="alnoor.html"><img src="logo-1995.png" alt="Al Noor"></a>
+<a href="locations.html"><span class="navIcon">⌖</span>Locations</a>
+<a href="menu.html"><span class="navIcon">☰</span>Menu</a>
 </nav>
 
-
 <script>
-
-const SUPABASE_URL =
-"https://fgarlyoqobopudfkifbp.supabase.co";
-
-const SUPABASE_KEY =
-"sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
-
-
-/* GET TOKEN */
-
-function getToken(){
-
-return new URLSearchParams(
-location.search
-).get("token") || "";
-
-}
-
-
-/* RPC */
-
-async function rpc(name,body){
-
-const r = await fetch(
-SUPABASE_URL +
-"/rest/v1/rpc/" +
-name,
-{
-method:"POST",
-
-headers:{
-"apikey":SUPABASE_KEY,
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify(body)
-
-}
-);
-
-const tx = await r.text();
-
-let d = null;
-
-try{
-d = tx ? JSON.parse(tx) : null;
-}catch{}
-
-if(!r.ok){
-
-throw new Error(
-(d && (d.message || d.error))
-|| tx
-|| "Request failed"
-);
-
-}
-
-return d;
-
-}
-
-
-/* ESCAPE */
-
-function esc(v){
-
-return String(v ?? "")
-.replace(/[&<>"']/g,m=>({
-
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;",
-"'":"&#039;"
-
-}[m]));
-
-}
-
-
-/* LOAD CUSTOMER */
-
-async function loadCustomer(token){
-
-const r =
-await rpc(
-"get_customer_by_token",
-{
-p_token:token
-}
-);
-
-const c =
-Array.isArray(r)
-? r[0]
-: r;
-
-if(!c){
-
-throw new Error(
-"Customer not found."
-);
-
-}
-
-
-/* SHOW CARD */
-
-document.getElementById(
-"registerBox"
-).style.display="none";
-
-document.getElementById(
-"card"
-).style.display="block";
-
-
-document.getElementById(
-"name"
-).textContent =
-c.full_name || "Al Noor Member";
-
-
-document.getElementById(
-"code"
-).textContent =
-c.customer_code || "—";
-
-
-/* AVATAR */
-
-const initials =
-(c.full_name || "A")
-.trim()
-.split(/\s+/)
-.slice(0,2)
-.map(x=>x[0])
-.join("")
-.toUpperCase();
-
-document.getElementById(
-"avatar"
-).textContent =
-initials;
-
-
-/* POINTS */
-
-const p =
-Math.max(
-0,
-Number(c.points || 0)
-);
-
-const cur =
-p % 10;
-
-const rem =
-cur ? 10-cur : 10;
-
-
-document.getElementById(
-"pv"
-).textContent =
-cur + "/10";
-
-
-document.getElementById(
-"pt"
-).textContent =
-rem + " MORE POINTS";
-
-
-const percent =
-cur * 10;
-
-
-document.getElementById(
-"ring"
-).style.background =
-"conic-gradient(" +
-"var(--gold2) 0 " +
-percent +
-"%," +
-"rgba(255,255,255,.12) " +
-percent +
-"% 100%)";
-
-
-/* POINT DOTS */
-
-document.getElementById(
-"dots"
-).innerHTML =
-Array.from(
-{length:10},
-(_,i)=>
-'<span class="dot ' +
-(i < cur ? "on" : "") +
-'"></span>'
-).join("");
-
-
-/* CUSTOMER QR */
-
-const qr =
-document.getElementById(
-"qrcode"
-);
-
-qr.innerHTML="";
-
-
-const customerUrl =
-location.origin +
-location.pathname +
-"?token=" +
-encodeURIComponent(token);
-
-
-new QRCode(
-qr,
-{
-text:customerUrl,
-width:138,
-height:138,
-colorDark:"#111",
-colorLight:"#fff",
-correctLevel:
-QRCode.CorrectLevel.H
-}
-);
-
-}
-
-
-/* REGISTER CUSTOMER */
+const SUPABASE_URL="https://fgarlyoqobopudfkifbp.supabase.co";
+const SUPABASE_KEY="sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
+const {createClient}=supabase;
+const sb=createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,experimental:{passkey:true}}});
+
+const app=document.getElementById("app");
+const TOKEN_KEY="alnoor_public_token";
+
+function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
+function initials(name){return (name||"AN").trim().split(/\s+/).slice(0,2).map(x=>x[0]).join("").toUpperCase();}
+function tokenFromUrl(){return new URLSearchParams(location.search).get("token");}
+function saveToken(t){if(t)localStorage.setItem(TOKEN_KEY,t);}
+function getToken(){return tokenFromUrl()||localStorage.getItem(TOKEN_KEY);}
+function goHome(){const t=getToken();location.href="index.html"+(t?"?token="+encodeURIComponent(t):"");}
 
 async function registerCustomer(){
-
-const btn =
-document.getElementById(
-"registerBtn"
-);
-
-const message =
-document.getElementById(
-"registerMessage"
-);
-
-
-const fullName =
-document.getElementById(
-"fullName"
-).value.trim();
-
-
-const mobile =
-document.getElementById(
-"mobile"
-).value.trim();
-
-
-const email =
-document.getElementById(
-"email"
-).value.trim();
-
-
-/* VALIDATION */
-
-if(!fullName){
-
-message.innerHTML =
-'<div class="error">Please enter your full name.</div>';
-
-return;
-
+ const name=document.getElementById("name").value.trim();
+ const mobile=document.getElementById("mobile").value.trim();
+ const email=document.getElementById("email").value.trim().toLowerCase();
+ const msg=document.getElementById("msg");
+ if(!name||!mobile||!email){msg.textContent="Please enter name, mobile and email.";return;}
+ msg.textContent="Creating your secure account…";
+ const password=crypto.randomUUID()+"Aa9!";
+ const {data,error}=await sb.auth.signUp({email,password,options:{data:{full_name:name,mobile}}});
+ if(error){msg.textContent=error.message;return;}
+ if(!data.session||!data.user){msg.textContent="Please confirm your email first, then return here to activate Face ID.";return;}
+ const {data:customer,error:ce}=await sb.rpc("register_customer_authenticated",{p_full_name:name,p_mobile:mobile,p_email:email});
+ if(ce){msg.textContent=ce.message;return;}
+ const token=customer.public_token;
+ saveToken(token);
+ msg.textContent="Account created. Set up Face ID…";
+ const {error:pe}=await sb.auth.registerPasskey();
+ if(pe){
+   msg.textContent="Card created. Face ID setup was skipped: "+pe.message;
+   setTimeout(()=>location.href="index.html?token="+encodeURIComponent(token),900);
+   return;
+ }
+ location.href="index.html?token="+encodeURIComponent(token);
 }
 
-
-if(!mobile){
-
-message.innerHTML =
-'<div class="error">Please enter your mobile number.</div>';
-
-return;
-
+async function useFaceID(){
+ const msg=document.getElementById("msg");
+ msg.textContent="Waiting for Face ID…";
+ const {data,error}=await sb.auth.signInWithPasskey();
+ if(error){msg.textContent=error.message;return;}
+ const {data:customer,error:ce}=await sb.rpc("get_my_customer");
+ if(ce||!customer){msg.textContent=ce?.message||"Customer account not found.";return;}
+ saveToken(customer.public_token);
+ location.href="index.html?token="+encodeURIComponent(customer.public_token);
 }
 
-
-/* LOADING */
-
-btn.disabled=true;
-
-btn.textContent =
-"CREATING YOUR CARD...";
-
-message.innerHTML="";
-
-
-try{
-
-/* CALL SUPABASE */
-
-const result =
-await rpc(
-"register_customer",
-{
-p_full_name:fullName,
-p_mobile:mobile,
-p_email:email || null
-}
-);
-
-
-/* RESULT */
-
-const customer =
-Array.isArray(result)
-? result[0]
-: result;
-
-
-if(
-!customer ||
-!customer.public_token
-){
-
-throw new Error(
-"Customer card was created but token was not returned."
-);
-
+async function loadCustomer(token){
+ const {data,error}=await sb.rpc("get_customer_by_token",{p_token:token});
+ if(error||!data?.length){localStorage.removeItem(TOKEN_KEY);showWelcome();return;}
+ const c=data[0];
+ const points=Number(c.points||0);
+ const pct=Math.min(10,points%10);
+ const remaining=points%10===0?0:10-(points%10);
+ app.innerHTML=`
+ <div class="eyebrow">Al Noor • Loyalty Member</div>
+ <div class="card">
+  <div class="cardTop"><div class="badge">AL NOOR • LOYALTY MEMBER</div><div class="pill">AL NOOR FAMILY</div></div>
+  <div class="initial">${esc(initials(c.full_name))}</div>
+  <div class="welcome">Welcome back,</div>
+  <div class="name">${esc(c.full_name)}</div>
+  <div class="id">Customer ID: ${esc(c.customer_code)}</div>
+  <div class="qrbox" id="qr"></div>
+  <div class="hint">Show this QR code at the counter</div>
+ </div>
+ <div class="points">
+  <div class="pointsHead"><div><div class="pointsNum">${points}</div><div class="pointsLabel">POINTS</div></div><div style="text-align:right;color:#c9a96a;font-size:12px">${Number(c.visits||0)} visits</div></div>
+  <div class="progress">${Array.from({length:10},(_,i)=>`<span class="dot ${i<pct?'on':''}"></span>`).join("")}</div>
+  <div class="message">${remaining===0?"You are ready for your next free drink.":"${remaining} MORE POINTS UNTIL YOUR NEXT FREE DRINK!"}</div>
+ </div>
+ <button class="secondary" onclick="useFaceID()">Continue with Face ID</button>`;
+ new QRCode(document.getElementById("qr"),{text:location.origin+location.pathname+"?token="+encodeURIComponent(token),width:160,height:160,colorDark:"#211914",colorLight:"#ffffff"});
 }
 
-
-/* SAVE TOKEN */
-
-const token =
-customer.public_token;
-
-
-/* REDIRECT TO CUSTOMER CARD */
-
-history.replaceState(
-null,
-"",
-"?token=" +
-encodeURIComponent(token)
-);
-
-
-/* LOAD CARD */
-
-await loadCustomer(token);
-
-}
-catch(error){
-
-message.innerHTML =
-'<div class="error">' +
-esc(
-error.message ||
-"Could not create your loyalty card."
-) +
-'</div>';
-
-btn.disabled=false;
-
-btn.textContent =
-"CREATE MY LOYALTY CARD";
-
+function showWelcome(){
+ app.innerHTML=`
+ <div class="eyebrow">Welcome to Al Noor</div>
+ <div class="title">Your Loyalty Card</div>
+ <div class="sub">Create your Al Noor account and use Face ID on supported devices for secure access.</div>
+ <div class="form">
+  <div class="field"><label>FULL NAME</label><input id="name" autocomplete="name" placeholder="Your name"></div>
+  <div class="field"><label>MOBILE</label><input id="mobile" autocomplete="tel" inputmode="tel" placeholder="+971 5X XXX XXXX"></div>
+  <div class="field"><label>EMAIL</label><input id="email" autocomplete="email" type="email" placeholder="you@example.com"></div>
+  <button onclick="registerCustomer()">CREATE MY LOYALTY CARD</button>
+  <div class="passkey"><button class="secondary" onclick="useFaceID()">CONTINUE WITH FACE ID</button></div>
+  <div class="msg" id="msg"></div>
+ </div>`;
 }
 
+async function start(){
+ const token=getToken();
+ if(token){saveToken(token);await loadCustomer(token);return;}
+ const {data:{session}}=await sb.auth.getSession();
+ if(session){
+   const {data:customer}=await sb.rpc("get_my_customer");
+   if(customer?.public_token){saveToken(customer.public_token);await loadCustomer(customer.public_token);return;}
+ }
+ showWelcome();
 }
-
-
-/* START */
-
-(async()=>{
-
-const token =
-getToken();
-
-
-/*
-If customer already has a token:
-open customer card.
-*/
-
-if(token){
-
-try{
-
-await loadCustomer(token);
-
-}
-catch(error){
-
-document.getElementById(
-"error"
-).style.display="block";
-
-document.getElementById(
-"error"
-).textContent =
-error.message ||
-"Could not load your card.";
-
-}
-
-return;
-
-}
-
-
-/*
-No token:
-show registration page.
-*/
-
-document.getElementById(
-"registerBox"
-).style.display="block";
-
-})();
-
+start();
 </script>
-
 </body>
 </html>
