@@ -14,7 +14,6 @@
 .member{display:inline-block;border:1px solid #80653c;border-radius:20px;padding:7px 13px;color:#d7bd8a;font-size:10px;letter-spacing:1.5px;margin-bottom:17px}.welcome{color:var(--muted);font-size:13px}.name{font-size:28px;font-weight:800;margin:5px 0}.id{color:#8f8377;font-size:12px;letter-spacing:1px}
 .qrbox{width:300px;height:300px;max-width:100%;background:#fff;border-radius:20px;margin:24px auto 14px;display:grid;place-items:center}.qrnote{text-align:center;color:var(--muted);font-size:12px}
 .points{margin-top:17px;background:#19130f;border:1px solid #4b3b2e;border-radius:22px;padding:20px;text-align:center}.circle{width:112px;height:112px;border-radius:50%;border:8px solid #8e7042;margin:auto;display:flex;flex-direction:column;align-items:center;justify-content:center}.circle strong{font-size:29px}.circle span{font-size:10px;letter-spacing:2px;color:var(--muted)}.more{margin-top:13px;color:#c8b99f;font-size:12px}.dots{display:flex;justify-content:center;gap:7px;margin-top:14px}.dot{width:10px;height:10px;border-radius:50%;background:#55442c}.dot.on{background:var(--gold)}
-.face{margin-top:17px;background:#19130f;border:1px solid #4b3b2e;border-radius:22px;padding:18px}.face h3{margin:0 0 7px;font-size:17px}.face p{margin:0 0 14px;color:var(--muted);font-size:12px;line-height:1.5}
 button{width:100%;padding:15px;border:0;border-radius:14px;font-weight:800;cursor:pointer}.facebtn{background:var(--gold);color:#1d150f}.signout{margin-top:10px;background:transparent;color:var(--gold);border:1px solid #6f5835}.status{text-align:center;color:var(--gold);font-size:12px;min-height:18px;margin-top:9px;line-height:1.5}.error{text-align:center;padding:55px 20px;color:#e0b3a5}.error p{color:var(--muted)}
 .bottom{position:fixed;left:0;right:0;bottom:0;background:rgba(15,11,8,.97);border-top:1px solid #3d3021;display:flex;justify-content:center;padding:9px 6px calc(9px + env(safe-area-inset-bottom));z-index:20}.nav{width:20%;max-width:105px;text-align:center;color:#9f927f;font-size:10px;text-decoration:none}.nav span{display:block;font-size:20px;margin-bottom:3px}.active{color:var(--gold)}.center{width:38px;height:38px;border-radius:50%;border:1px solid #8e7042;margin:-3px auto 2px;display:grid;place-items:center;color:var(--gold);font-weight:900;font-size:13px}
 </style>
@@ -43,48 +42,6 @@ async function loadCustomer(){
   return null;
 }
 
-async function activateFaceID(){
-  const btn=document.getElementById("faceBtn"),status=document.getElementById("faceStatus");
-  btn.disabled=true;
-  status.textContent="Checking Face ID / Passkey support...";
-  try{
-    if(!window.isSecureContext)
-      throw new Error("Please open the secure HTTPS Al Noor website.");
-
-    if(!window.PublicKeyCredential)
-      throw new Error("Passkey is not supported by this browser.");
-
-    const {data:{session}}=await sb.auth.getSession();
-    if(!session)
-      throw new Error("Please sign in first, then activate Face ID.");
-
-    if(typeof PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable==="function"){
-      const available =
-        await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
-
-      if(!available){
-        status.textContent =
-          "Face ID / device passkey is currently unavailable in this Safari session. Your account is OK; no change is needed to your loyalty card.";
-        return;
-      }
-    }
-
-    status.textContent="Waiting for Face ID...";
-    const {error}=await sb.auth.registerPasskey();
-
-    if(error)
-      throw new Error(error.message||"Face ID activation failed.");
-
-    status.textContent="Face ID is now active on this device.";
-    btn.textContent="FACE ID ACTIVE";
-    btn.disabled=true;
-
-  }catch(e){
-    status.textContent=e?.message||"Face ID activation failed.";
-  }finally{
-    if(btn.textContent!=="FACE ID ACTIVE") btn.disabled=false;
-  }
-}
 
 async function signOut(){await sb.auth.signOut();localStorage.removeItem("alnoor_public_token");location.href="login.html";}
 
@@ -94,13 +51,7 @@ async function render(){
     app.innerHTML=`<div class="error"><h2>Customer card not found</h2><p>Please sign in again.</p><button onclick="location.href='login.html'">SIGN IN</button></div>`;
     return;
   }
-  const qrToken = String(
-    c.public_token ||
-    new URLSearchParams(location.search).get("token") ||
-    localStorage.getItem("alnoor_public_token") ||
-    ""
-  );
-  if(qrToken)localStorage.setItem("alnoor_public_token",qrToken);
+  if(c.public_token)localStorage.setItem("alnoor_public_token",c.public_token);
   const p=Math.max(0,Number(c.points||0)),n=p%10,more=n===0?10:10-n;
 
   app.innerHTML=`
@@ -120,34 +71,18 @@ async function render(){
       <div class="dots">${Array.from({length:10},(_,i)=>`<div class="dot ${i<n?"on":""}"></div>`).join("")}</div>
     </div>
 
-    <div class="face">
-      <h3>Activate Face ID</h3>
-      <p>Activate Face ID once on this device. After that, you can use Face ID to sign in without typing your email.</p>
-      <button id="faceBtn" class="facebtn" onclick="activateFaceID()">ACTIVATE FACE ID</button>
-      <div id="faceStatus" class="status"></div>
-    </div>
-
     <button class="signout" onclick="signOut()">SIGN OUT</button>
   </section>
 
   <div class="bottom">
-    <a class="nav active" href="card.html?token=${encodeURIComponent(qrToken)}"><span>⌂</span>Home</a>
+    <a class="nav active" href="card.html?token=${encodeURIComponent(c.public_token||"")}"><span>⌂</span>Home</a>
     <a class="nav" href="rewards.html"><span>🎁</span>Rewards</a>
     <a class="nav" href="alnoor.html"><div class="center">AN</div>Al Noor</a>
     <a class="nav" href="locations.html"><span>⌖</span>Locations</a>
     <a class="nav" href="menu.html"><span>☰</span>Menu</a>
   </div>`;
 
-  if(qrToken){
-    new QRCode(document.getElementById("customerQr"),{
-      text:qrToken,
-      width:272,
-      height:272,
-      colorDark:"#111111",
-      colorLight:"#ffffff",
-      correctLevel:QRCode.CorrectLevel.H
-    });
-  }
+  if(c.public_token)new QRCode(document.getElementById("customerQr"),{text:String(c.public_token),width:272,height:272,colorDark:"#111111",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H});
 }
 render();
 </script>
