@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Al Noor — Passkey Diagnostic</title>
+<style>
+:root{color-scheme:dark}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  background:#0b0907;
+  color:#f5ead7;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  padding:24px 18px 40px;
+}
+.wrap{max-width:620px;margin:auto}
+.logo{
+  width:76px;height:76px;border-radius:50%;
+  margin:10px auto 16px;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid #9b7b3e;
+  color:#d9b96e;font-weight:800;font-size:18px;
+  letter-spacing:1px;
+}
+h1{text-align:center;font-size:25px;margin:0 0 7px}
+.sub{text-align:center;color:#a99d8c;font-size:14px;line-height:1.5;margin-bottom:22px}
+.card{
+  background:#17130f;
+  border:1px solid #34291d;
+  border-radius:18px;
+  padding:17px;
+  margin:12px 0;
+}
+.row{display:flex;gap:12px;align-items:flex-start}
+.dot{
+  flex:0 0 12px;width:12px;height:12px;border-radius:50%;
+  margin-top:5px;background:#777;
+}
+.ok{background:#35d06f}.bad{background:#ff5d5d}.warn{background:#e3b95f}
+.title{font-weight:700;font-size:16px}
+.detail{color:#aaa092;font-size:13px;line-height:1.45;margin-top:4px;word-break:break-word}
+button{
+  width:100%;border:0;border-radius:14px;
+  padding:15px;margin-top:10px;
+  background:#caa45a;color:#17120c;
+  font-weight:800;font-size:16px;
+}
+button:disabled{opacity:.55}
+pre{
+  white-space:pre-wrap;word-break:break-word;
+  color:#d7c9b4;font-size:12px;line-height:1.5;
+}
+#result{display:none}
+.small{color:#81796e;font-size:12px;line-height:1.5;margin-top:18px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">AL<br>NOOR</div>
+  <h1>Passkey Diagnostic</h1>
+  <div class="sub">
+    This page checks the iPhone/browser environment only.<br>
+    It does not change your Al Noor account.
+  </div>
+
+  <div id="checks"></div>
+
+  <div class="card">
+    <button id="testBtn" onclick="runCreationTest()">TEST PASSKEY CREATION</button>
+    <div id="result"></div>
+  </div>
+
+  <div class="card">
+    <div class="title">Technical details</div>
+    <pre id="details">Not tested yet.</pre>
+  </div>
+
+  <div class="small">
+    Use Safari normally, not Private Browsing. Do not change WebKit Feature Flags.
+  </div>
+</div>
+
+<script>
+const checks=document.getElementById("checks");
+
+function addCheck(title, ok, detail, type){
+  const div=document.createElement("div");
+  div.className="card";
+  div.innerHTML=`
+    <div class="row">
+      <div class="dot ${type|| (ok?"ok":"bad")}"></div>
+      <div>
+        <div class="title">${escapeHtml(title)}</div>
+        <div class="detail">${escapeHtml(detail)}</div>
+      </div>
+    </div>`;
+  checks.appendChild(div);
+}
+
+function escapeHtml(v){
+  return String(v ?? "").replace(/[&<>"']/g,m=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
+}
+
+async function initialChecks(){
+  checks.innerHTML="";
+
+  const secure=window.isSecureContext;
+  addCheck(
+    "Secure HTTPS",
+    secure,
+    secure ? location.origin : "This page is not running in a secure context.",
+    secure ? "ok":"bad"
+  );
+
+  const webauthn=!!window.PublicKeyCredential;
+  addCheck(
+    "WebAuthn API",
+    webauthn,
+    webauthn ? "PublicKeyCredential is available." : "WebAuthn is unavailable in this browser.",
+    webauthn ? "ok":"bad"
+  );
+
+  let platform="unknown";
+  if(webauthn && typeof PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable==="function"){
+    try{
+      platform=await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+    }catch(e){
+      platform="error: "+(e.message||e.name);
+    }
+  }else{
+    platform="API unavailable";
+  }
+
+  addCheck(
+    "Platform authenticator",
+    platform===true,
+    platform===true
+      ? "The browser reports that a built-in authenticator is available."
+      : "The browser reports that a built-in/platform authenticator is NOT available.",
+    platform===true ? "ok":"bad"
+  );
+
+  let conditional="unknown";
+  if(webauthn && typeof PublicKeyCredential.isConditionalMediationAvailable==="function"){
+    try{
+      conditional=await PublicKeyCredential.isConditionalMediationAvailable();
+    }catch(e){
+      conditional="error: "+(e.message||e.name);
+    }
+  }
+
+  addCheck(
+    "Conditional passkey support",
+    conditional===true,
+    String(conditional),
+    conditional===true ? "ok":"warn"
+  );
+
+  const privateHint =
+    /Safari/.test(navigator.userAgent) &&
+    !/CriOS|FxiOS|EdgiOS|OPiOS/.test(navigator.userAgent);
+
+  addCheck(
+    "Browser",
+    privateHint,
+    privateHint
+      ? "Safari user-agent detected."
+      : "A non-Safari browser may be in use. For this test, use Safari.",
+    privateHint ? "ok":"warn"
+  );
+
+  document.getElementById("details").textContent =
+`Origin: ${location.origin}
+Host: ${location.hostname}
+Secure context: ${secure}
+WebAuthn: ${webauthn}
+Platform authenticator: ${platform}
+Conditional mediation: ${conditional}
+User agent:
+${navigator.userAgent}`;
+}
+
+async function runCreationTest(){
+  const btn=document.getElementById("testBtn");
+  const result=document.getElementById("result");
+
+  btn.disabled=true;
+  btn.textContent="TESTING…";
+  result.style.display="block";
+  result.innerHTML="<div class='detail'>Waiting for the iPhone passkey prompt…</div>";
+
+  try{
+    if(!window.isSecureContext) throw new Error("HTTPS is required.");
+    if(!window.PublicKeyCredential) throw new Error("WebAuthn is unavailable.");
+
+    const challenge=new Uint8Array(32);
+    const userId=new Uint8Array(16);
+    crypto.getRandomValues(challenge);
+    crypto.getRandomValues(userId);
+
+    const credential=await navigator.credentials.create({
+      publicKey:{
+        challenge,
+        rp:{
+          name:"Al Noor",
+          id:location.hostname
+        },
+        user:{
+          id:userId,
+          name:"diagnostic@alnoor.local",
+          displayName:"Al Noor Diagnostic"
+        },
+        pubKeyCredParams:[
+          {type:"public-key",alg:-7},
+          {type:"public-key",alg:-257}
+        ],
+        authenticatorSelection:{
+          authenticatorAttachment:"platform",
+          residentKey:"required",
+          userVerification:"required"
+        },
+        timeout:60000,
+        attestation:"none"
+      }
+    });
+
+    if(!credential) throw new Error("No credential was returned.");
+
+    result.innerHTML=`
+      <div class="title">PASSKEY CREATION SUCCEEDED</div>
+      <div class="detail">
+        The browser successfully created a platform passkey.
+        This test did not save it to Supabase.
+      </div>`;
+
+  }catch(e){
+    result.innerHTML=`
+      <div class="title">PASSKEY CREATION FAILED</div>
+      <div class="detail">
+        Name: ${escapeHtml(e?.name||"Unknown")}<br>
+        Message: ${escapeHtml(e?.message||String(e))}
+      </div>`;
+  }finally{
+    btn.disabled=false;
+    btn.textContent="TEST PASSKEY CREATION";
+  }
+}
+
+initialChecks();
+</script>
+</body>
+</html>
