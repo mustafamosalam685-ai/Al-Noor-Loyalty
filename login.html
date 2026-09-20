@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Al Noor Loyalty — Login</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#17120f;color:#f7edd9;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;min-height:100vh}
+.wrap{max-width:520px;margin:auto;padding:28px 20px 110px}
+.logo{width:86px;height:86px;border-radius:50%;margin:10px auto 24px;display:flex;align-items:center;justify-content:center;background:#eee2bf;color:#6e5528;font-weight:800;font-size:12px;box-shadow:0 8px 30px #0008}
+h1{text-align:center;font-size:28px;margin:0 0 8px}
+.sub{text-align:center;color:#bfb29e;margin:0 0 30px;line-height:1.6}
+.card{background:#211a16;border:1px solid #5b4a36;border-radius:26px;padding:24px;box-shadow:0 15px 45px #0005}
+label{display:block;margin:0 0 8px;color:#d9c9ad;font-size:14px}
+input{width:100%;height:56px;border-radius:15px;border:1px solid #68563e;background:#332a24;color:#fff;padding:0 16px;font-size:16px;outline:none;margin-bottom:18px}
+input:focus{border-color:#d8c17d}
+button{width:100%;height:56px;border:0;border-radius:16px;background:#eee08d;color:#4b3c16;font-size:16px;font-weight:800;cursor:pointer}
+button.secondary{margin-top:12px;background:#302722;color:#f4e8d1;border:1px solid #69553d}
+.msg{min-height:24px;text-align:center;margin-top:16px;color:#e5c980;font-size:14px;line-height:1.5}
+.bottom{position:fixed;left:0;right:0;bottom:0;background:#211a16;border-top:1px solid #4e402f;padding:12px 20px calc(12px + env(safe-area-inset-bottom));text-align:center;color:#8f826e;font-size:12px}
+a{color:#ead889;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">AL NOOR</div>
+  <h1>Welcome Back</h1>
+  <p class="sub">Sign in to your Al Noor Loyalty Card</p>
+
+  <div class="card">
+    <label for="email">Email</label>
+    <input id="email" type="email" autocomplete="email" placeholder="you@example.com">
+
+    <button id="passkeyBtn" onclick="loginPasskey()">CONTINUE WITH FACE ID</button>
+    <button class="secondary" onclick="loginEmail()">SIGN IN WITH EMAIL</button>
+
+    <div id="msg" class="msg"></div>
+  </div>
+
+  <p class="sub" style="margin-top:22px">
+    New customer?
+    <a href="register.html">CREATE MY LOYALTY CARD</a>
+  </p>
+</div>
+
+<div class="bottom">AL NOOR • LOYALTY</div>
+
+<script>
+const SUPABASE_URL="https://fgarlyoqobopudfkifbp.supabase.co";
+const SUPABASE_KEY="sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
+  auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,experimental:{passkey:true}}
+});
+
+const msg=document.getElementById("msg");
+function setMsg(t){msg.textContent=t}
+
+function goToCustomer(c){
+  if(!c || !c.public_token){setMsg("Customer account was found, but the loyalty card is not linked yet.");return}
+  location.href="index.html?token="+encodeURIComponent(c.public_token);
+}
+
+async function loadMyCustomer(){
+  const {data,error}=await sb.rpc("get_my_customer");
+  if(error || !data){return null}
+  return data;
+}
+
+async function loginPasskey(){
+  try{
+    if(!window.isSecureContext){setMsg("Passkey requires the secure Al Noor website.");return}
+    if(!window.PublicKeyCredential){setMsg("Passkey is not supported on this device/browser.");return}
+
+    setMsg("Waiting for Face ID / device verification...");
+
+    const {error}=await sb.auth.signInWithPasskey();
+    if(error){setMsg(error.message || "Passkey sign-in failed.");return}
+
+    const customer=await loadMyCustomer();
+    if(!customer){setMsg("Login succeeded, but no loyalty card was found for this account.");return}
+
+    goToCustomer(customer);
+  }catch(e){
+    setMsg(e?.message || "Passkey sign-in was cancelled or not available.");
+  }
+}
+
+async function loginEmail(){
+  const email=document.getElementById("email").value.trim().toLowerCase();
+  if(!email){setMsg("Enter your email first.");return}
+
+  try{
+    setMsg("Sending secure sign-in link...");
+    const {error}=await sb.auth.signInWithOtp({
+      email,
+      options:{emailRedirectTo:location.origin + location.pathname}
+    });
+    if(error){setMsg(error.message);return}
+    setMsg("Check your email and open the sign-in link on this device.");
+  }catch(e){setMsg(e?.message || "Unable to sign in.")}
+}
+
+(async function(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(session){
+    const customer=await loadMyCustomer();
+    if(customer) goToCustomer(customer);
+  }
+})();
+</script>
+</body>
+</html>
