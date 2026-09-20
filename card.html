@@ -6,7 +6,6 @@
 <meta name="theme-color" content="#17120f">
 <title>Al Noor Loyalty Card</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 :root{--panel:#211914;--cream:#f3ead9;--gold:#c9a96a;--muted:#aa9d8d;--line:#3b2d24}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#2a2019,#17120f 55%);color:var(--cream);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -55,7 +54,14 @@ async function activateFaceID(){
     if(error)throw new Error(error.message||"Face ID activation failed.");
     status.textContent="Face ID is now active on this device.";
     btn.textContent="FACE ID ACTIVE";
-  }catch(e){status.textContent=e?.message||"Face ID activation failed."}
+  }catch(e){
+    const msg=e?.message||"Face ID activation failed.";
+    if(/not allowed|denied|permission|NotAllowedError/i.test(msg)){
+      status.textContent="Face ID registration was blocked by the browser/device. Please try again from Safari on the same Al Noor HTTPS page.";
+    }else{
+      status.textContent=msg;
+    }
+  }
   finally{btn.disabled=false}
 }
 
@@ -78,7 +84,10 @@ async function render(){
     <div class="name">${esc(c.full_name)}</div>
     <div class="id">CUSTOMER ID · ${esc(c.customer_code)}</div>
 
-    <div class="qrbox"><div id="customerQr"></div></div>
+    <div class="qrbox">
+      <img id="customerQrImage" alt="Al Noor customer QR code"
+           style="width:272px;height:272px;display:block;object-fit:contain;border-radius:8px;">
+    </div>
     <div class="qrnote">Show this QR code at the counter</div>
 
     <div class="points">
@@ -105,7 +114,33 @@ async function render(){
     <a class="nav" href="menu.html"><span>☰</span>Menu</a>
   </div>`;
 
-  if(c.public_token)new QRCode(document.getElementById("customerQr"),{text:String(c.public_token),width:272,height:272,colorDark:"#111111",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H});
+  const qrText = String(
+    c.public_token ||
+    new URLSearchParams(location.search).get("token") ||
+    localStorage.getItem("alnoor_public_token") ||
+    ""
+  );
+
+  if(qrText){
+    localStorage.setItem("alnoor_public_token",qrText);
+
+    const qrImg=document.getElementById("customerQrImage");
+    qrImg.alt="Al Noor customer QR code";
+
+    const primary="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=8&data="+encodeURIComponent(qrText);
+    const fallback="https://quickchart.io/qr?size=300&margin=2&text="+encodeURIComponent(qrText);
+
+    qrImg.src=primary;
+
+    qrImg.onerror=()=>{
+      qrImg.onerror=()=>{
+        qrImg.removeAttribute("src");
+        qrImg.alt="QR code could not be loaded.";
+        qrImg.style.background="#fff";
+      };
+      qrImg.src=fallback;
+    };
+  }
 }
 render();
 </script>
