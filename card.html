@@ -43,20 +43,66 @@ async function loadCustomer(){
   return null;
 }
 
-async function activateFaceID(){
-  const btn=document.getElementById("faceBtn"),status=document.getElementById("faceStatus");
-  btn.disabled=true;status.textContent="Waiting for Face ID / device verification...";
+async function registerPasskey(){
+  const btn=document.getElementById("faceBtn");
+  const status=document.getElementById("faceStatus");
+
   try{
-    if(!window.isSecureContext)throw new Error("Please open the secure HTTPS Al Noor website.");
-    if(!window.PublicKeyCredential)throw new Error("Passkey is not supported on this device/browser.");
-    const {data:{session}}=await sb.auth.getSession();
-    if(!session)throw new Error("Please sign in first, then activate Face ID.");
-    const {error}=await sb.auth.registerPasskey();
-    if(error)throw new Error(error.message||"Face ID activation failed.");
+    if(!window.isSecureContext){
+      status.textContent="Face ID requires HTTPS.";
+      return;
+    }
+
+    const {data:sessionData,error:sessionError}=await sb.auth.getSession();
+
+    if(sessionError || !sessionData?.session){
+      status.textContent="Please sign in first.";
+      return;
+    }
+
+    if(!window.PublicKeyCredential){
+      status.textContent="Passkeys are not supported in this browser.";
+      return;
+    }
+
+    btn.disabled=true;
+    btn.textContent="SETTING UP FACE ID...";
+    status.textContent="Waiting for Face ID / device verification...";
+
+    const {data,error}=await sb.auth.registerPasskey();
+
+    if(error){
+      console.error("PASSKEY ERROR:",error);
+      let msg=error.message||"Face ID setup failed.";
+      if(error.code==="webauthn_credential_exists"){
+        msg="Face ID / Passkey is already registered for this account.";
+      }
+      status.textContent=msg;
+      return;
+    }
+
+    console.log("PASSKEY REGISTERED:",data);
+    btn.textContent="✓ FACE ID ACTIVE";
+    btn.disabled=true;
     status.textContent="Face ID is now active on this device.";
-    btn.textContent="FACE ID ACTIVE";
-  }catch(e){status.textContent=e?.message||"Face ID activation failed."}
-  finally{btn.disabled=false}
+
+  }catch(err){
+    console.error("FACE ID ERROR:",err);
+    if(err?.name==="NotAllowedError"){
+      status.textContent="Face ID setup was cancelled or blocked by the browser.";
+    }else{
+      status.textContent=err?.message||err?.name||"Face ID could not be activated.";
+    }
+  }finally{
+    if(btn && btn.textContent==="SETTING UP FACE ID..."){
+      btn.disabled=false;
+      btn.textContent="ACTIVATE FACE ID";
+    }
+  }
+}
+
+async function activateFaceID(){
+  return registerPasskey();
 }
 
 async function signOut(){await sb.auth.signOut();localStorage.removeItem("alnoor_public_token");location.href="login.html";}
@@ -105,7 +151,24 @@ async function render(){
     <a class="nav" href="menu.html"><span>☰</span>Menu</a>
   </div>`;
 
-  if(c.public_token)new QRCode(document.getElementById("customerQr"),{text:String(c.public_token),width:272,height:272,colorDark:"#111111",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H});
+  const qrToken=String(
+  c.public_token ||
+  new URLSearchParams(location.search).get("token") ||
+  localStorage.getItem("alnoor_public_token") ||
+  ""
+);
+
+if(qrToken){
+  localStorage.setItem("alnoor_public_token",qrToken);
+  new QRCode(document.getElementById("customerQr"),{
+    text:qrToken,
+    width:272,
+    height:272,
+    colorDark:"#111111",
+    colorLight:"#ffffff",
+    correctLevel:QRCode.CorrectLevel.H
+  });
+}
 }
 render();
 </script>
