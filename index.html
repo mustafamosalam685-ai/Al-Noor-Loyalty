@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#17120f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>Al Noor Loyalty</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0/dist/umd/supabase.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
@@ -30,6 +36,10 @@
 </nav>
 
 <script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./service-worker.js").catch(() => {}));
+}
+
 const SUPABASE_URL="https://fgarlyoqobopudfkifbp.supabase.co";
 const SUPABASE_KEY="sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
 const {createClient}=supabase;
@@ -60,14 +70,20 @@ async function registerCustomer(){
  if(ce){msg.textContent=ce.message;return;}
  const token=customer.public_token;
  saveToken(token);
- msg.textContent="Account created. Now set up Face ID…";
- const {error:pe}=await sb.auth.registerPasskey();
+ msg.textContent="Account created. Setting up your Passkey…";
+ const {data:passkey,error:pe}=await sb.auth.registerPasskey();
  if(pe){
-   msg.textContent="Card created, but Face ID could not be registered: "+pe.message;
-   setTimeout(()=>location.href="index.html?token="+encodeURIComponent(token),1400);
+   console.error("Passkey registration error:",pe);
+   let friendly="Face ID setup was not completed.";
+   if(pe.code==="passkey_disabled") friendly="Passkey is not enabled in Al Noor yet. Please check Supabase → Authentication → Passkeys.";
+   else if(pe.code==="webauthn_credential_exists") friendly="A Passkey is already registered for this account.";
+   else if(/cancel/i.test(pe.message||"")) friendly="Face ID setup was cancelled. You can try again from this page.";
+   else if(/not.?supported|secure context/i.test(pe.message||"")) friendly="This browser or connection does not support Passkeys here. Open the live HTTPS site in Safari.";
+   msg.textContent=friendly;
+   setTimeout(()=>location.href="index.html?token="+encodeURIComponent(token),1800);
    return;
  }
- msg.textContent="Face ID saved successfully. Opening your card…";
+ msg.textContent="Passkey saved successfully. Opening your card…";
  setTimeout(()=>location.href="index.html?token="+encodeURIComponent(token),500);
 }
 
@@ -120,7 +136,7 @@ function showWelcome(){
   <div class="field"><label>MOBILE</label><input id="mobile" autocomplete="tel" inputmode="tel" placeholder="+971 5X XXX XXXX"></div>
   <div class="field"><label>EMAIL</label><input id="email" autocomplete="email" type="email" placeholder="you@example.com"></div>
   <button onclick="registerCustomer()">CREATE MY LOYALTY CARD + FACE ID</button>
-  <div class="passkey"><button class="secondary" onclick="useFaceID()">I ALREADY HAVE FACE ID</button></div>
+  <div class="passkey"><button class="secondary" onclick="useFaceID()">I ALREADY HAVE A PASSKEY</button></div>
   <div class="msg" id="msg"></div>
  </div>`;
 }
