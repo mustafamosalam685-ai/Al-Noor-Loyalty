@@ -51,7 +51,13 @@ async function render(){
     app.innerHTML=`<div class="error"><h2>Customer card not found</h2><p>Please sign in again.</p><button onclick="location.href='login.html'">SIGN IN</button></div>`;
     return;
   }
-  if(c.public_token)localStorage.setItem("alnoor_public_token",c.public_token);
+  const qrToken=String(
+    c.public_token ||
+    new URLSearchParams(location.search).get("token") ||
+    localStorage.getItem("alnoor_public_token") ||
+    ""
+  );
+  if(qrToken)localStorage.setItem("alnoor_public_token",qrToken);
   const p=Math.max(0,Number(c.points||0)),n=p%10,more=n===0?10:10-n;
 
   app.innerHTML=`
@@ -75,14 +81,23 @@ async function render(){
   </section>
 
   <div class="bottom">
-    <a class="nav active" href="card.html?token=${encodeURIComponent(c.public_token||"")}"><span>⌂</span>Home</a>
+    <a class="nav active" href="card.html?token=${encodeURIComponent(qrToken)}"><span>⌂</span>Home</a>
     <a class="nav" href="rewards.html"><span>🎁</span>Rewards</a>
     <a class="nav" href="alnoor.html"><div class="center">AN</div>Al Noor</a>
     <a class="nav" href="locations.html"><span>⌖</span>Locations</a>
     <a class="nav" href="menu.html"><span>☰</span>Menu</a>
   </div>`;
 
-  if(c.public_token)new QRCode(document.getElementById("customerQr"),{text:String(c.public_token),width:272,height:272,colorDark:"#111111",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H});
+  if(qrToken){
+    new QRCode(document.getElementById("customerQr"),{
+      text:qrToken,
+      width:272,
+      height:272,
+      colorDark:"#111111",
+      colorLight:"#ffffff",
+      correctLevel:QRCode.CorrectLevel.H
+    });
+  }
 }
 render();
 </script>
