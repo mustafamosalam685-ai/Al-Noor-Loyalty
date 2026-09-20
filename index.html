@@ -198,8 +198,23 @@ async function loadCustomer(token){
   <div class="progress">${Array.from({length:10},(_,i)=>`<span class="dot ${i<pct?'on':''}"></span>`).join("")}</div>
   <div class="message">${remaining===0?"You are ready for your next free drink.":remaining+" MORE POINTS UNTIL YOUR NEXT FREE DRINK!"}</div>
  </div>
- <button id="passkeyBtn" class="secondary" onclick="useFaceID()">Continue with Face ID</button><div class="msg" id="msg"></div>`;
+ <button id="passkeyBtn" class="secondary" onclick="useFaceID()">Continue with Face ID</button>
+ <button class="secondary" onclick="logoutCustomer()">LOG OUT / USE ANOTHER ACCOUNT</button>
+ <div class="msg" id="msg"></div>`;
  new QRCode(document.getElementById("qr"),{text:location.origin+location.pathname+"?token="+encodeURIComponent(token),width:160,height:160,colorDark:"#211914",colorLight:"#ffffff"});
+}
+
+async function logoutCustomer(){
+ const msg=document.getElementById("msg");
+ try{
+   if(msg) msg.textContent="Signing out…";
+   await sb.auth.signOut();
+ }catch(err){
+   console.error("Logout error:",err);
+ }finally{
+   localStorage.removeItem(TOKEN_KEY);
+   location.replace("index.html");
+ }
 }
 
 function showWelcome(){
