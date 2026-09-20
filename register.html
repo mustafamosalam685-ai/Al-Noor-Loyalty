@@ -125,7 +125,7 @@ async function createAccount(){
       The customer must first reach the loyalty card while signed in.
       The card page can then offer Face ID / Passkey registration.
     */
-    location.href="index.html?token="+encodeURIComponent(customer.public_token)+"&new=1";
+    location.href="card.html?token="+encodeURIComponent(customer.public_token)+"&new=1";
 
   }catch(e){
     setMsg(e?.message || "Something went wrong.");

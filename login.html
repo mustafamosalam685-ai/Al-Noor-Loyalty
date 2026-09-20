@@ -59,7 +59,7 @@ function setMsg(t){msg.textContent=t}
 
 function goToCustomer(c){
   if(!c || !c.public_token){setMsg("Customer account was found, but the loyalty card is not linked yet.");return}
-  location.href="index.html?token="+encodeURIComponent(c.public_token);
+  location.href="card.html?token="+encodeURIComponent(c.public_token);
 }
 
 async function loadMyCustomer(){
