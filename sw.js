@@ -1,4 +1,4 @@
-const CACHE_NAME = "alnoor-loyalty-android-v2";
+const CACHE_NAME = "alnoor-loyalty-v4";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -16,34 +16,40 @@ const APP_SHELL = [
 ];
 
 self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(async cache => {
-      for (const url of APP_SHELL) {
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    await Promise.all(
+      APP_SHELL.map(async url => {
         try { await cache.add(url); } catch (_) {}
-      }
-      await self.skipWaiting();
-    })
-  );
+      })
+    );
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys()
-      .then(keys => Promise.all(
-        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
-      ))
-      .then(() => self.clients.claim())
-  );
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(
+      keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
+    );
+    await self.clients.claim();
+  })());
 });
 
 self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
 
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin) return;
+
   event.respondWith(
     fetch(event.request)
       .then(response => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+        if (response && response.ok) {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy)).catch(()=>{});
+        }
         return response;
       })
       .catch(() => caches.match(event.request).then(cached => {
