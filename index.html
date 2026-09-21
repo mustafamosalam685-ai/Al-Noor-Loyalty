@@ -19,6 +19,6 @@ const SUPABASE_URL="https://fgarlyoqobopudfkifbp.supabase.co";const SUPABASE_KEY
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 async function openCustomer(){const token=new URLSearchParams(location.search).get("token");if(token){localStorage.setItem("alnoor_public_token",token);location.href="card.html?token="+encodeURIComponent(token);return}try{const {data:{session}}=await sb.auth.getSession();if(session){const r=await sb.rpc("get_my_customer");if(!r.error&&r.data){const c=Array.isArray(r.data)?r.data[0]:r.data;if(c?.public_token){localStorage.setItem("alnoor_public_token",c.public_token);location.href="card.html?token="+encodeURIComponent(c.public_token);}}}}catch(e){}}
 openCustomer();
-if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js",{scope:"./"}).catch(()=>{}));
 let deferredInstallPrompt=null;window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstallPrompt=e;document.getElementById("installAppBtn").style.display="block"});async function installAlNoorApp(){if(!deferredInstallPrompt){alert("Android Chrome: open ⋮ and choose Install app or Add to Home screen.");return}deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;document.getElementById("installAppBtn").style.display="none"}
 </script></body></html>
