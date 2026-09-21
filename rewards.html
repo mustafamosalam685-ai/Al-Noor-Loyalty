@@ -6,85 +6,41 @@
 <title>Al Noor Rewards</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0/dist/umd/supabase.min.js"></script>
 <style>
-:root{
-  --bg:#17110e;--panel:#211915;--line:rgba(255,255,255,.12);
-  --gold:#e8c77b;--cream:#f6efe3;--muted:#bdb2a7;--green:#8dbb72;
-}
+:root{--bg:#17110e;--panel:#211915;--line:rgba(255,255,255,.12);--gold:#e8c77b;--cream:#f6efe3;--muted:#bdb2a7;--green:#8dbb72}
 *{box-sizing:border-box}
-body{
-  margin:0;background:radial-gradient(circle at top,#30221b 0,#17110e 45%,#100c0a 100%);
-  color:var(--cream);font-family:Arial,sans-serif;min-height:100vh;padding-bottom:100px;
-}
+body{margin:0;background:radial-gradient(circle at top,#30221b 0,#17110e 45%,#100c0a 100%);color:var(--cream);font-family:Arial,sans-serif;min-height:100vh;padding-bottom:100px}
 .wrap{max-width:560px;margin:auto;padding:28px 18px 30px}
-.brand{text-align:center;margin:5px 0 25px}
-.brand img{width:190px;max-width:70%;height:auto;object-fit:contain}
-.brand h1{font-family:Georgia,serif;font-size:38px;margin:8px 0 3px;letter-spacing:1px}
-.brand p{margin:0;color:var(--gold);font-size:13px;letter-spacing:2px}
-h2{font-family:Georgia,serif;font-size:31px;margin:10px 0 8px}
-.subtitle{color:var(--muted);font-size:16px;margin-bottom:22px}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
-.card,.history{background:rgba(32,25,21,.78);border:1px solid var(--line);border-radius:22px}
-.card{padding:22px 14px;text-align:center}
-.num{font-size:39px;font-weight:800;color:var(--gold);line-height:1}
-.label{font-size:13px;color:#ddd3c8;margin-top:10px;letter-spacing:.5px}
-.history{padding:22px 18px}
-.history h3{font-family:Georgia,serif;font-size:28px;margin:0 0 7px}
-.history p{color:var(--muted);line-height:1.45;margin:0 0 18px}
-.coupon{
-  border:1px solid var(--line);border-radius:17px;padding:17px;margin:12px 0;
-  background:rgba(255,255,255,.025)
-}
-.row{display:flex;justify-content:space-between;gap:12px;align-items:center}
-.coupon-title{font-weight:800;font-size:18px}
-.status{font-size:11px;font-weight:800;letter-spacing:.7px;padding:7px 10px;border-radius:20px;white-space:nowrap}
-.available{background:rgba(141,187,114,.16);color:var(--green)}
-.redeemed{background:rgba(255,255,255,.08);color:#bdb2a7}
-.meta{margin-top:10px;color:var(--muted);font-size:13px;line-height:1.65}
-.empty{text-align:center;padding:24px 10px;color:var(--muted)}
-.error{text-align:center;color:#e7a29a;padding:18px}
-.loading{text-align:center;color:var(--muted);padding:25px}
-button{
-  width:100%;border:0;border-radius:15px;padding:13px;margin-top:12px;
-  background:var(--gold);color:#21170f;font-weight:800;font-size:14px;cursor:pointer
-}
-.nav{
- position:fixed;left:0;right:0;bottom:0;height:82px;background:rgba(17,12,10,.96);
- border-top:1px solid var(--line);display:flex;justify-content:center;gap:22px;z-index:20
-}
-.nav a{color:#aaa;text-decoration:none;font-size:11px;text-align:center;padding-top:17px;min-width:55px}
-.nav a.active{color:var(--gold)}
-.logoNav{
- width:58px;height:58px;border-radius:50%;border:1px solid var(--gold);
- margin-top:8px;background:#eee7d8;color:#59452c;display:flex!important;
- align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:800;font-size:9px
-}
+.brand{text-align:center;margin:5px 0 25px}.brand h1{font-family:Georgia,serif;font-size:38px;margin:8px 0 3px;letter-spacing:1px}.brand p{margin:0;color:var(--gold);font-size:13px;letter-spacing:2px}
+h2{font-family:Georgia,serif;font-size:31px;margin:10px 0 8px}.subtitle{color:var(--muted);font-size:16px;margin-bottom:22px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}.card,.history{background:rgba(32,25,21,.78);border:1px solid var(--line);border-radius:22px}.card{padding:22px 14px;text-align:center}.num{font-size:39px;font-weight:800;color:var(--gold);line-height:1}.label{font-size:13px;color:#ddd3c8;margin-top:10px;letter-spacing:.5px}
+.history{padding:22px 18px}.history h3{font-family:Georgia,serif;font-size:28px;margin:0 0 7px}.history>p{color:var(--muted);line-height:1.45;margin:0 0 18px}
+.coupon{border:1px solid var(--line);border-radius:17px;padding:17px;margin:12px 0;background:rgba(255,255,255,.025)}
+.row{display:flex;justify-content:space-between;gap:12px;align-items:center}.coupon-title{font-weight:800;font-size:18px}.status{font-size:11px;font-weight:800;letter-spacing:.7px;padding:7px 10px;border-radius:20px;white-space:nowrap}.available{background:rgba(141,187,114,.16);color:var(--green)}.redeemed{background:rgba(255,255,255,.08);color:#bdb2a7}
+.meta{margin-top:10px;color:var(--muted);font-size:13px;line-height:1.65}.staff{color:var(--cream);font-weight:800;text-transform:uppercase}
+.empty{text-align:center;padding:24px 10px;color:var(--muted)}.error{text-align:center;color:#e7a29a;padding:18px}.loading{text-align:center;color:var(--muted);padding:25px}
+button{width:100%;border:0;border-radius:15px;padding:13px;margin-top:12px;background:var(--gold);color:#21170f;font-weight:800;font-size:14px;cursor:pointer}
+.nav{position:fixed;left:0;right:0;bottom:0;height:82px;background:rgba(17,12,10,.96);border-top:1px solid var(--line);display:flex;justify-content:center;gap:22px;z-index:20}
+.nav a{color:#aaa;text-decoration:none;font-size:11px;text-align:center;padding-top:17px;min-width:55px}.nav a.active{color:var(--gold)}
+.logoNav{width:58px;height:58px;border-radius:50%;border:1px solid var(--gold);margin-top:8px;background:#eee7d8;color:#59452c;display:flex!important;align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:800;font-size:9px}
 @media(max-width:390px){.brand h1{font-size:32px}h2{font-size:28px}.nav{gap:8px}}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="brand">
-    <div style="font-size:44px;color:var(--gold)">☕</div>
-    <h1>AL NOOR</h1>
-    <p>REWARDS • EST. 1995</p>
-  </div>
-
+  <div class="brand"><div style="font-size:44px;color:var(--gold)">☕</div><h1>AL NOOR</h1><p>REWARDS • EST. 1995</p></div>
   <h2>Your Rewards</h2>
   <div class="subtitle">Your free drinks and reward history.</div>
-
   <div class="stats">
     <div class="card"><div class="num" id="earned">0</div><div class="label">FREE DRINKS EARNED</div></div>
     <div class="card"><div class="num" id="available">0</div><div class="label">AVAILABLE NOW</div></div>
   </div>
-
   <section class="history">
     <h3>Reward History</h3>
-    <p>Every free drink is recorded here with its coupon number and date.</p>
+    <p>Every free drink is recorded here with its coupon number, date and staff member.</p>
     <div id="content" class="loading">Loading rewards…</div>
     <button onclick="loadRewards()">Refresh Rewards</button>
   </section>
 </div>
-
 <nav class="nav">
   <a href="index.html">⌂<br>Home</a>
   <a class="active" href="rewards.html">♣<br>Rewards</a>
@@ -92,89 +48,32 @@ button{
   <a href="locations.html">⌖<br>Locations</a>
   <a href="menu.html">☰<br>Menu</a>
 </nav>
-
 <script>
 const SUPABASE_URL="https://fgarlyoqobopudfkifbp.supabase.co";
-const SUPABASE_KEY="sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
+const SUPABASE_KEY="sb_publishable_hmDY0Nch_M_WPIMRXW26-HA_eaLaVZcY";
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-
-function getToken(){
-  return localStorage.getItem("alnoor_public_token")
-      || new URLSearchParams(location.search).get("token");
-}
-function esc(v){
-  return String(v ?? "").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
-}
-function fmtDate(v){
-  if(!v)return "—";
-  const d=new Date(v);
-  if(isNaN(d))return esc(v);
-  return d.toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"});
-}
+function getToken(){return localStorage.getItem("alnoor_public_token")||new URLSearchParams(location.search).get("token")}
+function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function fmtDate(v){if(!v)return "—";const d=new Date(v);if(isNaN(d))return esc(v);return d.toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"})}
 async function loadRewards(){
-  const token=getToken(), content=document.getElementById("content");
-  content.className="loading"; content.textContent="Loading rewards…";
-
-  if(!token){
-    content.className="error";
-    content.textContent="Customer card not found. Please open your loyalty card first.";
-    return;
-  }
-
-  try{
-    // Reward history already identifies the customer by public_token.
-    // We intentionally do not call get_customer_by_token here.
-    const historyRes=await sb.rpc("get_customer_reward_history",{p_token:token});
-
-    if(historyRes.error){
-      console.error("Reward history RPC error:",historyRes.error);
-      content.className="error";
-      content.innerHTML="Reward history could not be loaded.<br><small>"+
-        esc(historyRes.error.message||"Unknown error")+"</small>";
-      return;
-    }
-
-    const rows=Array.isArray(historyRes.data)?historyRes.data:[];
-    const available=rows.filter(x=>String(x.status||"").toUpperCase()==="AVAILABLE").length;
-    const redeemed=rows.filter(x=>String(x.status||"").toUpperCase()==="REDEEMED").length;
-
-    document.getElementById("earned").textContent=available+redeemed;
-    document.getElementById("available").textContent=available;
-
-    if(!rows.length){
-      content.className="empty";
-      content.innerHTML="<strong>No free drinks yet.</strong><br>Earn 10 points to receive a FREE DRINK.";
-      return;
-    }
-
-    const sorted=[...rows].sort((a,b)=>{
-      const da=new Date(a.redeemed_at||a.issued_at||0).getTime();
-      const db=new Date(b.redeemed_at||b.issued_at||0).getTime();
-      return db-da;
-    });
-
-    content.className="";
-    content.innerHTML=sorted.map(x=>{
-      const isAvailable=String(x.status||"").toUpperCase()==="AVAILABLE";
-      const date=isAvailable?x.issued_at:x.redeemed_at;
-      const staff=x.redeemed_by_name?`<br>Staff: ${esc(x.redeemed_by_name)}`:"";
-      return `
-        <div class="coupon">
-          <div class="row">
-            <div class="coupon-title">FREE DRINK #${esc(String(x.coupon_number??"").padStart(6,"0"))}</div>
-            <span class="status ${isAvailable?"available":"redeemed"}">${isAvailable?"READY TO REDEEM":"REDEEMED"}</span>
-          </div>
-          <div class="meta">
-            ${isAvailable?"Issued":"Redeemed"}: ${fmtDate(date)}${staff}<br>
-            Coupon: ${esc(x.coupon_code || ("FREE-"+x.coupon_number))}
-          </div>
-        </div>`;
-    }).join("");
-  }catch(err){
-    console.error("Rewards page error:",err);
-    content.className="error";
-    content.innerHTML="Unable to load rewards right now.<br><small>"+esc(err?.message||err)+"</small>";
-  }
+ const token=getToken(),content=document.getElementById("content");content.className="loading";content.textContent="Loading rewards…";
+ if(!token){content.className="error";content.textContent="Customer card not found. Please open your loyalty card first.";return}
+ localStorage.setItem("alnoor_public_token",token);
+ const cr=await sb.rpc("get_customer_by_token",{p_token:token});
+ if(cr.error||!cr.data){content.className="error";content.textContent="Unable to load customer rewards.";return}
+ const hr=await sb.rpc("get_customer_reward_history",{p_token:token});
+ if(hr.error){content.className="error";content.innerHTML="Reward history could not be loaded.<br><small>"+esc(hr.error.message)+"</small>";return}
+ const rows=Array.isArray(hr.data)?hr.data:[],available=rows.filter(x=>String(x.status).toUpperCase()==="AVAILABLE").length;
+ const redeemed=rows.filter(x=>String(x.status).toUpperCase()==="REDEEMED").length;
+ document.getElementById("earned").textContent=available+redeemed;document.getElementById("available").textContent=available;
+ if(!rows.length){content.className="empty";content.innerHTML="<strong>No free drinks yet.</strong><br>Earn 10 points to receive a FREE DRINK.";return}
+ content.className="";
+ content.innerHTML=rows.map(x=>{
+   const ready=String(x.status).toUpperCase()==="AVAILABLE";
+   const date=ready?x.issued_at:x.redeemed_at;
+   const staff=x.redeemed_by_name?`<span class="staff">${esc(x.redeemed_by_name)}</span>`:"—";
+   return `<div class="coupon"><div class="row"><div class="coupon-title">FREE DRINK #${esc(String(x.coupon_number).padStart(6,"0"))}</div><span class="status ${ready?"available":"redeemed"}">${ready?"READY TO REDEEM":"REDEEMED"}</span></div><div class="meta">${ready?"Issued":"Redeemed"}: ${fmtDate(date)}<br>Staff: ${staff}<br>Coupon: ${esc(x.coupon_code||("FREE-"+x.coupon_number))}</div></div>`;
+ }).join("");
 }
 loadRewards();
 </script>

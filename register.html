@@ -1,83 +1,130 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<title>Al Noor — Register</title>
+<title>Al Noor Loyalty — Create Account</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
 <style>
-:root{--panel:#211914;--cream:#f3ead9;--gold:#c9a96a;--muted:#aa9d8d;--line:#3b2d24}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#2a2019,#17120f 55%);color:var(--cream);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.wrap{max-width:520px;margin:auto;padding:35px 18px}.logo{width:145px;display:block;margin:8px auto 28px}.eyebrow{text-align:center;color:var(--gold);font-size:11px;letter-spacing:2px}.title{text-align:center;font-size:30px;margin:10px 0}.sub{text-align:center;color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:25px}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:28px;padding:22px;box-shadow:0 18px 45px #0007}.field{margin-top:15px}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:8px}.field input{width:100%;padding:15px;border-radius:14px;border:1px solid #4a392d;background:#2b211b;color:#fff;outline:none}
-button{width:100%;padding:16px;border-radius:15px;border:0;font-weight:800;font-size:14px;cursor:pointer;margin-top:18px}.primary{background:var(--gold);color:#1d150f}.secondary{background:#33271f;color:var(--cream);border:1px solid #4a392d}
-.status{text-align:center;color:var(--gold);font-size:12px;min-height:20px;margin-top:14px;line-height:1.5}.footer{text-align:center;color:#766b60;font-size:11px;margin-top:22px}
+*{box-sizing:border-box}
+body{margin:0;background:#17120f;color:#f7edd9;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;min-height:100vh}
+.wrap{max-width:520px;margin:auto;padding:28px 20px 110px}
+.logo{width:86px;height:86px;border-radius:50%;margin:10px auto 24px;display:flex;align-items:center;justify-content:center;background:#eee2bf;color:#6e5528;font-weight:800;font-size:12px;box-shadow:0 8px 30px #0008}
+h1{text-align:center;font-size:28px;margin:0 0 8px}
+.sub{text-align:center;color:#bfb29e;margin:0 0 28px;line-height:1.6}
+.card{background:#211a16;border:1px solid #5b4a36;border-radius:26px;padding:24px;box-shadow:0 15px 45px #0005}
+label{display:block;margin:0 0 8px;color:#d9c9ad;font-size:14px}
+input{width:100%;height:56px;border-radius:15px;border:1px solid #68563e;background:#332a24;color:#fff;padding:0 16px;font-size:16px;outline:none;margin-bottom:18px}
+input:focus{border-color:#d8c17d}
+button{width:100%;height:56px;border:0;border-radius:16px;background:#eee08d;color:#4b3c16;font-size:16px;font-weight:800;cursor:pointer}
+button.secondary{margin-top:12px;background:#302722;color:#f4e8d1;border:1px solid #69553d}
+.msg{min-height:24px;text-align:center;margin-top:16px;color:#e5c980;font-size:14px;line-height:1.5}
+.bottom{position:fixed;left:0;right:0;bottom:0;background:#211a16;border-top:1px solid #4e402f;padding:12px 20px calc(12px + env(safe-area-inset-bottom));text-align:center;color:#8f826e;font-size:12px}
+a{color:#ead889;text-decoration:none}
 </style>
 </head>
 <body>
 <div class="wrap">
-<img class="logo" src="logo-1995.png" alt="Al Noor">
-<div class="eyebrow">AL NOOR • LOYALTY</div>
-<div class="title">Welcome to Al Noor</div>
-<div class="sub">Create your Al Noor Loyalty Card.</div>
-<div class="panel">
-<div class="field"><label>Full Name</label><input id="name" autocomplete="name" placeholder="Enter your full name"></div>
-<div class="field"><label>Mobile</label><input id="mobile" type="tel" autocomplete="tel" placeholder="Enter your mobile number"></div>
-<div class="field"><label>Email</label><input id="email" type="email" autocomplete="email" placeholder="Enter your email"></div>
-<button id="createBtn" class="primary">CREATE MY LOYALTY CARD</button>
-<div id="status" class="status"></div>
-<button class="secondary" onclick="location.href='login.html'">I ALREADY HAVE AN ACCOUNT</button>
+  <div class="logo">AL NOOR</div>
+  <h1>Welcome to Al Noor</h1>
+  <p class="sub">Create your Al Noor Loyalty Card</p>
+
+  <div class="card">
+    <label for="name">Full Name</label>
+    <input id="name" autocomplete="name" placeholder="Your full name">
+
+    <label for="mobile">Mobile</label>
+    <input id="mobile" type="tel" autocomplete="tel" placeholder="+971 5X XXX XXXX">
+
+    <label for="email">Email</label>
+    <input id="email" type="email" autocomplete="email" placeholder="you@example.com">
+
+    <button onclick="createAccount()">CREATE MY LOYALTY CARD</button>
+    <div id="msg" class="msg"></div>
+  </div>
+
+  <p class="sub" style="margin-top:22px">
+    Already registered?
+    <a href="login.html">SIGN IN</a>
+  </p>
 </div>
-<div class="footer">AL NOOR • LOYALTY MEMBER</div>
-</div>
+
+<div class="bottom">AL NOOR • LOYALTY</div>
 
 <script>
 const SUPABASE_URL="https://fgarlyoqobopudfkifbp.supabase.co";
 const SUPABASE_KEY="sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
-const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,experimental:{passkey:true}}});
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
+  auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
+});
+
+const msg=document.getElementById("msg");
+function setMsg(t){msg.textContent=t}
 
 async function createAccount(){
   const name=document.getElementById("name").value.trim();
   const mobile=document.getElementById("mobile").value.trim();
   const email=document.getElementById("email").value.trim().toLowerCase();
-  const status=document.getElementById("status");
-  const btn=document.getElementById("createBtn");
 
-  if(!name||!mobile||!email){status.textContent="Please complete all fields.";return}
-
-  btn.disabled=true;status.textContent="Creating your account...";
+  if(!name || !mobile || !email){
+    setMsg("Please complete all fields.");
+    return;
+  }
 
   try{
+    setMsg("Creating your loyalty account...");
+
     const password=crypto.randomUUID()+"Aa9!";
+
     const {data,error}=await sb.auth.signUp({
-      email,password,
+      email,
+      password,
       options:{data:{full_name:name,mobile}}
     });
 
-    if(error)throw new Error(error.message);
-
-    if(!data.session){
-      status.textContent="Account created. Please confirm your email, then return to SIGN IN. Your name and mobile are saved with your account.";
+    if(error){
+      const text=(error.message||"").toLowerCase();
+      if(text.includes("already") || text.includes("registered") || text.includes("exists")){
+        setMsg("This email is already registered. Please use SIGN IN.");
+      }else{
+        setMsg(error.message);
+      }
       return;
     }
 
-    const r=await sb.rpc("register_customer_authenticated",{
-      p_full_name:name,p_mobile:mobile,p_email:email
-    });
-    if(r.error)throw new Error(r.error.message||"Could not create loyalty card.");
+    if(!data.user){
+      setMsg("Account could not be created.");
+      return;
+    }
 
-    const customer=r.data;
-    if(!customer?.public_token)throw new Error("Loyalty card was not created correctly.");
+    if(!data.session){
+      setMsg("Account created. Please confirm your email, then return to the SIGN IN page.");
+      return;
+    }
+
+    const {data:customer,error:ce}=await sb.rpc(
+      "register_customer_authenticated",
+      {p_full_name:name,p_mobile:mobile,p_email:email}
+    );
+
+    if(ce){
+      setMsg(ce.message || "Account created, but the loyalty card could not be created.");
+      return;
+    }
+
+    if(!customer || !customer.public_token){
+      setMsg("Account created, but the loyalty card data is missing.");
+      return;
+    }
 
     localStorage.setItem("alnoor_public_token",customer.public_token);
+
     location.href="card.html?token="+encodeURIComponent(customer.public_token)+"&new=1";
+
   }catch(e){
-    status.textContent=e?.message||"Registration failed.";
-  }finally{
-    btn.disabled=false;
+    setMsg(e?.message || "Something went wrong.");
   }
 }
-document.getElementById("createBtn").onclick=createAccount;
 </script>
 </body>
 </html>
