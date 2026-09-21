@@ -6,7 +6,6 @@
 <meta name="theme-color" content="#17120f">
 <title>Al Noor Loyalty Card</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 :root{--panel:#211914;--cream:#f3ead9;--gold:#c9a96a;--muted:#aa9d8d;--line:#3b2d24}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#2a2019,#17120f 55%);color:var(--cream);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -14,8 +13,93 @@
 .member{display:inline-block;border:1px solid #80653c;border-radius:20px;padding:7px 13px;color:#d7bd8a;font-size:10px;letter-spacing:1.5px;margin-bottom:17px}.welcome{color:var(--muted);font-size:13px}.name{font-size:28px;font-weight:800;margin:5px 0}.id{color:#8f8377;font-size:12px;letter-spacing:1px}
 .qrbox{width:300px;height:300px;max-width:100%;background:#fff;border-radius:20px;margin:24px auto 14px;display:grid;place-items:center}.qrnote{text-align:center;color:var(--muted);font-size:12px}
 .points{margin-top:17px;background:#19130f;border:1px solid #4b3b2e;border-radius:22px;padding:20px;text-align:center}.circle{width:112px;height:112px;border-radius:50%;border:8px solid #8e7042;margin:auto;display:flex;flex-direction:column;align-items:center;justify-content:center}.circle strong{font-size:29px}.circle span{font-size:10px;letter-spacing:2px;color:var(--muted)}.more{margin-top:13px;color:#c8b99f;font-size:12px}.dots{display:flex;justify-content:center;gap:7px;margin-top:14px}.dot{width:10px;height:10px;border-radius:50%;background:#55442c}.dot.on{background:var(--gold)}
-button{width:100%;padding:15px;border:0;border-radius:14px;font-weight:800;cursor:pointer}.signout{margin-top:10px;background:transparent;color:var(--gold);border:1px solid #6f5835}.status{text-align:center;color:var(--gold);font-size:12px;min-height:18px;margin-top:9px;line-height:1.5}.error{text-align:center;padding:55px 20px;color:#e0b3a5}.error p{color:var(--muted)}
+.face{margin-top:17px;background:#19130f;border:1px solid #4b3b2e;border-radius:22px;padding:18px}.face h3{margin:0 0 7px;font-size:17px}.face p{margin:0 0 14px;color:var(--muted);font-size:12px;line-height:1.5}
+button{width:100%;padding:15px;border:0;border-radius:14px;font-weight:800;cursor:pointer}.facebtn{background:var(--gold);color:#1d150f}.signout{margin-top:10px;background:transparent;color:var(--gold);border:1px solid #6f5835}.status{text-align:center;color:var(--gold);font-size:12px;min-height:18px;margin-top:9px;line-height:1.5}.error{text-align:center;padding:55px 20px;color:#e0b3a5}.error p{color:var(--muted)}
 .bottom{position:fixed;left:0;right:0;bottom:0;background:rgba(15,11,8,.97);border-top:1px solid #3d3021;display:flex;justify-content:center;padding:9px 6px calc(9px + env(safe-area-inset-bottom));z-index:20}.nav{width:20%;max-width:105px;text-align:center;color:#9f927f;font-size:10px;text-decoration:none}.nav span{display:block;font-size:20px;margin-bottom:3px}.active{color:var(--gold)}.center{width:38px;height:38px;border-radius:50%;border:1px solid #8e7042;margin:-3px auto 2px;display:grid;place-items:center;color:var(--gold);font-weight:900;font-size:13px}
+
+/* AL NOOR LOYALTY — Unified Green / Gold / Cream Theme */
+:root{
+  --al-green:#123d2a;
+  --al-green-2:#1d5a3f;
+  --al-gold:#c9952e;
+  --al-gold-2:#e1b95d;
+  --al-cream:#f8f3e8;
+  --al-cream-2:#efe5d3;
+  --al-brown:#5b3a24;
+  --al-ink:#173126;
+  --al-muted:#6f746d;
+  --al-line:rgba(18,61,42,.16);
+}
+html{background:var(--al-cream)!important}
+body{
+  background:linear-gradient(135deg,#fbf8f0 0%,#f4ecdc 55%,#eee1ca 100%)!important;
+  color:var(--al-ink)!important;
+  font-family:Arial,Helvetica,sans-serif!important;
+}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 50% -10%,rgba(201,149,46,.10),transparent 38%);z-index:0}
+.page,.wrap{position:relative;z-index:1}
+.panel,.card,.form,.points,.section,.report-card,.modal-box,.login{
+  background:rgba(255,255,255,.90)!important;
+  color:var(--al-ink)!important;
+  border:1px solid var(--al-line)!important;
+  box-shadow:0 18px 55px rgba(66,48,27,.12)!important;
+  backdrop-filter:blur(10px);
+}
+input,select{
+  background:#fff!important;color:var(--al-ink)!important;
+  border:1px solid rgba(18,61,42,.20)!important;
+}
+input::placeholder{color:#8b9089!important}
+button,.login-btn,.action.add,.gm-refresh,.modal-confirm{
+  background:linear-gradient(135deg,var(--al-green),var(--al-green-2))!important;
+  color:#fff!important;border:0!important;
+  box-shadow:0 8px 22px rgba(18,61,42,.16)!important;
+}
+button:hover{filter:brightness(1.06)}
+.secondary,.next,.logout-btn,.back-btn,.copy-register,.modal-cancel{
+  background:#fff!important;color:var(--al-green)!important;
+  border:1px solid rgba(18,61,42,.20)!important;
+}
+.open-register,.redeem{background:var(--al-gold)!important;color:#fff!important}
+.logout-btn{box-shadow:none!important}
+.brand-logo{width:190px!important;max-width:42vw!important;filter:drop-shadow(0 7px 14px rgba(65,46,24,.16))!important}
+.title h1,.gm-header h1,.header h1,.name,.customer-name,.points-title,.gm-user-name,.user-name{color:var(--al-green)!important}
+.title p,.gm-header p,.gm-user-email,.user-email,.sub,.welcome,.id,.feature-sub,.report-sub,.points-sub{color:var(--al-muted)!important}
+.gold,.pointsLabel,.section-link,.status,.active,.brand{color:var(--al-gold)!important}
+.star{color:var(--al-gold)!important}
+.coupon-number,.report-number,.points-number,.pointsNum{color:var(--al-green)!important}
+.dot.active,.dot.on{background:var(--al-gold)!important}
+.progress-ring{background:conic-gradient(var(--al-gold) 0 70%,#e9e0cf 70% 100%)!important}
+.progress-ring:before{background:#fff!important;border-color:rgba(18,61,42,.08)!important}
+.avatar,.initial{background:var(--al-green)!important;color:#fff!important}
+.status{background:rgba(18,61,42,.08)!important;color:var(--al-green)!important}
+.message.success{background:rgba(18,61,42,.08)!important;color:var(--al-green)!important}
+.message.error{background:rgba(160,48,48,.08)!important;color:#a03030!important}
+.report-orange,.report-green,.report-light{border-top-color:var(--al-gold)!important}
+.coupons-panel{background:var(--al-cream)!important;border-color:var(--al-line)!important}
+.coupon-item,.next-line{background:#fff!important;color:var(--al-ink)!important;border-color:var(--al-line)!important}
+.coupons-count,.badge,.family-pill{background:var(--al-gold)!important;color:#fff!important}
+.features{border-color:var(--al-line)!important}
+.footer{color:var(--al-green)!important;opacity:.75}
+.scanner-frame{background:#f3ede1!important;border-color:rgba(18,61,42,.18)!important}
+.corner{border-color:var(--al-gold)!important}
+.menu-qr-wrap,.qrbox,.qr-box,.register-qr{box-shadow:0 12px 30px rgba(66,48,27,.12)!important}
+.menu-qr-label,.label,.points-text,.report-label{color:var(--al-green)!important}
+.staff-home .home-action{background:#fff!important;color:var(--al-green)!important;border-color:var(--al-line)!important}
+.staff-home .home-action.add{border-color:rgba(18,61,42,.28)!important}
+.staff-home .home-action.new{border-color:rgba(201,149,46,.45)!important}
+.register-panel h2{color:var(--al-green)!important}
+.camera-help{background:var(--al-cream)!important;color:var(--al-muted)!important}
+.modal{background:rgba(18,61,42,.48)!important}
+.modal-box h2{color:var(--al-green)!important}
+.bottom{background:rgba(255,255,255,.96)!important;border-top:1px solid var(--al-line)!important}
+.nav{color:#7a817a!important}.nav.active,.active{color:var(--al-gold)!important}
+.cardTop .pill,.pill{background:var(--al-green)!important;color:#fff!important}
+.more,.hint,.message,.msg{color:var(--al-muted)!important}
+.form button:not(.secondary){background:var(--al-green)!important}
+.logo,.logo-img{object-fit:contain!important}
+@media(max-width:700px){.brand-logo{width:150px!important;max-width:45vw!important}.page{padding-top:18px!important}.title h1,.gm-header h1{font-size:34px!important}}
+
 </style>
 </head>
 <body>
@@ -24,7 +108,7 @@ button{width:100%;padding:15px;border:0;border-radius:14px;font-weight:800;curso
 <script>
 const SUPABASE_URL="https://fgarlyoqobopudfkifbp.supabase.co";
 const SUPABASE_KEY="sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
-const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,experimental:{passkey:true}}});
 
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
 
@@ -42,6 +126,28 @@ async function loadCustomer(){
   return null;
 }
 
+async function activateFaceID(){
+  const btn=document.getElementById("faceBtn"),status=document.getElementById("faceStatus");
+  btn.disabled=true;status.textContent="Waiting for Face ID / device verification...";
+  try{
+    if(!window.isSecureContext)throw new Error("Please open the secure HTTPS Al Noor website.");
+    if(!window.PublicKeyCredential)throw new Error("Passkey is not supported on this device/browser.");
+    const {data:{session}}=await sb.auth.getSession();
+    if(!session)throw new Error("Please sign in first, then activate Face ID.");
+    const {error}=await sb.auth.registerPasskey();
+    if(error)throw new Error(error.message||"Face ID activation failed.");
+    status.textContent="Face ID is now active on this device.";
+    btn.textContent="FACE ID ACTIVE";
+  }catch(e){
+    const msg=e?.message||"Face ID activation failed.";
+    if(/not allowed|denied|permission|NotAllowedError/i.test(msg)){
+      status.textContent="Face ID registration was blocked by the browser/device. Please try again from Safari on the same Al Noor HTTPS page.";
+    }else{
+      status.textContent=msg;
+    }
+  }
+  finally{btn.disabled=false}
+}
 
 async function signOut(){await sb.auth.signOut();localStorage.removeItem("alnoor_public_token");location.href="login.html";}
 
@@ -51,19 +157,21 @@ async function render(){
     app.innerHTML=`<div class="error"><h2>Customer card not found</h2><p>Please sign in again.</p><button onclick="location.href='login.html'">SIGN IN</button></div>`;
     return;
   }
-  const qrToken=String(c.public_token||new URLSearchParams(location.search).get("token")||localStorage.getItem("alnoor_public_token")||"");
-  if(qrToken)localStorage.setItem("alnoor_public_token",qrToken);
+  if(c.public_token)localStorage.setItem("alnoor_public_token",c.public_token);
   const p=Math.max(0,Number(c.points||0)),n=p%10,more=n===0?10:10-n;
 
   app.innerHTML=`
-  <div class="top"><div class="logo">AN</div><div class="brand">AL NOOR LOYALTY</div></div>
+  <div class="top"><img class="logo-img" src="al-noor-loyalty-logo.png" alt="AL NOOR LOYALTY"></div>
   <section class="card">
     <div class="member">AL NOOR • LOYALTY MEMBER</div>
     <div class="welcome">Welcome back</div>
     <div class="name">${esc(c.full_name)}</div>
     <div class="id">CUSTOMER ID · ${esc(c.customer_code)}</div>
 
-    <div class="qrbox"><div id="customerQr"></div></div>
+    <div class="qrbox">
+      <img id="customerQrImage" alt="Al Noor customer QR code"
+           style="width:272px;height:272px;display:block;object-fit:contain;border-radius:8px;">
+    </div>
     <div class="qrnote">Show this QR code at the counter</div>
 
     <div class="points">
@@ -72,18 +180,51 @@ async function render(){
       <div class="dots">${Array.from({length:10},(_,i)=>`<div class="dot ${i<n?"on":""}"></div>`).join("")}</div>
     </div>
 
+    <div class="face">
+      <h3>Activate Face ID</h3>
+      <p>Activate Face ID once on this device. After that, you can use Face ID to sign in without typing your email.</p>
+      <button id="faceBtn" class="facebtn" onclick="activateFaceID()">ACTIVATE FACE ID</button>
+      <div id="faceStatus" class="status"></div>
+    </div>
+
     <button class="signout" onclick="signOut()">SIGN OUT</button>
   </section>
 
   <div class="bottom">
-    <a class="nav active" href="card.html?token=${encodeURIComponent(qrToken)}"><span>⌂</span>Home</a>
+    <a class="nav active" href="card.html?token=${encodeURIComponent(c.public_token||"")}"><span>⌂</span>Home</a>
     <a class="nav" href="rewards.html"><span>🎁</span>Rewards</a>
     <a class="nav" href="alnoor.html"><div class="center">AN</div>Al Noor</a>
     <a class="nav" href="locations.html"><span>⌖</span>Locations</a>
     <a class="nav" href="menu.html"><span>☰</span>Menu</a>
   </div>`;
 
-  if(qrToken)new QRCode(document.getElementById("customerQr"),{text:qrToken,width:272,height:272,colorDark:"#111111",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H});
+  const qrText = String(
+    c.public_token ||
+    new URLSearchParams(location.search).get("token") ||
+    localStorage.getItem("alnoor_public_token") ||
+    ""
+  );
+
+  if(qrText){
+    localStorage.setItem("alnoor_public_token",qrText);
+
+    const qrImg=document.getElementById("customerQrImage");
+    qrImg.alt="Al Noor customer QR code";
+
+    const primary="https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=8&data="+encodeURIComponent(qrText);
+    const fallback="https://quickchart.io/qr?size=300&margin=2&text="+encodeURIComponent(qrText);
+
+    qrImg.src=primary;
+
+    qrImg.onerror=()=>{
+      qrImg.onerror=()=>{
+        qrImg.removeAttribute("src");
+        qrImg.alt="QR code could not be loaded.";
+        qrImg.style.background="#fff";
+      };
+      qrImg.src=fallback;
+    };
+  }
 }
 render();
 </script>

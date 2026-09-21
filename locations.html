@@ -1,70 +1,133 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#100a05">
-<title>Al Noor | Locations</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Al Noor — Locations</title>
+<meta name="theme-color" content="#17110f">
 <style>
-:root{--bg:#100a05;--card:#191008;--gold:#dca84b;--gold2:#f1c66d;--cream:#f7efe0;--muted:#b9afa0;--line:rgba(220,168,75,.34)}
-*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--cream);font-family:Arial,sans-serif}
-body{min-height:100vh;background:radial-gradient(circle at 50% -10%,rgba(220,168,75,.12),transparent 34%),linear-gradient(180deg,#100a05,#160c06 55%,#0c0704)}
-a{text-decoration:none;color:inherit}.page{max-width:760px;margin:auto;padding:20px 16px 120px}
-.brand{text-align:center}.brand-logo{width:84px;height:84px;object-fit:contain;border:1px solid var(--gold2);border-radius:50%;padding:7px}
-.brand-name{margin-top:8px;font:29px Georgia,serif;letter-spacing:2px}.brand-sub{font-size:9px;letter-spacing:3px;color:var(--gold2);margin-top:3px}.brand-ar{font-size:11px;margin-top:3px;color:#ddd1bd}.rule{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:14px 12px}
-.hero{padding:17px 2px}.kicker{font-size:13px;letter-spacing:5px;color:var(--gold2);font-weight:700}h1{font:52px Georgia,serif;line-height:1;margin:5px 0 10px}.intro{font-size:16px;color:var(--muted);line-height:1.5;margin:0}
-.card{border:1px solid var(--line);border-radius:22px;padding:20px 18px;margin:14px 0;background:linear-gradient(145deg,rgba(36,23,12,.94),rgba(17,10,5,.97));box-shadow:0 18px 50px rgba(0,0,0,.35)}
-.top{display:flex;gap:14px}.pin{width:48px;height:48px;flex:0 0 48px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--gold2);font-size:24px}.info{flex:1}.name{font:700 24px Georgia,serif;margin:0 0 5px}.area{font-size:11px;letter-spacing:3px;color:var(--gold2);text-transform:uppercase}.detail{display:flex;gap:9px;margin-top:13px;color:#ddd4c8;font-size:14px;line-height:1.45}.icon{color:var(--gold2);width:18px;text-align:center}
-.map{margin-top:17px;width:100%;display:flex;align-items:center;justify-content:center;gap:9px;border:1px solid #f1c66d;border-radius:14px;padding:13px 15px;background:linear-gradient(135deg,#f3ca78,#c99235);color:#160e07;font-weight:800;font-size:12px;letter-spacing:.7px}
-.note{border:1px solid var(--line);border-radius:20px;padding:20px;margin-top:18px;display:flex;gap:14px;align-items:center;background:rgba(23,14,8,.72)}.note-icon{font-size:28px;color:var(--gold2)}.note-title{font:19px Georgia,serif;margin-bottom:5px}.note-text{font-size:11px;letter-spacing:2px;color:var(--gold2)}
-.nav{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);width:min(720px,calc(100% - 24px));height:74px;border:1px solid var(--line);border-radius:26px;background:rgba(15,9,5,.95);backdrop-filter:blur(16px);display:grid;grid-template-columns:1fr 1fr 1.25fr 1fr 1fr;align-items:center;z-index:50;box-shadow:0 15px 40px rgba(0,0,0,.45)}
-.nav a{text-align:center;color:#a99f93;font-size:10px}.nav .ico{display:block;font-size:21px;margin-bottom:3px}.nav .active{color:var(--gold2)}
-.center-logo{width:64px;height:64px;border-radius:50%;margin:-29px auto 0;border:2px solid var(--gold);background:#120b06;padding:6px;display:block}.center-label{color:var(--gold2)!important;letter-spacing:3px;font-size:9px!important;margin-top:7px}
-@media(max-width:430px){.page{padding-left:13px;padding-right:13px}h1{font-size:46px}.name{font-size:21px}.nav{height:70px}}
+:root{--bg:#17110f;--card:#211815;--gold:#d7b46a;--cream:#f4ead8;--muted:#a99d91;--line:#4a382c}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#17110f,#120e0d);color:var(--cream);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;padding-bottom:105px}
+.header{padding:42px 22px 24px;text-align:center}.logo{width:78px;height:78px;object-fit:contain;border-radius:50%;margin-bottom:14px}
+h1{margin:0;font-size:34px;font-weight:500}.subtitle{margin:8px 0 0;color:var(--muted);font-size:15px}
+.wrap{max-width:720px;margin:auto;padding:0 16px}.branch{background:linear-gradient(145deg,#241b18,#1b1513);border:1px solid var(--line);border-radius:24px;padding:22px;margin:14px 0;box-shadow:0 12px 30px rgba(0,0,0,.18)}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.name{font-size:22px;font-weight:650;margin:0 0 7px}.badge{color:#17110f;background:var(--gold);border-radius:999px;padding:6px 10px;font-size:11px;font-weight:800;white-space:nowrap}
+.address{color:#b8aaa0;line-height:1.55;font-size:14px}.meta{margin-top:15px;color:#ddd0c2;font-size:14px}.actions{display:flex;gap:10px;margin-top:18px}.btn{flex:1;text-align:center;text-decoration:none;padding:12px 10px;border-radius:14px;font-weight:700;font-size:13px}.call{background:var(--gold);color:#17110f}.map{border:1px solid var(--line);color:var(--cream);background:#181311}
+.footer-note{text-align:center;color:#766c64;font-size:12px;margin:24px 0}.nav{position:fixed;left:0;right:0;bottom:0;height:82px;background:rgba(20,15,13,.97);border-top:1px solid #3b2e27;display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;z-index:10}
+.nav a{color:#9d9289;text-decoration:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:11px}.nav a.active{color:var(--cream)}.center{width:58px;height:58px;border-radius:50%;margin-top:-17px;background:#efe2c8;border:2px solid #6f5938;display:flex!important;align-items:center;justify-content:center;overflow:hidden}.center img{width:100%;height:100%;object-fit:cover}.icon{font-size:20px;line-height:1}
+@media(max-width:420px){.top{display:block}.badge{display:inline-block;margin-top:10px}.actions{flex-direction:column}}
+
+/* AL NOOR LOYALTY — Unified Green / Gold / Cream Theme */
+:root{
+  --al-green:#123d2a;
+  --al-green-2:#1d5a3f;
+  --al-gold:#c9952e;
+  --al-gold-2:#e1b95d;
+  --al-cream:#f8f3e8;
+  --al-cream-2:#efe5d3;
+  --al-brown:#5b3a24;
+  --al-ink:#173126;
+  --al-muted:#6f746d;
+  --al-line:rgba(18,61,42,.16);
+}
+html{background:var(--al-cream)!important}
+body{
+  background:linear-gradient(135deg,#fbf8f0 0%,#f4ecdc 55%,#eee1ca 100%)!important;
+  color:var(--al-ink)!important;
+  font-family:Arial,Helvetica,sans-serif!important;
+}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 50% -10%,rgba(201,149,46,.10),transparent 38%);z-index:0}
+.page,.wrap{position:relative;z-index:1}
+.panel,.card,.form,.points,.section,.report-card,.modal-box,.login{
+  background:rgba(255,255,255,.90)!important;
+  color:var(--al-ink)!important;
+  border:1px solid var(--al-line)!important;
+  box-shadow:0 18px 55px rgba(66,48,27,.12)!important;
+  backdrop-filter:blur(10px);
+}
+input,select{
+  background:#fff!important;color:var(--al-ink)!important;
+  border:1px solid rgba(18,61,42,.20)!important;
+}
+input::placeholder{color:#8b9089!important}
+button,.login-btn,.action.add,.gm-refresh,.modal-confirm{
+  background:linear-gradient(135deg,var(--al-green),var(--al-green-2))!important;
+  color:#fff!important;border:0!important;
+  box-shadow:0 8px 22px rgba(18,61,42,.16)!important;
+}
+button:hover{filter:brightness(1.06)}
+.secondary,.next,.logout-btn,.back-btn,.copy-register,.modal-cancel{
+  background:#fff!important;color:var(--al-green)!important;
+  border:1px solid rgba(18,61,42,.20)!important;
+}
+.open-register,.redeem{background:var(--al-gold)!important;color:#fff!important}
+.logout-btn{box-shadow:none!important}
+.brand-logo{width:190px!important;max-width:42vw!important;filter:drop-shadow(0 7px 14px rgba(65,46,24,.16))!important}
+.title h1,.gm-header h1,.header h1,.name,.customer-name,.points-title,.gm-user-name,.user-name{color:var(--al-green)!important}
+.title p,.gm-header p,.gm-user-email,.user-email,.sub,.welcome,.id,.feature-sub,.report-sub,.points-sub{color:var(--al-muted)!important}
+.gold,.pointsLabel,.section-link,.status,.active,.brand{color:var(--al-gold)!important}
+.star{color:var(--al-gold)!important}
+.coupon-number,.report-number,.points-number,.pointsNum{color:var(--al-green)!important}
+.dot.active,.dot.on{background:var(--al-gold)!important}
+.progress-ring{background:conic-gradient(var(--al-gold) 0 70%,#e9e0cf 70% 100%)!important}
+.progress-ring:before{background:#fff!important;border-color:rgba(18,61,42,.08)!important}
+.avatar,.initial{background:var(--al-green)!important;color:#fff!important}
+.status{background:rgba(18,61,42,.08)!important;color:var(--al-green)!important}
+.message.success{background:rgba(18,61,42,.08)!important;color:var(--al-green)!important}
+.message.error{background:rgba(160,48,48,.08)!important;color:#a03030!important}
+.report-orange,.report-green,.report-light{border-top-color:var(--al-gold)!important}
+.coupons-panel{background:var(--al-cream)!important;border-color:var(--al-line)!important}
+.coupon-item,.next-line{background:#fff!important;color:var(--al-ink)!important;border-color:var(--al-line)!important}
+.coupons-count,.badge,.family-pill{background:var(--al-gold)!important;color:#fff!important}
+.features{border-color:var(--al-line)!important}
+.footer{color:var(--al-green)!important;opacity:.75}
+.scanner-frame{background:#f3ede1!important;border-color:rgba(18,61,42,.18)!important}
+.corner{border-color:var(--al-gold)!important}
+.menu-qr-wrap,.qrbox,.qr-box,.register-qr{box-shadow:0 12px 30px rgba(66,48,27,.12)!important}
+.menu-qr-label,.label,.points-text,.report-label{color:var(--al-green)!important}
+.staff-home .home-action{background:#fff!important;color:var(--al-green)!important;border-color:var(--al-line)!important}
+.staff-home .home-action.add{border-color:rgba(18,61,42,.28)!important}
+.staff-home .home-action.new{border-color:rgba(201,149,46,.45)!important}
+.register-panel h2{color:var(--al-green)!important}
+.camera-help{background:var(--al-cream)!important;color:var(--al-muted)!important}
+.modal{background:rgba(18,61,42,.48)!important}
+.modal-box h2{color:var(--al-green)!important}
+.bottom{background:rgba(255,255,255,.96)!important;border-top:1px solid var(--al-line)!important}
+.nav{color:#7a817a!important}.nav.active,.active{color:var(--al-gold)!important}
+.cardTop .pill,.pill{background:var(--al-green)!important;color:#fff!important}
+.more,.hint,.message,.msg{color:var(--al-muted)!important}
+.form button:not(.secondary){background:var(--al-green)!important}
+.logo,.logo-img{object-fit:contain!important}
+@media(max-width:700px){.brand-logo{width:150px!important;max-width:45vw!important}.page{padding-top:18px!important}.title h1,.gm-header h1{font-size:34px!important}}
+
 </style>
 </head>
 <body>
-<main class="page">
-<header class="brand">
-<img class="brand-logo" src="icon-512.png" alt="Al Noor Modern Bakery & Cafe">
-<div class="brand-name">AL NOOR</div><div class="brand-sub">MODERN BAKERY &amp; CAFÉ</div><div class="brand-ar">مخبز النور الحديث</div><div class="rule"></div>
+<header class="header">
+<img class="logo" src="al-noor-loyalty-logo.png" onerror="this.src='al-noor-loyalty-logo.png'" alt="Al Noor">
+<h1>Our Locations</h1><div class="subtitle">Al Noor Modern Bakery & Café — Al Ain</div>
 </header>
+<main class="wrap">
 
-<section class="hero"><div class="kicker">OUR</div><h1>Locations</h1><p class="intro">Visit us at any of our branches in Al Ain.</p></section>
+<section class="branch"><div class="top"><div><h2 class="name">Al Qattara</h2><div class="address">6QW3+26M — Mohammed Bin Khalifa St, Al Qattara, Al Ain</div></div><div class="badge">24 HOURS</div></div>
+<div class="meta">☎ +971 3 762 7772</div><div class="actions"><a class="btn call" href="tel:+97137627772">CALL</a><a class="btn map" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=6QW3%2B26M%20Al%20Noor%20Modern%20Bakery%20Al%20Qattara%20Al%20Ain">DIRECTIONS</a></div></section>
 
-<div class="card"><div class="top"><div class="pin">⌖</div><div class="info">
-<h2 class="name">Al Bawadi Branch</h2><div class="area">Al Bawadi · Al Ain</div>
-<div class="detail"><span class="icon">⌖</span><span>Zayed Bin Sultan Street, near Bawadi Mall<br>Al Ain, Abu Dhabi</span></div>
-<div class="detail"><span class="icon">◷</span><span>Open 24 Hours</span></div></div></div>
-<a class="map" href="https://www.google.com/maps/search/?api=1&query=5R74%2BH2R%20Al%20Noor%20Modern%20Bakery%20Al%20Bawadi%20Al%20Ain" target="_blank" rel="noopener">➤ &nbsp; OPEN IN GOOGLE MAPS &nbsp; ↗</a></div>
+<section class="branch"><div class="top"><div><h2 class="name">Al Bawadi</h2><div class="address">5R74+H2R — Zayed Bin Sultan St, Al Noud / Wadi Al Ain 1</div></div><div class="badge">24 HOURS</div></div>
+<div class="meta">☎ +971 3 784 0003</div><div class="actions"><a class="btn call" href="tel:+97137840003">CALL</a><a class="btn map" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=5R74%2BH2R%20Al%20Noor%20Modern%20Bakery%20Al%20Bawadi%20Al%20Ain">DIRECTIONS</a></div></section>
 
-<div class="card"><div class="top"><div class="pin">⌖</div><div class="info">
-<h2 class="name">Al Qattara Branch</h2><div class="area">Al Qattara · Al Ain</div>
-<div class="detail"><span class="icon">⌖</span><span>6QW3+26M, Mohammed Bin Khalifa Street<br>Al Qattara, Al Ain</span></div>
-<div class="detail"><span class="icon">◷</span><span>Open 24 Hours</span></div></div></div>
-<a class="map" href="https://www.google.com/maps/search/?api=1&query=6QW3%2B26M%20Al%20Noor%20Modern%20Bakery%20Al%20Qattara%20Al%20Ain" target="_blank" rel="noopener">➤ &nbsp; OPEN IN GOOGLE MAPS &nbsp; ↗</a></div>
+<section class="branch"><div class="top"><div><h2 class="name">Al Muwaiji</h2><div class="address">6PGM+3FX — Sheikh Khalifa Bin Zayed St, near Choithram</div></div><div class="badge">24 HOURS</div></div>
+<div class="meta">☎ +971 3 755 7500</div><div class="actions"><a class="btn call" href="tel:+97137557500">CALL</a><a class="btn map" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=6PGM%2B3FX%20Al%20Noor%20Modern%20Bakery%20Al%20Muwaiji%20Al%20Ain">DIRECTIONS</a></div></section>
 
-<div class="card"><div class="top"><div class="pin">⌖</div><div class="info">
-<h2 class="name">Al Muwaiji Branch</h2><div class="area">Al Muwaiji · Al Ain</div>
-<div class="detail"><span class="icon">⌖</span><span>6PGM+3FX, Sheikh Khalifa Bin Zayed Street<br>Near Choithram · Al Ain</span></div>
-<div class="detail"><span class="icon">◷</span><span>Open 24 Hours</span></div></div></div>
-<a class="map" href="https://www.google.com/maps/search/?api=1&query=6PGM%2B3FX%20Al%20Noor%20Modern%20Bakery%20Al%20Muwaiji%20Al%20Ain" target="_blank" rel="noopener">➤ &nbsp; OPEN IN GOOGLE MAPS &nbsp; ↗</a></div>
+<section class="branch"><div class="top"><div><h2 class="name">Al Neyadat</h2><div class="address">6Q7H+Q89 — Zayed Bin Sultan St, Al Sarouj / Al Neyadat</div></div><div class="badge">24 HOURS</div></div>
+<div class="meta">☎ +971 3 761 7063</div><div class="actions"><a class="btn call" href="tel:+97137617063">CALL</a><a class="btn map" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=6Q7H%2BQ89%20Al%20Noor%20Modern%20Bakery%20Al%20Neyadat%20Al%20Ain">DIRECTIONS</a></div></section>
 
-<div class="card"><div class="top"><div class="pin">⌖</div><div class="info">
-<h2 class="name">Al Neyadat Branch</h2><div class="area">Al Neyadat · Al Sarouj · Al Ain</div>
-<div class="detail"><span class="icon">⌖</span><span>6Q7H+Q89, Zayed Bin Sultan Street<br>Al Sarouj · Al Neyadat · Al Ain</span></div>
-<div class="detail"><span class="icon">◷</span><span>Open 24 Hours</span></div></div></div>
-<a class="map" href="https://www.google.com/maps/search/?api=1&query=6Q7H%2BQ89%20Al%20Noor%20Modern%20Bakery%20Al%20Neyadat%20Al%20Ain" target="_blank" rel="noopener">➤ &nbsp; OPEN IN GOOGLE MAPS &nbsp; ↗</a></div>
-
-<section class="note"><div class="note-icon">☕</div><div><div class="note-title">Freshly baked. Locally loved.</div><div class="note-text">AL NOOR · ALWAYS NEAR YOU</div></div></section>
+<div class="footer-note">Al Noor Modern Bakery & Café • Al Ain</div>
 </main>
-
 <nav class="nav">
-<a href="index.html"><span class="ico">⌂</span>Home</a>
-<a href="rewards.html"><span class="ico">♧</span>Rewards</a>
-<a href="alnoor.html"><img class="center-logo" src="icon-512.png" alt="Al Noor"><div class="center-label">AL NOOR</div></a>
-<a href="locations.html" class="active"><span class="ico">●</span>Locations</a>
-<a href="menu.html"><span class="ico">☰</span>Menu</a>
+<a href="index.html"><span class="icon">⌂</span><span>Home</span></a>
+<a href="rewards.html"><span class="icon">♢</span><span>Rewards</span></a>
+<a class="center" href="alnoor.html"><img src="al-noor-loyalty-logo.png" onerror="this.src='al-noor-loyalty-logo.png'" alt="Al Noor"></a>
+<a class="active" href="locations.html"><span class="icon">⌖</span><span>Locations</span></a>
+<a href="menu.html"><span class="icon">☰</span><span>Menu</span></a>
 </nav>
-</body>
-</html>
+</body></html>

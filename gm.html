@@ -14,18 +14,102 @@ button,input{font:inherit}.hidden{display:none!important}.page{width:min(1120px,
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{padding:22px;text-align:center;min-height:145px;display:flex;flex-direction:column;justify-content:center}.icon{font-size:33px}.label{font-size:12px;letter-spacing:2px;color:var(--muted);margin-top:5px}.num{font-size:42px;font-weight:900;margin-top:6px}.sub{font-size:12px;color:var(--muted);margin-top:4px}.orange{border-top:4px solid var(--orange)}.green{border-top:4px solid var(--green)}.cream{border-top:4px solid var(--cream)}
 .section{margin-top:18px;padding:22px}.section h2{margin:0 0 15px;font-size:22px}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.mini{padding:16px;border-radius:16px;background:rgba(255,255,255,.06);text-align:center}.mini b{display:block;font-size:25px;margin-top:5px}.mini span{font-size:11px;letter-spacing:1px;color:var(--muted)}.notice{text-align:center;margin-top:14px;color:#ffb4a8;font-weight:700;min-height:20px}.footer{text-align:center;margin-top:28px;letter-spacing:4px;color:var(--muted);font-size:12px}
 @media(max-width:700px){.page{width:94%}.header h1{font-size:35px}.grid{grid-template-columns:1fr 1fr}.summary{grid-template-columns:1fr 1fr}.filters-row{grid-template-columns:1fr}.refresh{width:100%;min-height:55px}.card{min-height:130px}.num{font-size:34px}.brand-logo{width:185px}}@media(max-width:430px){.grid{grid-template-columns:1fr}.summary{grid-template-columns:1fr 1fr}}
+
+/* AL NOOR LOYALTY — Unified Green / Gold / Cream Theme */
+:root{
+  --al-green:#123d2a;
+  --al-green-2:#1d5a3f;
+  --al-gold:#c9952e;
+  --al-gold-2:#e1b95d;
+  --al-cream:#f8f3e8;
+  --al-cream-2:#efe5d3;
+  --al-brown:#5b3a24;
+  --al-ink:#173126;
+  --al-muted:#6f746d;
+  --al-line:rgba(18,61,42,.16);
+}
+html{background:var(--al-cream)!important}
+body{
+  background:linear-gradient(135deg,#fbf8f0 0%,#f4ecdc 55%,#eee1ca 100%)!important;
+  color:var(--al-ink)!important;
+  font-family:Arial,Helvetica,sans-serif!important;
+}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 50% -10%,rgba(201,149,46,.10),transparent 38%);z-index:0}
+.page,.wrap{position:relative;z-index:1}
+.panel,.card,.form,.points,.section,.report-card,.modal-box,.login{
+  background:rgba(255,255,255,.90)!important;
+  color:var(--al-ink)!important;
+  border:1px solid var(--al-line)!important;
+  box-shadow:0 18px 55px rgba(66,48,27,.12)!important;
+  backdrop-filter:blur(10px);
+}
+input,select{
+  background:#fff!important;color:var(--al-ink)!important;
+  border:1px solid rgba(18,61,42,.20)!important;
+}
+input::placeholder{color:#8b9089!important}
+button,.login-btn,.action.add,.gm-refresh,.modal-confirm{
+  background:linear-gradient(135deg,var(--al-green),var(--al-green-2))!important;
+  color:#fff!important;border:0!important;
+  box-shadow:0 8px 22px rgba(18,61,42,.16)!important;
+}
+button:hover{filter:brightness(1.06)}
+.secondary,.next,.logout-btn,.back-btn,.copy-register,.modal-cancel{
+  background:#fff!important;color:var(--al-green)!important;
+  border:1px solid rgba(18,61,42,.20)!important;
+}
+.open-register,.redeem{background:var(--al-gold)!important;color:#fff!important}
+.logout-btn{box-shadow:none!important}
+.brand-logo{width:190px!important;max-width:42vw!important;filter:drop-shadow(0 7px 14px rgba(65,46,24,.16))!important}
+.title h1,.gm-header h1,.header h1,.name,.customer-name,.points-title,.gm-user-name,.user-name{color:var(--al-green)!important}
+.title p,.gm-header p,.gm-user-email,.user-email,.sub,.welcome,.id,.feature-sub,.report-sub,.points-sub{color:var(--al-muted)!important}
+.gold,.pointsLabel,.section-link,.status,.active,.brand{color:var(--al-gold)!important}
+.star{color:var(--al-gold)!important}
+.coupon-number,.report-number,.points-number,.pointsNum{color:var(--al-green)!important}
+.dot.active,.dot.on{background:var(--al-gold)!important}
+.progress-ring{background:conic-gradient(var(--al-gold) 0 70%,#e9e0cf 70% 100%)!important}
+.progress-ring:before{background:#fff!important;border-color:rgba(18,61,42,.08)!important}
+.avatar,.initial{background:var(--al-green)!important;color:#fff!important}
+.status{background:rgba(18,61,42,.08)!important;color:var(--al-green)!important}
+.message.success{background:rgba(18,61,42,.08)!important;color:var(--al-green)!important}
+.message.error{background:rgba(160,48,48,.08)!important;color:#a03030!important}
+.report-orange,.report-green,.report-light{border-top-color:var(--al-gold)!important}
+.coupons-panel{background:var(--al-cream)!important;border-color:var(--al-line)!important}
+.coupon-item,.next-line{background:#fff!important;color:var(--al-ink)!important;border-color:var(--al-line)!important}
+.coupons-count,.badge,.family-pill{background:var(--al-gold)!important;color:#fff!important}
+.features{border-color:var(--al-line)!important}
+.footer{color:var(--al-green)!important;opacity:.75}
+.scanner-frame{background:#f3ede1!important;border-color:rgba(18,61,42,.18)!important}
+.corner{border-color:var(--al-gold)!important}
+.menu-qr-wrap,.qrbox,.qr-box,.register-qr{box-shadow:0 12px 30px rgba(66,48,27,.12)!important}
+.menu-qr-label,.label,.points-text,.report-label{color:var(--al-green)!important}
+.staff-home .home-action{background:#fff!important;color:var(--al-green)!important;border-color:var(--al-line)!important}
+.staff-home .home-action.add{border-color:rgba(18,61,42,.28)!important}
+.staff-home .home-action.new{border-color:rgba(201,149,46,.45)!important}
+.register-panel h2{color:var(--al-green)!important}
+.camera-help{background:var(--al-cream)!important;color:var(--al-muted)!important}
+.modal{background:rgba(18,61,42,.48)!important}
+.modal-box h2{color:var(--al-green)!important}
+.bottom{background:rgba(255,255,255,.96)!important;border-top:1px solid var(--al-line)!important}
+.nav{color:#7a817a!important}.nav.active,.active{color:var(--al-gold)!important}
+.cardTop .pill,.pill{background:var(--al-green)!important;color:#fff!important}
+.more,.hint,.message,.msg{color:var(--al-muted)!important}
+.form button:not(.secondary){background:var(--al-green)!important}
+.logo,.logo-img{object-fit:contain!important}
+@media(max-width:700px){.brand-logo{width:150px!important;max-width:45vw!important}.page{padding-top:18px!important}.title h1,.gm-header h1{font-size:34px!important}}
+
 </style>
 </head>
 <body>
 <div id="loginPage" class="page">
-<div class="topbar"><img class="brand-logo" src="logo.png" alt="Al Noor Modern Bakery & Cafe"></div>
+<div class="topbar"><img class="brand-logo" src="al-noor-loyalty-logo.png" alt="Al Noor Modern Bakery & Cafe"></div>
 <div class="login panel"><h2>GM Login</h2><p>General Manager access only</p>
 <div class="field"><label>Email</label><input id="email" type="email" autocomplete="username" placeholder="Enter GM email"></div>
 <div class="field"><label>Password</label><input id="password" type="password" autocomplete="current-password" placeholder="Enter password"></div>
 <button id="loginBtn" class="login-btn">LOGIN</button><div id="loginMessage"></div></div></div>
 
 <div id="dashboard" class="page hidden">
-<div class="topbar"><img class="brand-logo" src="logo.png" alt="Al Noor Modern Bakery & Cafe"><button id="logoutBtn" class="logout">LOGOUT</button></div>
+<div class="topbar"><img class="brand-logo" src="al-noor-loyalty-logo.png" alt="Al Noor Modern Bakery & Cafe"><button id="logoutBtn" class="logout">LOGOUT</button></div>
 <div class="header"><h1>GM DASHBOARD</h1><p>Al Noor Loyalty Management</p></div>
 <div class="user"><div id="gmName" class="user-name">GM</div><div id="gmEmail" class="user-email">—</div></div>
 <div class="filters panel"><div class="filters-row"><div><div class="filter-label">REPORT DATE</div><input id="reportDate" class="date-input" type="date"></div><button id="refreshBtn" class="refresh">↻ REFRESH REPORT</button></div></div>
