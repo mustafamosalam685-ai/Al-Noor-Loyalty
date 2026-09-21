@@ -15,7 +15,7 @@
 </head>
 <body><div class="wrap"><img class="logo" src="icon-512.png" alt="Al Noor"><div class="eyebrow">AL NOOR • LOYALTY</div><div class="title">Welcome to Al Noor</div><div class="sub">Your Al Noor Loyalty Card is ready whenever you are.</div><div class="panel"><div class="option"><h2>Already a Customer?</h2><p>Sign in to your existing Al Noor Loyalty Card.</p><a class="btn primary" href="login.html">I ALREADY HAVE AN ACCOUNT</a></div><div class="option"><h2>New Customer?</h2><p>Create your Al Noor Loyalty Card and start earning points.</p><a class="btn secondary" href="register.html">CREATE MY LOYALTY CARD</a></div><button id="installAppBtn" class="install" onclick="installAlNoorApp()">INSTALL AL NOOR APP</button></div><div class="footer">AL NOOR • LOYALTY MEMBER</div></div>
 <script>
-const SUPABASE_URL="https://fgarlyoqobopudfkifbp.supabase.co";const SUPABASE_KEY="sb_publishable_hmDY0Nch_M_WPIMRXW26-HA_eaLaVZcY";
+const SUPABASE_URL="https://fgarlyoqobopudfkifbp.supabase.co";const SUPABASE_KEY="sb_publishable_hmDY0NchM_WPIMRXW26-HA_eaLaVZcY";
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 async function openCustomer(){const token=new URLSearchParams(location.search).get("token");if(token){localStorage.setItem("alnoor_public_token",token);location.href="card.html?token="+encodeURIComponent(token);return}try{const {data:{session}}=await sb.auth.getSession();if(session){const r=await sb.rpc("get_my_customer");if(!r.error&&r.data){const c=Array.isArray(r.data)?r.data[0]:r.data;if(c?.public_token){localStorage.setItem("alnoor_public_token",c.public_token);location.href="card.html?token="+encodeURIComponent(c.public_token);}}}}catch(e){}}
 openCustomer();
